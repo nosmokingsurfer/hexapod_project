@@ -1,0 +1,58 @@
+with main; version=80 ;
+  type=mbs;  autogravity=true;  symbolic = false; language=cplusplus; size=1; scene=0; 
+  objectidentifier=UMObject;
+  bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
+  gridstep= 5.E-1; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
+  rotationstyle = z;
+  mousepick=false;
+  a={0.851163297954443 0.1738589456838 -0.495271750881307 0 0.943552724198932 0.331222367385975 0.524900981343451 -0.281924322580524 0.803117448523064};
+  target={0 0 0.6};
+  distance=10;
+  sensitivity_threshold=0.050;
+with const;
+  cnst=(a# 0);
+
+with egravity; gravityz=-1; 
+with go;
+  name="GO1";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=ELLIPSOID;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  abc=0.5,0.5,0.5;
+  nm=40; nl=25;
+with go;
+  name="GO2";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=BAR;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  discret=0;  box=0.5,0.5,0.5;
+$ Bodies, inertia parameters, images
+with body1; name="Body1"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+
+$ Joints, degrees of freedom, hinges, initial conditions
+with joint1; name="jBase0_Body1"; type=transl; bd1="Base0"; bd2="Body1"; 
+  with jnt1dof; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y= 1.; e1z=0; e2x=0; e2y= 1.; e2z=0; 
+  constx=0; consta=0; x0=0; 
+with scalarforce; name="jBase0_Body1"; type=library;
+  libtype=;
+  pvalues=;
+
+$ Contact forces
+  with cfrc; name="CFrc1"; type=plane_sphere; bd1="Body1"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; 
+    sx=; sy=; sz=; sr=0.5; 
+with end;

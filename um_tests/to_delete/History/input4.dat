@@ -1,0 +1,73 @@
+with main; version=80 ;
+  type=mbs;  autogravity=true;  symbolic = false; size=1; scene=0; 
+  objectidentifier=UMObject;
+  bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
+  gridstep= 5.E-1; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
+  rotationstyle = z;
+  mousepick=false;
+  a={0.951229567760695 0.095162309417803 -0.293438995847643 0 0.951229567760693 0.308483888424992 0.308483888424991 -0.293438995847643 0.904837690582197};
+  target={0 0 0.6};
+  distance=10;
+  sensitivity_threshold=0.050;
+with const;
+  cnst=(a# 0);
+
+with egravity; gravityz=-1; 
+with go;
+  name="GO1";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  with ge; type=ELLIPSOID;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  abc=0.5,0.5,0.5;
+  nm=40; nl=25;
+with go;
+  name="GO2";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  with ge; type=BAR;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  discret=0;  box=0.5,0.5,0.5;
+$ Bodies, inertia parameters, images
+with body1; name="Body1"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body2; name="Body2"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+
+$ Joints, degrees of freedom, hinges, initial conditions
+with joint1; name="jBody1_Base0"; type=6dof; bd1="Body1"; bd2="Base0"; 
+  with jnt6dof; 
+  position=1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  position=2;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  position=0;
+  angles=312; 
+  x0=0; 
+  y0=0; 
+  z0=0; 
+  angle10=0; 
+  angle20=0; 
+  angle30=0; 
+with joint2; name="jBody1_Body2"; type=comm; bd1="Body1"; bd2="Body2"; 
+  with et; type=rv; ex= 1.; ey=0; ez=0; coord0=0; 
+with scalarforce; name="RVx"; type=expression;
+  expression=a; 
+
+$ Contact forces
+  with cfrc; name="CFrc1"; type=plane_sphere; bd1="Body1"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; 
+    sx=; sy=; sz=; sr=0.5; 
+with end;

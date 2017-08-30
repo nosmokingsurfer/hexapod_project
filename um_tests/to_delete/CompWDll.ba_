@@ -1,0 +1,3 @@
+"C:\PROGRA~2\MI30EB~1\VC\bin\cl.exe" /Zm200 /GX /I"C:\PROGRA~2\MI30EB~1\VC\include" /I"C:\PROGRA~2\MICROS~1.0" /I"C:\Users\Public\DOCUME~1\UMSOFT~1\UNIVER~1\8\com" /c C/*.cpp >"C:\Users\Public\Documents\UM Software Lab\Universal Mechanism\8\My models\to_delete\wCompile.er"
+"C:\PROGRA~2\MI30EB~1\VC\bin\\link.exe" /Libpath:"C:\PROGRA~2\MI30EB~1\VC\lib" /DEF:C\UmTask.def /dll *.obj
+@echo end >"C:\Users\Public\Documents\UM Software Lab\Universal Mechanism\8\My models\to_delete\end"
