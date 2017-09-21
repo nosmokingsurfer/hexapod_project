@@ -1,0 +1,91 @@
+with main; version=80 ;
+  type=mbs;  autogravity=true;  symbolic = false; language=cplusplus; size=1; scene=0; 
+  objectidentifier=UMObject;
+  bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
+  gridstep= 5.E-1; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
+  rotationstyle = z;
+  mousepick=true;
+  a={0.450385935747465 0.648879439102166 -0.613276432281014 0 0.686887426662429 0.726763828965819 0.892833976101313 -0.32732420717618 0.309364436410526};
+  target={0 0 6.54247426417897};
+  distance=10;
+  sensitivity_threshold=0.050;
+with const;
+  cnst=(p1# 1);
+  cnst=(p2# 2);
+  cnst=(p3# 3);
+  cnst=(torque_alpha# 0);
+  cnst=(torque_beta# 0);
+  cnst=(torque_gamma# 0);
+
+with egravity; gravityz=-1; 
+with go;
+  name="p1";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p1; r1=0.05; r2=0.05;
+  npc=20; npl=2;
+with go;
+  name="p2";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p2; r1=0.05; r2=0.05;
+  npc=20; npl=2;
+with go;
+  name="p3";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p3; r1=0.05; r2=0.05;
+  npc=20; npl=2;
+$ Bodies, inertia parameters, images
+with body1; name="Body1"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=0; rcy=0; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body2; name="Body2"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=0; rcy=0; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body3; name="Body3"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=0; rcy=0; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+
+$ Joints, degrees of freedom, hinges, initial conditions
+with joint1; name="jBase0_Body1"; type=comm; bd1="Base0"; bd2="Body1"; 
+  with et; type=rc; ex=0; ey= 1.; ez=0; coord0= 9.E1; 
+  with et; type=rv; ex=-1.; ey=0; ez=0; coord0=0; 
+with scalarforce; name="RVx"; type=expression;
+  expression=torque_alpha; 
+with joint2; name="jBody1_Body1"; type=comm; bd1="Body1"; bd2="Body2"; 
+  with et; type=tc; ex=; ey=; ez=p1; 
+  with et; type=rv; ex=0; ey=-1.; ez=0; coord0=0; 
+with scalarforce; name="RVy"; type=expression;
+  expression=torque_beta; 
+with joint3; name="jBody2_Body2"; type=comm; bd1="Body2"; bd2="Body3"; 
+  with et; type=tc; ex=; ey=; ez=p2; 
+  with et; type=rv; ex=0; ey=-1.; ez=0; coord0=0; 
+with scalarforce; name="RVy"; type=expression;
+  expression=torque_gamma; 
+with sensor;
+  name ="Sensor1";
+  body="Body3";
+  point=,,p3,;
+with end;
