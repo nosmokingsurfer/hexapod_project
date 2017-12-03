@@ -1,2 +1,0 @@
-add_subdirectory(flying_sphere)
-add_subdirectory(step_cycle)
