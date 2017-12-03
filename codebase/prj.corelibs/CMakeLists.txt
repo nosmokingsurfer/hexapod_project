@@ -1,0 +1,5 @@
+add_subdirectory(dummy)
+add_subdirectory(leg)
+add_subdirectory(step)
+add_subdirectory(robot)
+add_subdirectory(trajectory)

@@ -1,0 +1,3 @@
+add_subdirectory(single_leg)
+add_subdirectory(step_cycle)
+add_subdirectory(robot_test)

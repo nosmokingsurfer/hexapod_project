@@ -6,13 +6,13 @@ option(BUILD_TESTS "Build test projects" ON)
 
 
 if(BUILD_TESTS)
-	add_subdirectory(tests)
+	add_subdirectory(prj.tests)
 endif()
 
 if(BUILD_LIBRARIES)
-	add_subdirectory(corelibs)
+	add_subdirectory(prj.corelibs)
 endif()
 
 if(BUILD_DLL)
-	add_subdirectory(control_dlls)
+	add_subdirectory(prj.control_dlls)
 endif()

@@ -1,0 +1,14 @@
+EXPORTS
+  EXT_Initialize
+  EXT_Terminate
+  EXT_GetModelName
+  EXT_GetNumU
+  EXT_GetUName
+  EXT_GetNumY
+  EXT_GetYName
+  EXT_GetY
+  EXT_GetNumParameters
+  EXT_GetParameters
+  EXT_GetParameterName
+  EXT_SetParameters
+  EXT_StepConfirmed
