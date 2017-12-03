@@ -6,8 +6,8 @@ with main; version=80 ;
   gridstep= 5.E-2; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
   rotationstyle = z;
   mousepick=true;
-  a={-0.665967638781705 -0.062290452841467 0.743375412278502 0 0.996507656997679 0.0835014343884624 -0.745980632520355 0.0556092530945726 -0.66364185135863};
-  target={0 1.30780689020855 8.58712432742945};
+  a={-0.351141732258521 -0.261994664731574 0.898920619141946 0 0.96005467509592 0.279812474393818 -0.936322318363942 0.0982538369661884 -0.337115261676072};
+  target={0 1.30780689020855 14.1663622464921};
   distance=10;
   sensitivity_threshold=0.050;
 with const;
@@ -17,6 +17,10 @@ with const;
   cnst=(fr_alpha# 0);
   cnst=(mr_alpha# 0);
   cnst=(rr_alpha# 0);
+  cnst=(kP# 0);
+  cnst=(kI# 0);
+  cnst=(kD# 0);
+  cnst=(target_alpha# 0);
 
 with egravity; gravityz=-1; 
 with go;
@@ -113,14 +117,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -197,14 +201,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -281,14 +285,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -365,14 +369,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -449,14 +453,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -533,14 +537,14 @@ $ Subsystems and standard elements (wheelsets, etc)
     with jnt1dof; 
       ro1x=p1; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg1_leg_seg1"; type=expression;
     expression=beta; 
   with joint2; name="jleg_seg2_leg_seg2"; type=rotat; bd1="leg_seg2"; bd2="leg_seg3"; 
     with jnt1dof; 
       ro1x=p2; ro1y=0; ro1z=; ro2x=; ro2y=; ro2z=; 
     e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-    constx=0; consta= 3.5E1; x0=0; 
+    constx=0; consta=0; x0=0; 
   with scalarforce; name="jleg_seg2_leg_seg2"; type=expression;
     expression=gamma; 
   with end;
@@ -628,6 +632,51 @@ $ Contact forces
       '-0.05' '-0.1' '' 
     };
   with cfrc; name="CFrc2"; type=plane_point; bd1="FL.leg_seg3"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' '' 
+      '0.05' '0' '0' 
+      '0' '0' '0' 
+    };
+  with cfrc; name="CFrc3"; type=plane_point; bd1="ML.leg_seg3"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' '' 
+      '0.05' '0' '0' 
+      '0' '0' '0' 
+    };
+  with cfrc; name="CFrc4"; type=plane_point; bd1="RL.leg_seg3"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' '' 
+      '0.05' '0' '0' 
+      '0' '0' '0' 
+    };
+  with cfrc; name="CFrc5"; type=plane_point; bd1="FR.leg_seg3"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' '' 
+      '0.05' '0' '0' 
+      '0' '0' '0' 
+    };
+  with cfrc; name="CFrc6"; type=plane_point; bd1="MR.leg_seg3"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' '' 
+      '0.05' '0' '0' 
+      '0' '0' '0' 
+    };
+  with cfrc; name="CFrc7"; type=plane_point; bd1="RR.leg_seg3"; bd2="Base0"; reverse=true; 
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=; delta=1; dissfactor=; vstar=0.01; 
     px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
