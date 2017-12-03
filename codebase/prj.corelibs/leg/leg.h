@@ -33,9 +33,11 @@ public:
   void forwardKinematics(Vector3d& targetAngles, Vector3d& solution);
   bool checkReachability(Vector3d& targetPoint);
   Eigen::Vector3d trajectoryGenerator(double time);
+  bool getFB(VectorXd& feedback, int index);
 private:
   Matrix4d mounting; //leg position and orientation in parent reference frame
-  vector<double> state; //leg state - array of joint angles
+  VectorXd FBcoords; //leg state - array of joint angles
+  VectorXd FBvelocities; //leg coordinate velocities
 };
 
 #endif

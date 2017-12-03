@@ -64,3 +64,31 @@ Eigen::VectorXd Robot::getControls(double time)
   }
   return result;
 }
+
+bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
+{
+  Eigen::VectorXd signals(numberOfInputs);
+  signals.fill(0);
+
+  for (int i = 0; i < numberOfInputs; i++)
+  {
+    signals[i] = inputs[i];
+  }
+
+  this->feedBack = signals;
+
+
+  this->getFB(0);
+
+  for (int i = 0; i < static_cast<int>(robotLegs.size()); i++)
+  {
+    robotLegs[i].getFB(feedBack, 12 + i*6);
+  }
+  return true;
+}
+
+bool Robot::getFB(int index)
+{
+    this->FBcoords = this->feedBack.segment<6>(index);
+    this->FBvelocities = this->feedBack.segment<6>(index + 6);
+}

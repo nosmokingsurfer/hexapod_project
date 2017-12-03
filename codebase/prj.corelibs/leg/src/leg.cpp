@@ -136,3 +136,9 @@ Eigen::Vector3d Leg::trajectoryGenerator(double time)
   return result;
 
 }
+
+bool Leg::getFB(VectorXd& feedback, int index)
+{
+  this->FBcoords = feedback.segment<3>(index);
+  this->FBvelocities = feedback.segment<3>(index + 3);
+}

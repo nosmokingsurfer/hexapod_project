@@ -11,4 +11,4 @@ set(robot_HDR robot.h)
 
 add_library(robot ${robot_SRC} ${robot_HDR})
 
-target_link_libraries(robot trajectory leg Eigen3::Eigen)
+target_link_libraries(robot trajectory leg pose Eigen3::Eigen)
