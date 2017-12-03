@@ -11,4 +11,4 @@ set(leg_HDR leg.h)
 
 add_library(leg ${leg_SRC} ${leg_HDR})
 
-target_link_libraries (leg Eigen3::Eigen)
+target_link_libraries (leg pid Eigen3::Eigen)

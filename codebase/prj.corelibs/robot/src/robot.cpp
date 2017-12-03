@@ -4,6 +4,12 @@ using namespace Eigen;
 
 Robot::Robot()
 {
+  this->controls = VectorXd(18);
+  this->controls.fill(0);
+
+  this->feedBack = VectorXd(48);
+  this->feedBack.fill(0);
+
   //legs dimensions
   Vector3d segments(0.05, 0.05, 0.05);
 
@@ -47,22 +53,30 @@ Eigen::VectorXd Robot::getControls()
 {
   VectorXd result(3*this->robotLegs.size());
   result.fill(0);
-
-  for (size_t i = 0; i < 3*robotLegs.size(); i++)
-  {
-    result[i] = 0;
-  }
   return result;
 }
 
 Eigen::VectorXd Robot::getControls(double time)
 {
-  VectorXd result(3*this->robotLegs.size());
-  for (size_t i = 0; i < 3*robotLegs.size(); i++)
+  VectorXd targetAngles(18);
+  targetAngles.fill(0);
+
+  for (int i = 0; i < 6; i++)
   {
-    result[i] = 0.1*sin(time/(2*EIGEN_PI));
+    targetAngles[3*i + 0] = 0.1*sin(time*(2*EIGEN_PI/5));
+    targetAngles[3*i + 1] = 0.1*cos(time*(2*EIGEN_PI/5));
+    targetAngles[3*i + 2] = 0.2*cos(time*(2*EIGEN_PI/5));
   }
-  return result;
+
+
+  VectorXd torques(controls.size());
+
+  for (int i = 0; i < 6; i++)
+  {
+    torques.segment(3*i, 3) = robotLegs[i].getTorques(targetAngles.segment(3*i, 3));
+  }
+  
+  return torques;
 }
 
 bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
@@ -87,8 +101,32 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
   return true;
 }
 
+bool Robot::recieveParameters(double* params, int numberOfParams)
+{
+  Eigen::VectorXd parameters(numberOfParams);
+  parameters.fill(0);
+
+  for (int i = 0; i < numberOfParams; i++)
+  {
+    parameters[i] = params[i];
+  }
+
+  this->parameters = parameters;
+
+  for(int i = 0; i < static_cast<int>(robotLegs.size()); i++)
+  {
+    robotLegs[i].pids[0].setCoeefs(Vector3d(parameters.head(3)));
+    robotLegs[i].pids[1].setCoeefs(Vector3d(parameters.head(3)));
+    robotLegs[i].pids[2].setCoeefs(Vector3d(parameters.head(3)));
+  }
+
+  return true;
+}
+
 bool Robot::getFB(int index)
 {
     this->FBcoords = this->feedBack.segment<6>(index);
     this->FBvelocities = this->feedBack.segment<6>(index + 6);
+
+    return true;
 }

@@ -5,7 +5,7 @@
 ///
 
 #include <leg/leg.h>
-#include <pose/pose.h>
+#include <pid/pid.h>
 
 #pragma once
 #ifndef ROBOT_H
@@ -27,17 +27,23 @@ public:
   ~Robot();
   private:
     std::vector<Leg> robotLegs;
-    Pose pose;
-    Eigen::VectorXd feedBack; // all the feedback array from UM
-    VectorXd FBcoords;
-    VectorXd FBvelocities;
+    VectorXd feedBack; // the whole feedback array from UM
+    VectorXd FBcoords; // coords of the robot body
+    VectorXd FBvelocities; // velocities of the robot body
+    VectorXd controls; // the whole output array from control system
+    VectorXd parameters; // the whole list of parameters coming from UM
+
 public: 
   Eigen::VectorXd getControls();
   Eigen::VectorXd getControls(double time);
 
   bool recieveFeedBack(double* inputs, int numberOfInputs);
+  bool recieveParameters(double* params, int numberOfParams);
 
   bool getFB(int index);
+
+  //bool writeSelf();
+
 };
 
 #endif

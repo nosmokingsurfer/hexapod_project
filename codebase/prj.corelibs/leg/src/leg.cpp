@@ -36,6 +36,12 @@ bool Leg::init(const vector<double>& segments, const Eigen::Vector4d& mountingPo
   test.matrix().topLeftCorner(3,3) = temp;
   test.matrix().col(3) = mountingPoint;
   
+  //PID controller for all joints
+  pids.push_back(PID(Vector3d(0,0,0)));
+  pids.push_back(PID(Vector3d(0,0,0)));
+  pids.push_back(PID(Vector3d(0,0,0)));
+
+
   return true;
 }
 
@@ -51,8 +57,6 @@ bool Leg::init(const Eigen::Vector3d& segments, const Vector4d& mountingPoint, c
 
 void Leg::inverseKinematics(Eigen::Vector3d& targetPoint, Eigen::Vector3d& solution)
 {
-  double pi = 3.1415926535897932384626433832795;
-
   double p1 = this->segments[0];
   double p2 = this->segments[1];
   double p3 = this->segments[2];
@@ -78,7 +82,7 @@ void Leg::inverseKinematics(Eigen::Vector3d& targetPoint, Eigen::Vector3d& solut
 
   beta = psi1 + psi2;
 
-  gamma = acos((l*l - p2*p2 - p3*p3)/(-2*p2*p3)) - pi;
+  gamma = acos((l*l - p2*p2 - p3*p3)/(-2*p2*p3)) - EIGEN_PI;
 
   solution[0] = alpha;
   solution[1] = beta;
@@ -124,12 +128,10 @@ Eigen::Vector3d Leg::trajectoryGenerator(double time)
 
   Eigen::Vector3d result(3);
   result.fill(0);
-
-  double pi = 3.1415926535897932384626433832795;
-
-  double x = 3;// + R*sin(2*pi/period*time);
-  double y = R*sin(2*pi/period*time);
-  double z = R*cos(2*pi/period*time);
+  
+  double x = 3;
+  double y = R*sin(2*EIGEN_PI/period*time);
+  double z = R*cos(2*EIGEN_PI/period*time);
 
   result << x, y, z;
 
@@ -141,4 +143,16 @@ bool Leg::getFB(VectorXd& feedback, int index)
 {
   this->FBcoords = feedback.segment<3>(index);
   this->FBvelocities = feedback.segment<3>(index + 3);
+  return true;
+}
+
+Eigen::VectorXd Leg::getTorques(const VectorXd& targetAngles)
+{
+  VectorXd torques(3);
+  for(size_t i = 0; i < pids.size(); i++)
+  {
+    torques[i] = pids[i].getValue(targetAngles[i], FBcoords[i], FBvelocities[i]);
+  }
+  
+  return torques;
 }

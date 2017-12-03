@@ -130,7 +130,7 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   // status is the exit code 
   //   status==0 means no errors occured
 
-  num    = 18;
+  num    = 19;
   status = 0;
 }
 
@@ -167,6 +167,7 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   case 15: wcscpy(name, L"RR_alpha"); break;
   case 16: wcscpy(name, L"RR_beta"); break;
   case 17: wcscpy(name, L"RR_gamma"); break;
+  case 18: wcscpy(name, L"FL_alpha_target"); break;
   default: status = 1;
   }
 }
@@ -188,12 +189,17 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
   EXT_GetNumU(numberOfInputs, status);
   myRobot.recieveFeedBack(U, numberOfInputs);
 
-  Eigen::VectorXd result = myRobot.getControls(time);
-  
+  Eigen::VectorXd result(18);
+  result.fill(0); 
+
+  result = myRobot.getControls(time);
+
   for(int i = 0; i < 18; i++)
   {
     Y[i] = result[i];
   }
+
+  Y[18] = 0.1*sin(time*(2*EIGEN_PI/5));
 
   status = 0;
 }
@@ -203,7 +209,7 @@ void _cdecl EXT_GetNumParameters(int& num, int& status)
   // num - count of model parameters
   // status - exit code (0 - no errors)
 
-  num    = 0;    // Count of model parameters
+  num    = 3;    // Count of model parameters
   status = 0;
 }
 
@@ -224,6 +230,13 @@ void _cdecl EXT_GetParameterName(int i, WChar name, int& status)
   //   status==0 means no errors occured
 
   status = 0;
+  switch(i)
+  {
+    case 0: wcscpy(name, L"kP"); break;
+    case 1: wcscpy(name, L"kI"); break;
+    case 2: wcscpy(name, L"kD"); break;
+    default: status = 1;
+  }
 }
 
 void _cdecl EXT_SetParameters(int numpara, PDouble para, int& status)
@@ -232,7 +245,9 @@ void _cdecl EXT_SetParameters(int numpara, PDouble para, int& status)
   // para is the pointer to the first element of vector of parameter
   // status is the exit code 
   //   status==0 means no errors occured
-
+  int numParams = 0;
+  EXT_GetNumParameters(numParams, status);
+  myRobot.recieveParameters(para, numParams);
   status = 0;
 }
 
