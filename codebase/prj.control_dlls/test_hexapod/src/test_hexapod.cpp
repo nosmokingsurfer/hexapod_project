@@ -130,7 +130,7 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   // status is the exit code 
   //   status==0 means no errors occured
 
-  num    = 19;
+  num    = 36;
   status = 0;
 }
 
@@ -144,6 +144,7 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   status = 0;
   switch( i ) // Names of output variables
   {  
+    //control torques
   case 0: wcscpy(name, L"FL_alpha"); break;
   case 1: wcscpy(name, L"FL_beta"); break;
   case 2: wcscpy(name, L"FL_gamma"); break;
@@ -167,7 +168,34 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   case 15: wcscpy(name, L"RR_alpha"); break;
   case 16: wcscpy(name, L"RR_beta"); break;
   case 17: wcscpy(name, L"RR_gamma"); break;
+
+  
+    //desired angles
+    
   case 18: wcscpy(name, L"FL_alpha_target"); break;
+  case 19: wcscpy(name, L"FL_beta_target"); break;
+  case 20: wcscpy(name, L"FL_gamma_target"); break;
+
+  case 21: wcscpy(name, L"ML_alpha_target"); break;
+  case 22: wcscpy(name, L"ML_beta_target"); break;
+  case 23: wcscpy(name, L"ML_gamma_target"); break;
+
+  case 24: wcscpy(name, L"RL_alpha_target"); break;
+  case 25: wcscpy(name, L"RL_beta_target"); break;
+  case 26: wcscpy(name, L"RL_gamma_target"); break;
+
+  case 27: wcscpy(name, L"FR_alpha_target"); break;
+  case 28: wcscpy(name, L"FR_beta_target"); break;
+  case 29: wcscpy(name, L"FR_gamma_target"); break;
+
+  case 30: wcscpy(name, L"MR_alpha_target"); break;
+  case 31: wcscpy(name, L"MR_beta_target"); break;
+  case 32: wcscpy(name, L"MR_gamma_target"); break;
+
+  case 33: wcscpy(name, L"RR_alpha_target"); break;
+  case 34: wcscpy(name, L"RR_beta_target"); break;
+  case 35: wcscpy(name, L"RR_gamma_target"); break;
+
   default: status = 1;
   }
 }
@@ -189,17 +217,20 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
   EXT_GetNumU(numberOfInputs, status);
   myRobot.recieveFeedBack(U, numberOfInputs);
 
-  Eigen::VectorXd result(18);
-  result.fill(0); 
+  Eigen::VectorXd controlTorques(18);
+  controlTorques.fill(0); 
 
-  result = myRobot.getControls(time);
-
+  controlTorques = myRobot.getControls(time);
   for(int i = 0; i < 18; i++)
   {
-    Y[i] = result[i];
+    Y[i] = controlTorques[i];
   }
 
-  Y[18] = 0.1*sin(time*(2*EIGEN_PI/5));
+  Eigen::VectorXd targetJointAngles = myRobot.getCalculatedJoints();
+  for (int i = 0; i < 18; i++)
+  {
+    Y[18 + i] = targetJointAngles[i];
+  }
 
   status = 0;
 }

@@ -30,12 +30,14 @@ public:
     VectorXd feedBack; // the whole feedback array from UM
     VectorXd FBcoords; // coords of the robot body
     VectorXd FBvelocities; // velocities of the robot body
-    VectorXd controls; // the whole output array from control system
+    VectorXd controlTorques; // the whole output array from control system
+    VectorXd calculatedjoints; // calculated join angles
     VectorXd parameters; // the whole list of parameters coming from UM
 
 public: 
   Eigen::VectorXd getControls();
   Eigen::VectorXd getControls(double time);
+  Eigen::VectorXd getCalculatedJoints();
 
   bool recieveFeedBack(double* inputs, int numberOfInputs);
   bool recieveParameters(double* params, int numberOfParams);

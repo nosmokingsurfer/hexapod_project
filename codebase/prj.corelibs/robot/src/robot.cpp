@@ -4,11 +4,20 @@ using namespace Eigen;
 
 Robot::Robot()
 {
-  this->controls = VectorXd(18);
-  this->controls.fill(0);
+  this->controlTorques = VectorXd(18);
+  this->controlTorques.fill(0);
 
   this->feedBack = VectorXd(48);
   this->feedBack.fill(0);
+
+  this->calculatedjoints = VectorXd(48);
+  this->calculatedjoints.fill(0);
+
+  this->FBvelocities = VectorXd(6);
+  this->FBvelocities.fill(0);
+
+  this->FBcoords = VectorXd(6);
+  this->FBcoords.fill(0);
 
   //legs dimensions
   Vector3d segments(0.05, 0.05, 0.05);
@@ -53,6 +62,8 @@ Eigen::VectorXd Robot::getControls()
 {
   VectorXd result(3*this->robotLegs.size());
   result.fill(0);
+  this->calculatedjoints = result;
+
   return result;
 }
 
@@ -68,15 +79,22 @@ Eigen::VectorXd Robot::getControls(double time)
     targetAngles[3*i + 2] = 0.2*cos(time*(2*EIGEN_PI/5));
   }
 
+  this->calculatedjoints = targetAngles;
 
-  VectorXd torques(controls.size());
+  VectorXd torques(controlTorques.size());
 
   for (int i = 0; i < 6; i++)
   {
     torques.segment(3*i, 3) = robotLegs[i].getTorques(targetAngles.segment(3*i, 3));
   }
   
+  this->controlTorques = torques;
   return torques;
+}
+
+Eigen::VectorXd Robot::getCalculatedJoints()
+{
+  return this->calculatedjoints;
 }
 
 bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
