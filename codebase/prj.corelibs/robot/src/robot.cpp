@@ -18,53 +18,11 @@ Robot::Robot()
 
   this->FBcoords = VectorXd(6);
   this->FBcoords.fill(0);
-
-  //legs dimensions
-  Vector3d segments(0.05, 0.05, 0.05);
-
-  //TODO zip mounting point and mounting orientation in one class - will be able to iterate through it
-  //legs mounting points
-  Vector4d FLmPoint(-0.05,  0.1, 0, 0);
-  Vector4d MLmPoint(-0.05,    0, 0, 0);
-  Vector4d RLmPoint(-0.05, -0.1, 0, 0);
-  Vector4d FRmPoint( 0.05,  0.1, 0, 0);
-  Vector4d MRmPoint( 0.05,    0, 0, 0);
-  Vector4d RRmPoint( 0.05, -0.1, 0, 0);
-  
-  
-  //legs mounting orientations
-  Vector3d FLmOrient(0, 0, 0);
-  Vector3d MLmOrient(0, 0, 0);
-  Vector3d RLmOrient(0, 0, 0);
-  Vector3d FRmOrient(0, 0, 0);
-  Vector3d MRmOrient(0, 0, 0);
-  Vector3d RRmOrient(0, 0, 0);
-  
-  for(int i = 0; i < 6; i++)
-  {
-    robotLegs.push_back(Leg());
-  }
-
-  robotLegs[0].init(segments, FRmPoint, FRmOrient);
-  robotLegs[1].init(segments, MRmPoint, MRmOrient);
-  robotLegs[2].init(segments, RRmPoint, RRmOrient);
-  robotLegs[3].init(segments, FLmPoint, FLmOrient);
-  robotLegs[4].init(segments, MLmPoint, MLmOrient);
-  robotLegs[5].init(segments, RLmPoint, RLmOrient);
 }
 
 Robot::~Robot()
 {
 
-}
-
-Eigen::VectorXd Robot::getControls()
-{
-  VectorXd result(3*this->robotLegs.size());
-  result.fill(0);
-  this->calculatedjoints = result;
-
-  return result;
 }
 
 Eigen::VectorXd Robot::getControls(double time)
@@ -79,13 +37,21 @@ Eigen::VectorXd Robot::getControls(double time)
     targetAngles[3*i + 2] = 0.2*cos(time*(2*EIGEN_PI/5));
   }
 
+  
+
+  for (int i = 0; i < 6; i++)
+  {
+    targetAngles.segment(3*i,3) = robotBody.legs[i].inverseKinematics(robotBody.legs[i].trajectoryGenerator(time));
+  }
+
   this->calculatedjoints = targetAngles;
+
 
   VectorXd torques(controlTorques.size());
 
   for (int i = 0; i < 6; i++)
   {
-    torques.segment(3*i, 3) = robotLegs[i].getTorques(targetAngles.segment(3*i, 3));
+    torques.segment(3*i, 3) = robotBody.legs[i].getTorques(targetAngles.segment(3*i, 3));
   }
   
   this->controlTorques = torques;
@@ -110,11 +76,11 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
   this->feedBack = signals;
 
 
-  this->getFB(0);
+  this->robotBody.getFB(signals);
 
-  for (int i = 0; i < static_cast<int>(robotLegs.size()); i++)
+  for (int i = 0; i < static_cast<int>(robotBody.legs.size()); i++)
   {
-    robotLegs[i].getFB(feedBack, 12 + i*6);
+    robotBody.legs[i].getFB(feedBack, 12 + i*6);
   }
   return true;
 }
@@ -131,20 +97,13 @@ bool Robot::recieveParameters(double* params, int numberOfParams)
 
   this->parameters = parameters;
 
-  for(int i = 0; i < static_cast<int>(robotLegs.size()); i++)
+  for(int i = 0; i < static_cast<int>(robotBody.legs.size()); i++)
   {
-    robotLegs[i].pids[0].setCoeefs(Vector3d(parameters.head(3)));
-    robotLegs[i].pids[1].setCoeefs(Vector3d(parameters.head(3)));
-    robotLegs[i].pids[2].setCoeefs(Vector3d(parameters.head(3)));
+    robotBody.legs[i].pids[0].setCoeefs(Vector3d(parameters.head(3)));
+    robotBody.legs[i].pids[1].setCoeefs(Vector3d(parameters.head(3)));
+    robotBody.legs[i].pids[2].setCoeefs(Vector3d(parameters.head(3)));
   }
 
   return true;
 }
 
-bool Robot::getFB(int index)
-{
-    this->FBcoords = this->feedBack.segment<6>(index);
-    this->FBvelocities = this->feedBack.segment<6>(index + 6);
-
-    return true;
-}

@@ -34,6 +34,9 @@ public:
   MatrixXd getOrientationMatrix();
   Vector3d getPosition();
 
+  bool setOrientationMatrix(Eigen::MatrixXd orientationMatrix);
+  bool setPosition(Eigen::Vector3d position);
+
   MatrixXd getCoordsInPoseReferenceFrame(MatrixXd externalCoords);
   MatrixXd getCoordsOutsidePoseReferenceFrame(MatrixXd internalCoords);
 

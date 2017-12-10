@@ -18,4 +18,4 @@ set(test_hexapod_SRC
 
 add_library(test_hexapod SHARED ${test_hexapod_SRC})
 
-target_link_libraries(test_hexapod robot leg Eigen3::Eigen)
+target_link_libraries(test_hexapod robot leg body Eigen3::Eigen)

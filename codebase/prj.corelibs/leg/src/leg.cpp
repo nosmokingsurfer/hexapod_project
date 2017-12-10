@@ -5,7 +5,6 @@
 Leg::Leg()
 {
   this->segments.clear();
-  this->mounting.fill(0);
 }
 
 
@@ -14,14 +13,14 @@ Leg::~Leg()
 
 }
 
-bool Leg::init(const vector<double>& segments, const Eigen::Vector4d& mountingPoint, const Eigen::Vector3d& mountingAngles)
+bool Leg::init(const std::string name, const vector<double>& segments, const Eigen::Vector3d& mountingPoint, const Eigen::Vector3d& mountingAngles)
 {
   for (size_t i = 0; i < segments.size(); i++)
   {
     this->segments.push_back(segments[i]);
   }
 
-  this->mounting.col(3) = Vector4d(mountingPoint);
+  this->fbPose.setPosition(mountingPoint);
 
   Matrix3d temp;
 
@@ -29,12 +28,7 @@ bool Leg::init(const vector<double>& segments, const Eigen::Vector4d& mountingPo
         *AngleAxisd(mountingAngles[1], Vector3d::UnitY())
         *AngleAxisd(mountingAngles[2], Vector3d::UnitZ());
 
-  this->mounting.topLeftCorner(3, 3) = temp;
- 
-
-  Eigen::Transform<double, 3, Eigen::TransformTraits::Affine> test;
-  test.matrix().topLeftCorner(3,3) = temp;
-  test.matrix().col(3) = mountingPoint;
+  this->fbPose.setOrientationMatrix(temp);
   
   //PID controller for all joints
   pids.push_back(PID(Vector3d(0,0,0)));
@@ -45,17 +39,17 @@ bool Leg::init(const vector<double>& segments, const Eigen::Vector4d& mountingPo
   return true;
 }
 
-bool Leg::init(const Eigen::Vector3d& segments, const Vector4d& mountingPoint, const Vector3d& mountingAngles)
+bool Leg::init(const std::string name, const Eigen::Vector3d& segments, const Vector3d& mountingPoint, const Vector3d& mountingAngles)
 {
   std::vector<double> segms;
   segms.push_back(segments[0]);
   segms.push_back(segments[1]);
   segms.push_back(segments[2]);
 
-  return this->init(segms,mountingPoint,mountingAngles);
+  return this->init(name, segms, mountingPoint ,mountingAngles);
 }
 
-void Leg::inverseKinematics(Eigen::Vector3d& targetPoint, Eigen::Vector3d& solution)
+Eigen::Vector3d Leg::inverseKinematics(Eigen::Vector3d& targetPoint)
 {
   double p1 = this->segments[0];
   double p2 = this->segments[1];
@@ -70,29 +64,38 @@ void Leg::inverseKinematics(Eigen::Vector3d& targetPoint, Eigen::Vector3d& solut
   double beta = 0;
   double gamma = 0;
 
-  if (!checkReachability(targetPoint))
-    return;
+  //if (!checkReachability(targetPoint))
+    //return Eigen::Vector3d(0,0,0);
 
   alpha = atan2(y, x);
   double x_cap = sqrt(x*x + y*y);
   double l = sqrt(z*z + (x_cap - p1)*(x_cap - p1));
 
   double psi1 = atan2(z, x_cap - p1);
-  double psi2 = acos((p2*p2 + l*l - p3*p3)/(2*p2*l));  
+
+  double tempArg = (p2*p2 + l*l - p3*p3)/(2*p2*l);
+  if (tempArg < -1.0) tempArg = -1.0;
+  else if(tempArg > 1.0) tempArg = 1.0;
+
+  double psi2 = acos(tempArg);  
 
   beta = psi1 + psi2;
 
-  gamma = acos((l*l - p2*p2 - p3*p3)/(-2*p2*p3)) - EIGEN_PI;
+  tempArg = (l*l - p2*p2 - p3*p3)/(-2*p2*p3);
+  if (tempArg < -1.0) tempArg = -1.0;
+  else if(tempArg > 1.0) tempArg = 1.0;
+  
+  gamma = acos(tempArg) - EIGEN_PI;
 
-  solution[0] = alpha;
-  solution[1] = beta;
-  solution[2] = gamma;
+  return Eigen::Vector3d(alpha, beta, gamma);
   
 }
 
 
-void Leg::forwardKinematics(Eigen::Vector3d& targetAngles, Eigen::Vector3d& solution)
+Eigen::Vector3d Leg::forwardKinematics(Eigen::Vector3d& targetAngles)
 {
+  Eigen::Vector3d solution;
+
   double p1 = this->segments[0];
   double p2 = this->segments[1];
   double p3 = this->segments[2];
@@ -108,6 +111,8 @@ void Leg::forwardKinematics(Eigen::Vector3d& targetAngles, Eigen::Vector3d& solu
   solution[0] = x;
   solution[1] = y;
   solution[2] = z;
+
+  return solution;
 }
 
 
@@ -123,15 +128,15 @@ bool Leg::checkReachability(Vector3d& targetPoint)
 
 Eigen::Vector3d Leg::trajectoryGenerator(double time)
 {
-  double R = 0.3;
+  double R = 0.025;
   double period = 3;
 
   Eigen::Vector3d result(3);
   result.fill(0);
   
-  double x = 3;
-  double y = R*sin(2*EIGEN_PI/period*time);
-  double z = R*cos(2*EIGEN_PI/period*time);
+  double x = 0;//R*sin(2*EIGEN_PI/period*time);
+  double y = 0.1;
+  double z = 0.0 + R*sin(2*EIGEN_PI/period*time);
 
   result << x, y, z;
 

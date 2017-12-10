@@ -36,6 +36,18 @@ Eigen::Vector3d Pose::getPosition()
   return this->t;
 }
 
+bool Pose::setOrientationMatrix(Eigen::MatrixXd orientationMatrix)
+{
+  this->R = orientationMatrix;
+  return true;
+}
+
+bool Pose::setPosition(Eigen::Vector3d position)
+{
+  this->t = position;
+  return true;
+}
+
 Eigen::MatrixXd Pose::getCoordsInPoseReferenceFrame(MatrixXd externalCoords)
 {
   return this->R*(externalCoords - this->t);

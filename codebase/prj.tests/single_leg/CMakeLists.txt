@@ -16,4 +16,4 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 
 add_executable(single_leg_test src/single_leg_test.cpp ${single_leg_test_HDRS} ${single_leg_test_SRC})
-target_link_libraries (single_leg_test Eigen3::Eigen leg)
+target_link_libraries (single_leg_test Eigen3::Eigen leg pose)

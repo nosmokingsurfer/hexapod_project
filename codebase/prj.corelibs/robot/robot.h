@@ -4,12 +4,16 @@
 ///@brief Robot class for high level control
 ///
 
-#include <leg/leg.h>
-#include <pid/pid.h>
+
 
 #pragma once
 #ifndef ROBOT_H
 #define ROBOT_H
+
+#include <leg/leg.h>
+#include <pid/pid.h>
+#include <body/body.h>
+
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
@@ -26,7 +30,8 @@ public:
   Robot();
   ~Robot();
   private:
-    std::vector<Leg> robotLegs;
+    Body robotBody; // robot body.
+
     VectorXd feedBack; // the whole feedback array from UM
     VectorXd FBcoords; // coords of the robot body
     VectorXd FBvelocities; // velocities of the robot body
@@ -35,17 +40,11 @@ public:
     VectorXd parameters; // the whole list of parameters coming from UM
 
 public: 
-  Eigen::VectorXd getControls();
   Eigen::VectorXd getControls(double time);
   Eigen::VectorXd getCalculatedJoints();
 
   bool recieveFeedBack(double* inputs, int numberOfInputs);
   bool recieveParameters(double* params, int numberOfParams);
-
-  bool getFB(int index);
-
-  //bool writeSelf();
-
 };
 
 #endif
