@@ -226,6 +226,7 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
     Y[i] = controlTorques[i];
   }
 
+  //передаем рассчетные значения углов которые выдала система управления
   Eigen::VectorXd targetJointAngles = myRobot.getCalculatedJoints();
   for (int i = 0; i < 18; i++)
   {

@@ -12,12 +12,6 @@ Robot::Robot()
 
   this->calculatedjoints = VectorXd(48);
   this->calculatedjoints.fill(0);
-
-  this->FBvelocities = VectorXd(6);
-  this->FBvelocities.fill(0);
-
-  this->FBcoords = VectorXd(6);
-  this->FBcoords.fill(0);
 }
 
 Robot::~Robot()
@@ -27,18 +21,11 @@ Robot::~Robot()
 
 Eigen::VectorXd Robot::getControls(double time)
 {
+#if 0
   VectorXd targetAngles(18);
   targetAngles.fill(0);
 
-  for (int i = 0; i < 6; i++)
-  {
-    targetAngles[3*i + 0] = 0.1*sin(time*(2*EIGEN_PI/5));
-    targetAngles[3*i + 1] = 0.1*cos(time*(2*EIGEN_PI/5));
-    targetAngles[3*i + 2] = 0.2*cos(time*(2*EIGEN_PI/5));
-  }
-
-  
-
+  //каким-либо образом считаем целевые шарнирные углы
   for (int i = 0; i < 6; i++)
   {
     targetAngles.segment(3*i,3) = robotBody.legs[i].inverseKinematics(robotBody.legs[i].trajectoryGenerator(time));
@@ -46,8 +33,39 @@ Eigen::VectorXd Robot::getControls(double time)
 
   this->calculatedjoints = targetAngles;
 
+#else
+  VectorXd targetAngles(18);
+  targetAngles.fill(0);
 
+  std::vector<Vector3d> goals;
+
+  //положение следовых точек в абсолютной системе координат
+  goals.push_back(Vector3d(-0.12,  0.1, 0.0)); //FL
+  goals.push_back(Vector3d(-0.12,  0.0, 0.0)); //ML
+  goals.push_back(Vector3d(-0.12, -0.1, 0.0)); //RL
+  goals.push_back(Vector3d( 0.12,  0.1, 0.0)); //FR
+  goals.push_back(Vector3d( 0.12,  0.0, 0.0)); //MR
+  goals.push_back(Vector3d( 0.12, -0.1, 0.0)); //RR
+
+  robotBody.tarPose = robotBody.getTargetPose(time);
+
+  for (int i = 0; i < 6; i++)
+  {
+    //для i-ноги считаем радиус вектор в СК связанной с ногой
+    Vector3d result = robotBody.legs[i].pose.T*robotBody.tarPose.T*goals[i];
+    targetAngles.segment(3*i, 3) = robotBody.legs[i].inverseKinematics(result);
+  }
+    this->calculatedjoints = targetAngles;
+
+
+#endif
+
+
+
+
+  //по рассчитанным углам считаем моменты
   VectorXd torques(controlTorques.size());
+  torques.fill(0);
 
   for (int i = 0; i < 6; i++)
   {
@@ -76,11 +94,11 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
   this->feedBack = signals;
 
 
-  this->robotBody.getFB(signals);
+  this->robotBody.recieveFB(signals);
 
   for (int i = 0; i < static_cast<int>(robotBody.legs.size()); i++)
   {
-    robotBody.legs[i].getFB(feedBack, 12 + i*6);
+    robotBody.legs[i].recieveFB(feedBack, 12 + i*6);
   }
   return true;
 }

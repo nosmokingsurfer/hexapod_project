@@ -21,8 +21,16 @@ int main(int argc, char** argv)
   double inputArray[48];
   for(int i = 0; i < 48; i++)
   {
-    inputArray[i] = i/100.0;
+    inputArray[i] = 0.05*i;
   }
+
+  inputArray[0] = 0.0;
+  inputArray[1] = 0.0;
+  inputArray[2] = 0.05;
+  inputArray[3] = 0.0;
+  inputArray[4] = 0.0;
+  inputArray[5] = 0.0;
+
 
   double parameters[3];
   for (int i = 0; i < 3; i++)

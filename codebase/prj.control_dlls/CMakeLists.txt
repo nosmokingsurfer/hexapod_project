@@ -1,3 +1,4 @@
 add_subdirectory(flying_sphere)
 add_subdirectory(step_cycle)
 add_subdirectory(test_hexapod)
+add_subdirectory(pose_test_dll)

@@ -20,16 +20,8 @@ bool Leg::init(const std::string name, const vector<double>& segments, const Eig
     this->segments.push_back(segments[i]);
   }
 
-  this->fbPose.setPosition(mountingPoint);
+  pose = Pose(mountingAngles, mountingPoint);
 
-  Matrix3d temp;
-
-  temp = AngleAxisd(mountingAngles[0], Vector3d::UnitX())
-        *AngleAxisd(mountingAngles[1], Vector3d::UnitY())
-        *AngleAxisd(mountingAngles[2], Vector3d::UnitZ());
-
-  this->fbPose.setOrientationMatrix(temp);
-  
   //PID controller for all joints
   pids.push_back(PID(Vector3d(0,0,0)));
   pids.push_back(PID(Vector3d(0,0,0)));
@@ -64,8 +56,8 @@ Eigen::Vector3d Leg::inverseKinematics(Eigen::Vector3d& targetPoint)
   double beta = 0;
   double gamma = 0;
 
-  //if (!checkReachability(targetPoint))
-    //return Eigen::Vector3d(0,0,0);
+  if (!checkReachability(targetPoint))
+    return Eigen::Vector3d(0,0,0);
 
   alpha = atan2(y, x);
   double x_cap = sqrt(x*x + y*y);
@@ -144,7 +136,7 @@ Eigen::Vector3d Leg::trajectoryGenerator(double time)
 
 }
 
-bool Leg::getFB(VectorXd& feedback, int index)
+bool Leg::recieveFB(VectorXd& feedback, int index)
 {
   this->FBcoords = feedback.segment<3>(index);
   this->FBvelocities = feedback.segment<3>(index + 3);
@@ -158,6 +150,9 @@ Eigen::VectorXd Leg::getTorques(const VectorXd& targetAngles)
   {
     torques[i] = pids[i].getValue(targetAngles[i], FBcoords[i], FBvelocities[i]);
   }
+
+  //TODO torque saturation
+
   
   return torques;
 }

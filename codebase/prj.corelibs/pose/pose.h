@@ -22,25 +22,19 @@ using namespace Eigen;
 class Pose{
 public: 
   Pose();
-  Pose(Vector3d t);
-  Pose(Vector3d t, MatrixXd R);
-  ~Pose();
-
-private:
-  MatrixXd R;
-  Vector3d t;
+  Pose(Vector3d angles);
+  Pose(Vector3d angles, Vector3d t);
+  ~Pose();  
 
 public:
-  MatrixXd getOrientationMatrix();
-  Vector3d getPosition();
+  Transform<double, 3, Affine> T;
 
-  bool setOrientationMatrix(Eigen::MatrixXd orientationMatrix);
+public:
+  MatrixXd getRotation();
+  Vector3d getTranslation();
+
   bool setPosition(Eigen::Vector3d position);
-
-  MatrixXd getCoordsInPoseReferenceFrame(MatrixXd externalCoords);
-  MatrixXd getCoordsOutsidePoseReferenceFrame(MatrixXd internalCoords);
-
-  Pose inverse();
+  void getAngles();
 
 };
 

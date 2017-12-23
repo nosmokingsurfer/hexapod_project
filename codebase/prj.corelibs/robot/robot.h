@@ -33,10 +33,11 @@ public:
     Body robotBody; // robot body.
 
     VectorXd feedBack; // the whole feedback array from UM
-    VectorXd FBcoords; // coords of the robot body
-    VectorXd FBvelocities; // velocities of the robot body
+
     VectorXd controlTorques; // the whole output array from control system
+
     VectorXd calculatedjoints; // calculated join angles
+
     VectorXd parameters; // the whole list of parameters coming from UM
 
 public: 

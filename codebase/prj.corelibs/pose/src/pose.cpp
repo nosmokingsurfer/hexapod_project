@@ -1,66 +1,60 @@
 #include <pose/pose.h>
 
 using namespace Eigen;
+using namespace std;
+
 
 
 Pose::Pose()
 {
-  this->R = MatrixXd::Identity(3,3);
-
-  this->t = Vector3d(3);
-  t.fill(0);
+  (*this) = Pose(Vector3d(0,0,0), Vector3d(0,0,0));  
 }
 
-Pose::Pose(Vector3d t)
+Pose::Pose(Vector3d angles)
 {
-  this->t = t;
-  this->R  = MatrixXd::Identity(3,3);
+  (*this) = Pose(angles, Vector3d(0,0,0));
 }
 
-Pose::Pose(Vector3d t, MatrixXd R)
+
+Pose::Pose(Vector3d angles, Vector3d t)
 {
-  this->t = t;
-  this->R = R;
+  
+  this->T = Translation<double,3>(t)
+            *AngleAxis<double>(angles[0], Vector3d::UnitZ())
+            *AngleAxis<double>(angles[1], Vector3d::UnitX())
+            *AngleAxis<double>(angles[2], Vector3d::UnitY());
+            
+  std::cout << "Translation = " << endl<< Translation<double,3>(t).vector() << std::endl;                      
+  std::cout << "Rotation_Z = " << endl << AngleAxis<double>(angles[0], Vector3d::UnitZ()).matrix() << std::endl;
+  std::cout << "Rotation_X = " << endl << AngleAxis<double>(angles[1], Vector3d::UnitX()).matrix() << std::endl;
+  std::cout << "Rotation_Y = " << endl << AngleAxis<double>(angles[2], Vector3d::UnitY()).matrix() << std::endl;
+
+  this->T = this->T.inverse();
+
+  std::cout << "T = " << endl << this->T.matrix() << endl;
+  std::cout << "T_Inverse = " << endl << this->T.inverse().matrix() << endl;
+  std::cout << "T*T_inverse = " << endl << (this->T*this->T.inverse()).matrix() << endl;
+
+  
 }
 
 Pose::~Pose()
 {}
 
-Eigen::MatrixXd Pose::getOrientationMatrix()
+Eigen::MatrixXd Pose::getRotation()
 {
-  return this->R;
+  return this->T.rotation();
 }
 
-Eigen::Vector3d Pose::getPosition()
+Eigen::Vector3d Pose::getTranslation()
 {
-  return this->t;
-}
-
-bool Pose::setOrientationMatrix(Eigen::MatrixXd orientationMatrix)
-{
-  this->R = orientationMatrix;
-  return true;
+  return this->T.translation();
 }
 
 bool Pose::setPosition(Eigen::Vector3d position)
 {
-  this->t = position;
+  this->T.translation() = position;
   return true;
 }
 
-Eigen::MatrixXd Pose::getCoordsInPoseReferenceFrame(MatrixXd externalCoords)
-{
-  return this->R*(externalCoords - this->t);
-}
 
-Eigen::MatrixXd Pose::getCoordsOutsidePoseReferenceFrame(MatrixXd internalCoords)
-{
-  return this->t + this->R.inverse()*internalCoords;
-}
-
-Pose Pose::inverse()
-{
-  this->t = -this->R*t;
-  this->R = R.inverse();
-  return Pose(this->t, this->R);
-}

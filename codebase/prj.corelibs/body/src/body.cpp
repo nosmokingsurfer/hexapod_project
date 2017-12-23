@@ -20,48 +20,54 @@ Body::Body()
 
 
   //legs mounting orientations
-  Vector3d FLmOrient(0, 0, 0);
-  Vector3d MLmOrient(0, 0, 0);
-  Vector3d RLmOrient(0, 0, 0);
-  Vector3d FRmOrient(0, 0, 0);
-  Vector3d MRmOrient(0, 0, 0);
-  Vector3d RRmOrient(0, 0, 0);
+  Vector3d FLmOrient( EIGEN_PI/2, 0, 0);
+  Vector3d MLmOrient( EIGEN_PI/2, 0, 0);
+  Vector3d RLmOrient( EIGEN_PI/2, 0, 0);
+  Vector3d FRmOrient(-EIGEN_PI/2, 0, 0);
+  Vector3d MRmOrient(-EIGEN_PI/2, 0, 0);
+  Vector3d RRmOrient(-EIGEN_PI/2, 0, 0);
 
   for(int i = 0; i < 6; i++)
   {
     legs.push_back(Leg());
   }
 
-  legs[0].init("FL", segments, FRmPoint, FRmOrient);
-  legs[1].init("ML", segments, MRmPoint, MRmOrient);
-  legs[2].init("RL", segments, RRmPoint, RRmOrient);
-  legs[3].init("FR", segments, FLmPoint, FLmOrient);
-  legs[4].init("MR", segments, MLmPoint, MLmOrient);
-  legs[5].init("RR", segments, RLmPoint, RLmOrient);
+  legs[0].init("FL", segments, FLmPoint, FLmOrient);
+  legs[1].init("ML", segments, MLmPoint, MLmOrient);
+  legs[2].init("RL", segments, RLmPoint, RLmOrient);
+  legs[3].init("FR", segments, FRmPoint, FRmOrient);
+  legs[4].init("MR", segments, MRmPoint, MRmOrient);
+  legs[5].init("RR", segments, RRmPoint, RRmOrient);
 
 }
 
 Body::~Body()
 {}
 
-bool Body::getFB(VectorXd& feedback)
+bool Body::recieveFB(VectorXd& feedback)
 {
   this->FBcoords = feedback.segment<6>(this->fbIndex);
   this->FBvelocities = feedback.segment<6>(this->fbIndex + 6);
 
+  this->fbPose = Pose(FBcoords.tail(3), FBcoords.head(3));
+
   return true;
 }
 
-VectorXd Body::getTargetPosition(double time)
+Pose Body::getTargetPose(double time)
 {
-  VectorXd result(6);
+  Vector3d xyz;
 
-  result << 0,
+   xyz <<
     0,
     0,
-    0,
-    0,
-    0;
+    0.05 + 0.005*sin(2*EIGEN_PI/4*time);
 
-  return result;
+   Vector3d YawPitchRoll;
+    YawPitchRoll << 
+      0.05*sin(2*EIGEN_PI/2*time),
+      0.05*sin(2*EIGEN_PI/3*time),
+      0.05*sin(2*EIGEN_PI/4*time);
+
+  return Pose(YawPitchRoll, xyz);
 }

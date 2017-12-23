@@ -27,26 +27,22 @@ public:
   ~Leg();
 
  bool init(const std::string name, const Eigen::Vector3d& segments, const Vector3d& mountingPoint, const Vector3d& mountingAngles);
-  
  bool init(const std::string name, const vector<double>& segments, const Eigen::Vector3d& mountingPoint, const Eigen::Vector3d& mountingAngles);
 public:
   vector<double> segments;
   Eigen::Vector3d inverseKinematics(Vector3d& targetPoint);
   Eigen::Vector3d forwardKinematics(Vector3d& targetAngles);
   bool checkReachability(Vector3d& targetPoint);
+  bool recieveFB(VectorXd& feedback, int index);
 
   Eigen::Vector3d trajectoryGenerator(double time);
-
-  bool getFB(VectorXd& feedback, int index);
-
   Eigen::VectorXd getTorques(const VectorXd& targetAngles);
 
   std::vector<PID> pids; // all PID controllers of the leg
   
+  Pose pose;//leg mounting pose
+
 private:
-  //TODO deprecate Matrix4d mounting. Use the Pose class
-  //Matrix4d mounting; //leg position and orientation in parent reference frame
-  Pose fbPose;//leg mounting pose
   std::string legName; //leg name
   Vector3d FBcoords; //leg state - array of joint angles
   Vector3d FBvelocities; //leg coordinate velocities
