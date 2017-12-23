@@ -1,0 +1,3 @@
+[Error]: Singular mass matrix. Interruption.
+
+The most typical reason for that is zero mass or moments of inertia of one or several bodies. Every body must have non-zero inertial properties relative to every degree of freedom. It means that if a body has any translational d.o.f, then the body must have non-zero mass. If the body has rotational degrees of freedom, then it must have non-zero moment of inertia relative to correspondent axis. The body with 6 d.o.f. must have non-zero mass and non-zero moments of inertia relative to all X, Y, Z axes.

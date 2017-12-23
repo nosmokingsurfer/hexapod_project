@@ -1,13 +1,13 @@
 with main; version=80 ;
-  type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+  type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
     comments="Simple hexapod leg";
   objectidentifier=hexapod_leg;
   bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
-  gridstep= 5.E-2; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
+  gridstep= 5.E-2; axelengthx= 1.E1; axelengthy= 1.E1; axelengthz= 3.; 
   rotationstyle = z;
   mousepick=true;
-  a={-0.351141732258521 -0.261994664731574 0.898920619141946 0 0.96005467509592 0.279812474393818 -0.936322318363942 0.0982538369661884 -0.337115261676072};
-  target={0 1.30780689020855 14.1663622464921};
+  a={-0.0595818326561701 0.464142222799709 -0.883754492057425 0 0.885327342925799 0.464968274044407 0.998223424498373 0.0277036618945431 -0.0527494255921375};
+  target={0 1.30780689020855 -2.98918748684891};
   distance=10;
   sensitivity_threshold=0.050;
 with const;
@@ -57,7 +57,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs1; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -105,7 +105,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       cpoints={
         '' '' '' 'Point' 
         'p1' '' '' 'Point' 
@@ -114,7 +114,7 @@ $ Subsystems and standard elements (wheelsets, etc)
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       cpoints={
         '' '' '' 'Point' 
         'p2' '' '' 'Point' 
@@ -123,7 +123,7 @@ $ Subsystems and standard elements (wheelsets, etc)
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       cpoints={
         '' '' '' 'Point' 
         'p3' '' '' 'Point' 
@@ -153,7 +153,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs2; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -201,17 +201,17 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
@@ -237,7 +237,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs3; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -285,17 +285,17 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
@@ -321,7 +321,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs4; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -369,17 +369,17 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
@@ -405,7 +405,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs5; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -453,17 +453,17 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
@@ -489,7 +489,7 @@ $ Subsystems and standard elements (wheelsets, etc)
     ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
     ident=Subs6; 
   with main;
-    type=mbs;  autogravity=true;  symbolic = false; size=0.03; scene=0; 
+    type=mbs;  autogravity=true;  symbolic = false; size=0.1; scene=0; 
       comments="Simple hexapod leg";
     objectidentifier=hexapod_leg;
     bkgcolor=16777215; gridcolor=16448; axessaturation= 1.E2; 
@@ -537,17 +537,17 @@ $ Subsystems and standard elements (wheelsets, etc)
     npc=20; npl=2;
   $ Bodies, inertia parameters, images
   with body1; name="leg_seg1"; ppjoint=0; igrobj=1; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body2; name="leg_seg2"; ppjoint=0; igrobj=2; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
   with body3; name="leg_seg3"; ppjoint=0; igrobj=3; 
-    m=0.1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    AutoCalcInertia=true; m=0.04339; ixx=7.6820698E-7; ixy=; ixz=; iyy=9.4228506E-6; iyz=; izz=9.4228506E-6; rcx=0.025; rcy=1.325E-19; rcz=2.924E-18; 
       opoints={
         '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
       };
@@ -571,7 +571,7 @@ $ Subsystems and standard elements (wheelsets, etc)
   
 $ Bodies, inertia parameters, images
 with body1; name="Body"; ppjoint=0; igrobj=1; 
-  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+  AutoCalcInertia=true; m=2.34; ixx=0.007843875; ixy=; ixz=; iyy=0.001993875; iyz=; izz=0.00975; rcx=; rcy=; rcz=0.0075; 
     cpoints={
       '0.05' '0.1' '0' 'Point' 
       '-0.05' '0.1' '0' 'Point' 
@@ -593,7 +593,7 @@ with joint1; name="jBase0_Body"; type=6dof; bd1="Base0"; bd2="Body";
   angles=312; 
   x0=0; 
   y0=0; 
-  z0=0; 
+  z0= 3.5E-2; 
   angle10=0; 
   angle20=0; 
   angle30=0; 
@@ -601,42 +601,42 @@ with joint2; name="jBody_leg_FL"; type=rotat; bd1="Body"; bd2="FL.leg_seg1";
   with jnt1dof; 
     ro1x=-0.05; ro1y=0.1; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta= 1.8E2; x0=0; 
+  constx=0; consta= 9.E1; x0=0; 
 with scalarforce; name="jBody_leg_FL"; type=expression;
   expression=FL_alpha; 
 with joint3; name="jBody_leg_ML"; type=rotat; bd1="Body"; bd2="ML.leg_seg1"; 
   with jnt1dof; 
     ro1x=-0.05; ro1y=0; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta= 1.8E2; x0=0; 
+  constx=0; consta= 9.E1; x0=0; 
 with scalarforce; name="jBody_leg_ML"; type=expression;
   expression=ML_alpha; 
 with joint4; name="jBody_leg_RL"; type=rotat; bd1="Body"; bd2="RL.leg_seg1"; 
   with jnt1dof; 
     ro1x=-0.05; ro1y=-0.1; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta= 1.8E2; x0=0; 
+  constx=0; consta= 9.E1; x0=0; 
 with scalarforce; name="jBody_leg_RL"; type=expression;
   expression=RL_alpha; 
 with joint5; name="jBody_leg_FR"; type=rotat; bd1="Body"; bd2="FR.leg_seg1"; 
   with jnt1dof; 
     ro1x=0.05; ro1y=0.1; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta=0; x0=0; 
+  constx=0; consta=-9.E1; x0=0; 
 with scalarforce; name="jBody_leg_FR"; type=expression;
   expression=FR_alpha; 
 with joint6; name="jBody_leg_MR"; type=rotat; bd1="Body"; bd2="MR.leg_seg1"; 
   with jnt1dof; 
     ro1x=0.05; ro1y=0; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta=0; x0=0; 
+  constx=0; consta=-9.E1; x0=0; 
 with scalarforce; name="jBody_leg_MR"; type=expression;
   expression=MR_alpha; 
 with joint7; name="jBody_leg_RR"; type=rotat; bd1="Body"; bd2="RR.leg_seg1"; 
   with jnt1dof; 
     ro1x=0.05; ro1y=-0.1; ro1z=0; ro2x=; ro2y=; ro2z=; 
   e1x=0; e1y=0; e1z= 1.; e2x=0; e2y=0; e2z= 1.; 
-  constx=0; consta=0; x0=0; 
+  constx=0; consta=-9.E1; x0=0; 
 with scalarforce; name="jBody_leg_RR"; type=expression;
   expression=RR_alpha; 
 

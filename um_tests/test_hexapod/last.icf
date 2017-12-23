@@ -5,10 +5,9 @@ with integr;
   lastparfile    = "";
   step    =  2.000E-0003;
   h       =  1.000E-0003;
-  error   =  1.000E-0008;
+  error   =  1.000E-0007;
   error_cgm   =  1.000E-0001;
-  method  = park;
-  inverse = true;
+  method  = gearnl;
   crelaxation_linear=1;
   dx_linear=1E-08;
   eps_linear=1E-08;
@@ -17,15 +16,15 @@ with integr;
   la_auto_equilibrium=true;
   qr_alg4=false;
   la_break_singular_jm=true;
-  psolutionmethod=cgm;
+  psolutionmethod=bdj;
   usethreads=true;
   nthreads=5;
-  real_time_delay=true;
   keep_decomposition=true;
   keep_decomposition_count=100;
-  jacobian = false;
+  jacobian = true;
+  block_jacobian = true;
   asmmatrix = false;
-  info_disabled_frc = true;
+  info_disabled_frc = false;
 with solvers;
   bdfminstep=1E-10;
   bdfmaxorder=5;
@@ -44,21 +43,25 @@ with solvers;
   itermult=1;
   ppfrequency=500;
   ppdampingratio=0.5;
+with ctrlpanel;
+  cpfilename = "Default.cp";
+  cpleft = 5;
+  cptop = 419;
 with go_assignment;
 with graphwindow; 
-  left=-3; top=-3; 
+  left=333; top=-11; 
   width=805; height=645; 
-  minx= 0.00000000000000E+0000; 
-  maxx= 1.80348639208859E+0001; 
-  miny=-2.06140926281757E-0001; 
-  maxy= 2.86963315024540E-0001; 
+  minx=-3.35291353553118E+0000; 
+  maxx= 4.36088703624770E+0001; 
+  miny=-2.32836841267179E+0000; 
+  maxy= 1.90729734792513E+0000; 
   filtertype=0; 
   passtype=1; 
   filterorder=12; 
   lowfreq= 0.00000000000000E+0000; 
   highfreq= 1.00000000000000E+0001; 
   fixedvisibleregion=false;
-  align=3; dpsize= 6.61333333333333E+0001; 
+  align=3; dpsize= 1.66400000000000E+0002; 
   abscissa=0;
   legendsize=8;
   axislegendonplot=true;  addlines=true;  showscales=true;
@@ -476,17 +479,56 @@ with graphwindow;
     type=coor; loctype=coor; 
 with animwindow;
   graphicstype=3; 
-  left=747; top=3; 
-  width=282; height=447; 
+  left=-1; top=-4; 
+  width=525; height=477; 
   bgcolor=16777215;
   viewfield=30;
   rotation_style=z;
   camerasubs=0;  camerabody=0;  gridtype=1;  scalev=1;   scalea=10;   scaleang=0.1; 
-  scaleom=1;   scalee=10;   scalef=933.333;   scalem=7777.78; 
+  scaleom=1;   scalee=10;   scalef=280;   scalem=700; 
   arrowl=0.2;   arrowr=0.05;   vectorr=0.025; 
-  a11= -0.6703; a12= -0.0064; a13=  0.7420; 
-  a21=  0.0000; a22=  1.0000; a23=  0.0085; 
-  a31= -0.7420; a32=  0.0058; a33= -0.6704; 
-  tpx=-1.84719087540501E-0002; tpy=-3.83179138636871E-0002; tpz= 1.84009258415857E+0001; 
+  a11=  0.5613; a12=  0.3567; a13= -0.7473; 
+  a21=  0.0000; a22=  0.9025; a23=  0.4308; 
+  a31=  0.8276; a32= -0.2415; a33=  0.5063; 
+  tpx=-5.20245266207531E-0003; tpy= 2.24966925443087E-0001; tpz=-4.17156910184693E+0000; 
   align=3; dpsize=41; 
+    with grwindowvar;
+      color=C0C0C0;
+      maxtrgpointcount=1000;
+      waydraw=originpoint;
+    with grvar;
+      name=;
+      comment="Center of mass, vector";
+      subs=1; ielem=1;
+      type=VectorCenterOfMassBodyList;
+    with grwindowvar;
+      color=C0C0C0;
+      maxtrgpointcount=1000;
+      waydraw=originpoint;
+    with grvar;
+      name=Rc19(test_hexapod(All bodies));
+      comment="Center of mass, vector";
+      subs=1; ielem=1;
+      type=VectorCenterOfMassBodyList;
+      bodylist={
+        Body,
+        FL.leg_seg1,
+        FL.leg_seg2,
+        FL.leg_seg3,
+        ML.leg_seg1,
+        ML.leg_seg2,
+        ML.leg_seg3,
+        RL.leg_seg1,
+        RL.leg_seg2,
+        RL.leg_seg3,
+        FR.leg_seg1,
+        FR.leg_seg2,
+        FR.leg_seg3,
+        MR.leg_seg1,
+        MR.leg_seg2,
+        MR.leg_seg3,
+        RR.leg_seg1,
+        RR.leg_seg2,
+        RR.leg_seg3
+      };
 with end;
