@@ -1,13 +1,13 @@
 ///
-///@file dummy/dummy.h
+///@file trajectory/trajectory.h
 ///@authors Panchenko A.V.
-///@brief Dummy class for Core  libs
+///@brief Trajectory class to work with trajectories
 ///
 
 
 #pragma once
-#ifndef DUMMY_H
-#define DUMMY_H
+#ifndef TRAJECTORY_H
+#define TRAJECTORY_H
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
@@ -15,14 +15,25 @@
 #include <vector>
 #include <iostream>
 
+#include <pose/pose.h>
+
 
 using namespace std;
 using namespace Eigen;
 
-class Dummy{
+class Trajectory{
 public: 
-  Dummy();
-  ~Dummy();
+  Trajectory();
+  ~Trajectory();
+
+private:
+  vector<Pose> controlPoints;
+public:
+  bool init(const vector<Pose> &controlPoints);
+  double getCTE(const Pose& curPose);
+  double deltaPose(const Pose& curPose);
+  Pose interpolate(const Pose& p1, const Pose& p2, const double lambda);
+  
 };
 
 #endif

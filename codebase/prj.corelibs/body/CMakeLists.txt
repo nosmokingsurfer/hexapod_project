@@ -11,4 +11,6 @@ set(body_HDR body.h)
 
 add_library(body ${body_SRC} ${body_HDR})
 
-target_link_libraries (body leg pose Eigen3::Eigen)
+target_link_libraries (body leg pose segment Eigen3::Eigen)
+
+SET_PROPERTY(TARGET body PROPERTY FOLDER "prj.corelibs")

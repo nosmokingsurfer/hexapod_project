@@ -15,8 +15,8 @@
 #include <vector>
 #include <iostream>
 
-#include <pid/pid.h>
 #include <pose/pose.h>
+#include <pid/pid.h>
 
 using namespace std;
 using namespace Eigen;
@@ -34,6 +34,8 @@ public:
   Eigen::Vector3d forwardKinematics(Vector3d& targetAngles);
   bool checkReachability(Vector3d& targetPoint);
   bool recieveFB(VectorXd& feedback, int index);
+  bool setCoeffs(const PID::PIDcoeffs &coeffs);
+
 
   Eigen::Vector3d trajectoryGenerator(double time);
   Eigen::VectorXd getTorques(const VectorXd& targetAngles);

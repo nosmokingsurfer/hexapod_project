@@ -12,3 +12,4 @@ set(trajectory_HDR trajectory.h)
 add_library(trajectory ${trajectory_SRC} ${trajectory_HDR})
 
 target_link_libraries (trajectory Eigen3::Eigen)
+SET_PROPERTY(TARGET trajectory PROPERTY FOLDER "prj.corelibs")

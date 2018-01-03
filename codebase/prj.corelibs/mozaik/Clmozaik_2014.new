@@ -1,0 +1,84 @@
+/* Header file Clmozaik_2014 */
+#ifndef __Clmozaik_2014_HPP__
+#define __Clmozaik_2014_HPP__
+
+/* interface */
+
+#include"CtvSt.hpp"
+#include"CtvDll.hpp"
+
+EXTERN_C void cdecl UserCalc( VectRPtr _x, VectRPtr _v, VectRPtr _a, integer _isubs, integer _UMMessage, integer &WhatDo );
+EXTERN_C void cdecl ControlPanelMessage( VectRPtr _x, VectRPtr _v, VectRPtr _a, integer _isubs, integer _index, double _Value );
+EXTERN_C void cdecl TimeFuncCalc( real_ _t, VectRPtr _x, VectRPtr _v, integer _isubs );
+EXTERN_C void cdecl Get1stOrderODE( real_ _t, VectRPtr _x, VectRPtr _f, integer _isubs );
+EXTERN_C void cdecl Get2ndOrderODE( real_ _t, VectRPtr _x, VectRPtr _v, VectRPtr _f, integer _isubs );
+EXTERN_C void cdecl UserConCalc( VectRPtr _x, VectRPtr _v, MatrRPtr _Jacobi, Vec3RPtr _Error, integer _isubs, integer _ic, boolean _predict, integer _nright );
+/* implementation */
+
+#include"DGetVars.hpp"
+#include"mozaik_2014C.hpp"
+#include"_Tmozaik_2014.hpp"
+
+/* Функция "TimeFuncCalc" используется исключительно для расчета функций времени.
+Не используйте функции типа "GetPoint" внутри этой процедуры.
+Недопустим расчет сил в этой процедуре. */
+void TimeFuncCalc( real_ _t, VectRPtr _x, VectRPtr _v, integer _isubs )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+void ForceFuncCalc( real_ _t, VectRPtr _x, VectRPtr _v, integer _isubs )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+void Get1stOrderODE( real_ _t, VectRPtr _x, VectRPtr _f, integer _isubs )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+void Get2ndOrderODE( real_ _t, VectRPtr _x, VectRPtr _v, VectRPtr _f, integer _isubs )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+void UserConCalc( VectRPtr _x, VectRPtr _v, MatrRPtr _Jacobi, Vec3RPtr _Error, integer _isubs, integer _ic, boolean _predict, integer _nright )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+void UserCalc( VectRPtr _x, VectRPtr _v, VectRPtr _a, integer _isubs, integer _UMMessage, integer &WhatDo )
+ {
+  integer Key;
+  Key = WhatDo;
+  WhatDo = NOTHING;
+  switch( _UMMessage )
+   {
+    case FORCESCALC_MESSAGE :
+     {
+      try
+       {
+        ForceFuncCalc( t, _x, _v, _isubs );
+       }
+      catch(...)
+       {
+        WhatDo = -1;
+       }
+      break;
+     }
+   }
+ }
+
+void ControlPanelMessage( VectRPtr _x, VectRPtr _v, VectRPtr _a, integer _isubs, integer _index, double _Value )
+ {
+  _mozaik_2014VarPtr _;
+  _ = _PzAll[SubIndx[_isubs-1]-1];
+ }
+
+/* end of file */
+#endif

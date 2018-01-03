@@ -12,3 +12,5 @@ set(leg_HDR leg.h)
 add_library(leg ${leg_SRC} ${leg_HDR})
 
 target_link_libraries (leg pid Eigen3::Eigen)
+
+SET_PROPERTY(TARGET leg PROPERTY FOLDER "prj.corelibs")

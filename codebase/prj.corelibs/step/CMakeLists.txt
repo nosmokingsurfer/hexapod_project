@@ -12,3 +12,5 @@ set(step_HDR step.h)
 add_library(step ${step_SRC} ${step_HDR})
 
 target_link_libraries (step Eigen3::Eigen)
+
+SET_PROPERTY(TARGET step PROPERTY FOLDER "prj.corelibs")

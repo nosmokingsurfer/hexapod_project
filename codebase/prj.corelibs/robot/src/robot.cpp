@@ -52,8 +52,8 @@ Eigen::VectorXd Robot::getControls(double time)
   for (int i = 0; i < 6; i++)
   {
     //для i-ноги считаем радиус вектор в СК связанной с ногой
-    Vector3d result = robotBody.legs[i].pose.T*robotBody.tarPose.T*goals[i];
-    targetAngles.segment(3*i, 3) = robotBody.legs[i].inverseKinematics(result);
+    Vector3d result = robotBody.segments[0].legs[i].pose.T*robotBody.tarPose.T*goals[i];
+    targetAngles.segment(3*i, 3) = robotBody.segments[0].legs[i].inverseKinematics(result);
   }
     this->calculatedjoints = targetAngles;
 
@@ -69,7 +69,7 @@ Eigen::VectorXd Robot::getControls(double time)
 
   for (int i = 0; i < 6; i++)
   {
-    torques.segment(3*i, 3) = robotBody.legs[i].getTorques(targetAngles.segment(3*i, 3));
+    torques.segment(3*i, 3) = robotBody.segments[0].legs[i].getTorques(targetAngles.segment(3*i, 3));
   }
   
   this->controlTorques = torques;
@@ -96,9 +96,9 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
 
   this->robotBody.recieveFB(signals);
 
-  for (int i = 0; i < static_cast<int>(robotBody.legs.size()); i++)
+  for (int i = 0; i < static_cast<int>(robotBody.segments[0].legs.size()); i++)
   {
-    robotBody.legs[i].recieveFB(feedBack, 12 + i*6);
+    robotBody.segments[0].legs[i].recieveFB(feedBack, 12 + i*6);
   }
   return true;
 }
@@ -115,11 +115,17 @@ bool Robot::recieveParameters(double* params, int numberOfParams)
 
   this->parameters = parameters;
 
-  for(int i = 0; i < static_cast<int>(robotBody.legs.size()); i++)
+  
+  for(int j = 0; j < static_cast<int>(robotBody.segments.size()); j++)
   {
-    robotBody.legs[i].pids[0].setCoeefs(Vector3d(parameters.head(3)));
-    robotBody.legs[i].pids[1].setCoeefs(Vector3d(parameters.head(3)));
-    robotBody.legs[i].pids[2].setCoeefs(Vector3d(parameters.head(3)));
+    for(int i = 0; i < static_cast<int>(robotBody.segments[j].legs.size()); i++)
+    {
+      PID::PIDcoeffs coeffs;
+      coeffs.kP = parameters[0];
+      coeffs.kI = parameters[1];
+      coeffs.kD = parameters[2];
+      robotBody.segments[j].legs[i].setCoeffs(coeffs);
+    }
   }
 
   return true;

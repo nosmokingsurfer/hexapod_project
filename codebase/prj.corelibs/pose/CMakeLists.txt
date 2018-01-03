@@ -9,6 +9,10 @@ include_directories(
 set(pose_SRC src/pose.cpp)
 set(pose_HDR pose.h)
 
+
+
 add_library(pose ${pose_SRC} ${pose_HDR})
 
 target_link_libraries (pose Eigen3::Eigen)
+
+set_property(TARGET pose PROPERTY FOLDER "prj.corelibs")

@@ -1,8 +1,14 @@
-#include <dummy/dummy.h>
+#include <Trajectory/Trajectory.h>
 
 
-Dummy::Dummy()
+Trajectory::Trajectory()
 {}
 
-Dummy::~Dummy()
+Trajectory::~Trajectory()
 {}
+
+bool Trajectory::init(const vector<Pose> &controlPoints)
+{
+  this->controlPoints = controlPoints;
+  return true;
+}

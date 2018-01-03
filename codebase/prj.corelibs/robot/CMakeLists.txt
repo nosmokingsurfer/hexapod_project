@@ -12,3 +12,4 @@ set(robot_HDR robot.h)
 add_library(robot ${robot_SRC} ${robot_HDR})
 
 target_link_libraries(robot trajectory leg pid body Eigen3::Eigen)
+SET_PROPERTY(TARGET robot PROPERTY FOLDER "prj.corelibs")

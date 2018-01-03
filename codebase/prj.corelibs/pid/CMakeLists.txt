@@ -12,3 +12,5 @@ set(pid_HDR pid.h)
 add_library(pid ${pid_SRC} ${pid_HDR})
 
 target_link_libraries (pid Eigen3::Eigen)
+
+SET_PROPERTY(TARGET pid PROPERTY FOLDER "prj.corelibs")

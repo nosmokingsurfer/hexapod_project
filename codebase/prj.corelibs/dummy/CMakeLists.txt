@@ -12,3 +12,4 @@ set(dummy_HDR dummy.h)
 add_library(dummy ${dummy_SRC} ${dummy_HDR})
 
 target_link_libraries (dummy Eigen3::Eigen)
+set_property(TARGET dummy PROPERTY FOLDER "prj.corelibs")

@@ -143,6 +143,15 @@ bool Leg::recieveFB(VectorXd& feedback, int index)
   return true;
 }
 
+bool Leg::setCoeffs(const PID::PIDcoeffs &coeffs)
+{
+  for (int i = 0; i < static_cast<int>(pids.size());i++)
+  {
+    pids[i].setCoeffs(coeffs);
+  }
+  return true;
+}
+
 Eigen::VectorXd Leg::getTorques(const VectorXd& targetAngles)
 {
   VectorXd torques(3);

@@ -2,27 +2,27 @@
 
 
 PID::PID():
-  kP(0),
-  kI(0),
-  kD(0),
   P(0),
   I(0),
   D(0)
 {
+  coeffs.kP=0;
+  coeffs.kI=0;
+  coeffs.kD=0;
 }
 
-PID::PID(double kP, double kI, double kD)
+PID::PID(const double kP, const double kI, const double kD)
 {
-  this->kP = kP;
-  this->kI = kI;
-  this->kD = kD;
+  this->coeffs.kP = kP;
+  this->coeffs.kI = kI;
+  this->coeffs.kD = kD;
 }
 
-PID::PID(Vector3d coeffs)
+PID::PID(const Vector3d coeffs)
 {
-  this->kP = coeffs[0];
-  this->kI = coeffs[1];
-  this->kD = coeffs[2];
+  this->coeffs.kP = coeffs[0];
+  this->coeffs.kI = coeffs[1];
+  this->coeffs.kD = coeffs[2];
 
   this->P = 0;
   this->I = 0;
@@ -33,23 +33,29 @@ PID::~PID()
 {}
 
 
-bool PID::setCoeefs(double kP, double kI, double kD)
+bool PID::setCoeffs(const PIDcoeffs& coeffs)
 {
-  this->kP = kP;
-  this->kI = kI;
-  this->kD = kD;
+  this->coeffs = coeffs;
   return true;
 }
 
-bool PID::setCoeefs(Vector3d& coeffs)
+bool PID::setCoeffs(const double kP, const double kI, const double kD)
 {
-  this->kP = coeffs[0];
-  this->kI = coeffs[1];
-  this->kD = coeffs[2];
+  this->coeffs.kP = kP;
+  this->coeffs.kI = kI;
+  this->coeffs.kD = kD;
   return true;
 }
 
-bool PID::setState(Vector3d& state)
+bool PID::setCoeffs(const Vector3d& coeffs)
+{
+  this->coeffs.kP = coeffs[0];
+  this->coeffs.kI = coeffs[1];
+  this->coeffs.kD = coeffs[2];
+  return true;
+}
+
+bool PID::setState(const Vector3d& state)
 {
   this->P = state[0];
   this->I = state[1];
@@ -72,18 +78,18 @@ double PID::getValue(double x_0, double x, double dot_x)
 
   this->updateState(x_0 - x, dot_x);
 
-  result += kP*P;
-  result += kI*I;
-  result += kD*D;
+  result += coeffs.kP*P;
+  result += coeffs.kI*I;
+  result += coeffs.kD*D;
 
   return result;
 }
 
 bool PID::reset()
 {
-  this->kP = 0;
-  this->kI = 0;
-  this->kD = 0;
+  this->coeffs.kP = 0;
+  this->coeffs.kI = 0;
+  this->coeffs.kD = 0;
   this->P = 0;
   this->I = 0;
   this->D = 0;
