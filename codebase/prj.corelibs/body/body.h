@@ -30,7 +30,7 @@ public:
   Body();
   ~Body();
 public:
-  std::vector<Segment> segments;//!< segments of the body
+  vector<Segment> segments;
   Pose fbPose; //!< feedback pose of the robot's body
   Pose tarPose; //!< target pose of the robot's body
 

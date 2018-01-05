@@ -36,13 +36,14 @@ class Joint{
       TRANSLATION_3D //TODO not implemented
     };
 public: 
-  Joint();
+  Joint();//TODO сделать конструктор с необходимим набором параметров? или все сделать через Init функцию?
   ~Joint();
-  bool init(const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment* parent, Segment* child);
+  bool init(const string name, const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment* parent, Segment* child);
   
   bool recieveFB();
 
 private:
+  string name;//!< name of element
   int fbIndex;//!< index of joint coordinates inside the FB array
   bool initialized;//!< initialization flag
   vector<PID> pidControl;//!< PID controllers to calculate torques //TODO make abstract Controller class?
@@ -60,6 +61,7 @@ public:
   bool setState(VectorXd state); //!< set current state of the joint
   bool setTargetState(VectorXd targetState); //!< set target state of the joint
   VectorXd getTorques(); //!< get calculated torques from the joint control system
+  int getDOFnumber(); //!< returns number of degrees of freedom
   
 };
 

@@ -17,3 +17,4 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_executable(step_cycle_test src/step_cycle_test.cpp ${step_cycle_test_HDRS} ${step_cycle_test_SRC})
 target_link_libraries (step_cycle_test Eigen3::Eigen step)
+set_property(TARGET step_cycle_test PROPERTY FOLDER "prj.tests")

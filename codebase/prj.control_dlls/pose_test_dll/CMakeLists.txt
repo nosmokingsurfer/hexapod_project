@@ -20,3 +20,5 @@ add_library(pose_test_dll SHARED ${pose_test_dll_SRC})
 
 target_link_libraries(pose_test_dll pose Eigen3::Eigen)
 
+set_property(TARGET pose_test_dll PROPERTY FOLDER "prj.control_dlls")
+

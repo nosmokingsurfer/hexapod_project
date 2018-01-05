@@ -17,3 +17,4 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_executable(joint_test src/joint_test.cpp ${joint_test_HDRS} ${joint_test_SRC})
 target_link_libraries (joint_test Eigen3::Eigen joint pose segment)
+set_property(TARGET joint_test PROPERTY FOLDER "prj.tests")

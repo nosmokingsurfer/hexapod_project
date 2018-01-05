@@ -13,7 +13,6 @@ set(segment_test_SRC
 
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
-
-
 add_executable(segment_test src/segment_test.cpp ${segment_test_HDRS} ${segment_test_SRC})
-target_link_libraries (segment_test Eigen3::Eigen leg pose)
+target_link_libraries (segment_test Eigen3::Eigen leg segment joint )
+set_property(TARGET segment_test PROPERTY FOLDER "prj.tests")

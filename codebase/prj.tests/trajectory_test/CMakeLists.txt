@@ -15,3 +15,4 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_executable(trajectory_test src/trajectory_test.cpp ${trajectory_test_SRC})
 target_link_libraries (trajectory_test Eigen3::Eigen trajectory pose)
+set_property(TARGET trajectory_test PROPERTY FOLDER "prj.tests")

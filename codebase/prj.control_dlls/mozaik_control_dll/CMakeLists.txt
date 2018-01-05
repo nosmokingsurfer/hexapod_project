@@ -19,3 +19,4 @@ set(mozaik_control_dll_SRC
 add_library(mozaik_control_dll SHARED ${mozaik_control_dll_SRC})
 
 target_link_libraries(mozaik_control_dll robot Eigen3::Eigen)
+set_property(TARGET mozaik_control_dll PROPERTY FOLDER "prj.control_dlls")

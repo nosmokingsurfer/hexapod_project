@@ -12,9 +12,11 @@ Joint::~Joint()
 
 }
 
-bool Joint::init(const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment *parent, Segment *child)
+bool Joint::init(const string name, const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment *parent, Segment *child)
 {
   initialized = true;
+
+  this->name = name;
 
   this->fbIndex = fbIndex;
 
@@ -94,4 +96,9 @@ VectorXd Joint::getTorques()
   }
 
   return result;
+}
+
+int Joint::getDOFnumber()
+{
+  return static_cast<int>(this->currentState.size());
 }
