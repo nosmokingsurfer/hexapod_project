@@ -30,10 +30,10 @@ public:
  bool init(const std::string name, const vector<double>& segments, const Eigen::Vector3d& mountingPoint, const Eigen::Vector3d& mountingAngles);
 public:
   vector<double> segments;
-  Eigen::Vector3d inverseKinematics(Vector3d& targetPoint);
-  Eigen::Vector3d forwardKinematics(Vector3d& targetAngles);
-  bool checkReachability(Vector3d& targetPoint);
-  bool recieveFB(VectorXd& feedback, int index);
+  Eigen::Vector3d inverseKinematics(const Vector3d& targetPoint);
+  Eigen::Vector3d forwardKinematics(const Vector3d& targetAngles);
+  bool checkReachability(const Vector3d& targetPoint);
+  bool recieveFB(const VectorXd& feedback, int index);
   bool setCoeffs(const PID::PIDcoeffs &coeffs);
 
 

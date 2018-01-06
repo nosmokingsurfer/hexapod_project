@@ -41,7 +41,7 @@ bool Leg::init(const std::string name, const Eigen::Vector3d& segments, const Ve
   return this->init(name, segms, mountingPoint ,mountingAngles);
 }
 
-Eigen::Vector3d Leg::inverseKinematics(Eigen::Vector3d& targetPoint)
+Eigen::Vector3d Leg::inverseKinematics(const Eigen::Vector3d& targetPoint)
 {
   double p1 = this->segments[0];
   double p2 = this->segments[1];
@@ -84,7 +84,7 @@ Eigen::Vector3d Leg::inverseKinematics(Eigen::Vector3d& targetPoint)
 }
 
 
-Eigen::Vector3d Leg::forwardKinematics(Eigen::Vector3d& targetAngles)
+Eigen::Vector3d Leg::forwardKinematics(const Eigen::Vector3d& targetAngles)
 {
   Eigen::Vector3d solution;
 
@@ -108,7 +108,7 @@ Eigen::Vector3d Leg::forwardKinematics(Eigen::Vector3d& targetAngles)
 }
 
 
-bool Leg::checkReachability(Vector3d& targetPoint)
+bool Leg::checkReachability(const Vector3d& targetPoint)
 {
   Eigen::Vector3d segm(segments[0], segments[1], segments[2]);
 
@@ -136,7 +136,7 @@ Eigen::Vector3d Leg::trajectoryGenerator(double time)
 
 }
 
-bool Leg::recieveFB(VectorXd& feedback, int index)
+bool Leg::recieveFB(const VectorXd& feedback, int index)
 {
   this->FBcoords = feedback.segment<3>(index);
   this->FBvelocities = feedback.segment<3>(index + 3);

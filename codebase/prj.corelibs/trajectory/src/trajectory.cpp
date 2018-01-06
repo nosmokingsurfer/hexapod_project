@@ -1,4 +1,4 @@
-#include <Trajectory/Trajectory.h>
+#include <trajectory/trajectory.h> //prun: unix is case-sensitive
 
 
 Trajectory::Trajectory()

@@ -4,7 +4,7 @@ Joint::Joint():
   currentState(0)
 {
   this->pidControl.push_back(PID(0,0,0));
-  this->type = JOINT_TYPE::TRANSLATION_1D;
+  this->type = TRANSLATION_1D; //prun: either use enum class or don't use enum name::as a namespace
 }
 
 Joint::~Joint()
