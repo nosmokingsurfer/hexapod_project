@@ -16,7 +16,7 @@ set(test_hexapod_dll_SRC
 	src/test_hexapod_dll.def
 )
 
-add_library(test_hexapod_dll SHARED ${test_hexapod_SRC})
+add_library(test_hexapod_dll SHARED ${test_hexapod_dll_SRC})
 
 target_link_libraries(test_hexapod_dll robot leg body Eigen3::Eigen)
 set_property(TARGET test_hexapod_dll PROPERTY FOLDER "prj.control_dlls")
