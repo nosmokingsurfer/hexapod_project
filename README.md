@@ -1,4 +1,10 @@
 # hexapod_project
+## Goal of this project
+
+* build up RL framework for multilegged robots to teach multilegged gaits w/o ground truth markup data
+* use accurate physics engine (Universal Mechanism or some other)
+
+## Description
 Code source and readings related to hexapod and multilegged robots
 
 Dynamic models are made in the Universal Mechanism(UM) http://www.umlab.ru/en/pages/index.php?id=1 - Multi Body Simulation (MBS) software
