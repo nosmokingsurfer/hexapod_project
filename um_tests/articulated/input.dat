@@ -1,0 +1,599 @@
+with main; version=80 ;
+  type=mbs;  autogravity=true;  symbolic = false; language=cplusplus; size=0.25; scene=5; 
+  objectidentifier=hex_articulated_climb2;
+  bkgcolor=16744576; gridcolor=16448; axessaturation= 1.E2; 
+  gridstep= 5.E-1; axelengthx= 3.; axelengthy= 3.; axelengthz= 3.; 
+  rotationstyle = z;
+  mousepick=false;
+  a={0.871185088277385 0.316580640148785 -0.375250903058297 0 0.764328937025486 0.644826547239984 0.490954724962596 -0.561763272480865 0.665871972475508};
+  target={3.52331718789439 4.65663001424929 26.0095721176525};
+  distance=10;
+  sensitivity_threshold=0.050;
+with const;
+  cnst=(l_body# 0.5);
+  cnst=(w_body# 0.3);
+  cnst=(hi1# 5000);
+  cnst=(hi2# 500);
+  cnst=(p1# 0.2);
+  cnst=(p2# 0.3);
+  cnst=(p3# 0.4);
+  cnst=(leg_rad# 0.02);
+  cnst=(alpha1# 0);
+  cnst=(beta1# 0.69813170079773183076947630739545);
+  cnst=(gamma1# 0);
+  cnst=(delta1# 0);
+  cnst=(delta2# 0);
+  cnst=(alpha2# 0);
+  cnst=(beta2# 0.69813170079773183076947630739545);
+  cnst=(gamma2# 0);
+  cnst=(alpha3# 0);
+  cnst=(beta3# 0.69813170079773183076947630739545);
+  cnst=(gamma3# 0);
+  cnst=(alpha4# 0);
+  cnst=(beta4# 0.69813170079773183076947630739545);
+  cnst=(gamma4# 0);
+  cnst=(alpha5# 0);
+  cnst=(beta5# 0.69813170079773183076947630739545);
+  cnst=(gamma5# 0);
+  cnst=(alpha6# 0);
+  cnst=(beta6# 0.69813170079773183076947630739545);
+  cnst=(gamma6# 0);
+  cnst=(eta1# 0);
+  cnst=(eta2# pi);
+  cnst=(eta3# 0);
+  cnst=(eta4# pi);
+  cnst=(eta5# 0);
+  cnst=(eta6# pi);
+  cnst=(amp1# 0);
+  cnst=(amp2# 0);
+  cnst=(amp3# 0);
+  cnst=(amp4# 0);
+  cnst=(amp5# 0);
+  cnst=(amp6# 0);
+  cnst=(speed1# 0);
+  cnst=(speed2# 0);
+  cnst=(speed3# 0);
+  cnst=(speed4# 0);
+  cnst=(speed5# 0);
+  cnst=(speed6# 0);
+  cnst=(deltaamp1# 0);
+  cnst=(deltaamp2# 0);
+  cnst=(deltaspeed1# 0);
+  cnst=(deltaspeed2# 0);
+  cnst=(a# 0.1);
+  cnst=(b# 0.1);
+  cnst=(W# 0.5);
+  cnst=(psiamp1# 0);
+  cnst=(psiamp2# 0);
+  cnst=(psispeed1# 0);
+  cnst=(psispeed2# 0);
+  cnst=(phiamp1# 0);
+  cnst=(phiamp2# 0);
+  cnst=(phispeed1# 0);
+  cnst=(phispeed2# 0);
+  cnst=(psi1# 0);
+  cnst=(psi2# 0);
+  cnst=(phi1# 0);
+  cnst=(phi2# 0);
+  cnst=(step_number# 0);
+  cnst=(local_time# 0);
+
+with cnstpages;
+  page=("Сдвиг и вращение", amp1, amp2, amp3, amp4, amp5, amp6, speed1, speed2, speed3, speed4, speed5, speed6);
+  page=("Корпус", deltaamp1, deltaamp2, deltaspeed1, deltaspeed2, psiamp1, psiamp2, psispeed1, psispeed2, phiamp1, phiamp2, phispeed1, phispeed2);
+  page=("шаговый цикл", a, b, W);
+
+with egravity; gravityz=-1.0; 
+with go;
+  name="GO1";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=BAR;
+  VisibleSide=vsFront;  material=16711680,16384,0,0,10,1;
+  p1x=; p1y=; p1z=-0.005; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  discret=0;  box=w_body,l_body*0.8,0.1;
+  with ge; type=PROFILED;
+  VisibleSide=vsBoth;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=-0.1; p2y=; p2z=-0.1; axis1=3; axis2=2; angle1=90; angle2=90; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  proftype=ptUser2D; pscalex=0.1; pscaley=0.1; nptprof=40; lids=1;
+  axistype=atLine; ascalex=0.01; ascaley=1; nptaxis=2;
+  profplot={
+    continuum closed
+    0	0	L
+    0.5	0	L
+    0.5	1	L
+    1	1	L
+    0	2	L
+    -1	1	L
+    -0.5	1	L
+    -0.5	0	L
+    0	0	L
+  };
+with go;
+  name="leg1";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=65280,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p1; r1=leg_rad; r2=leg_rad;
+  npc=20; npl=2;
+with go;
+  name="leg2";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=65535,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p2; r1=leg_rad; r2=leg_rad;
+  npc=20; npl=2;
+with go;
+  name="leg3";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=CYLINDER;
+  VisibleSide=vsFront;  material=255,6520998,0,0,10,1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  h=p3; r1=leg_rad; r2=;
+  npc=20; npl=2;
+with go;
+  name="GO2";
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; angle1=0; angle2=0; angle3=0; 
+  with ge; type=PROFILED;
+  VisibleSide=vsBoth;  material=6520998,6520998,0,0,10,1;
+  p1x=; p1y=1; p1z=; p2x=; p2y=; p2z=; axis1=3; angle1=180; angle2=0; angle3=0; 
+  width=1;
+  Density=7800; SurfaceWidth=5; WireSection=5;
+  proftype=ptUser2D; pscalex=1; pscaley=1; nptprof=40; lids=1;
+  axistype=atLine; ascalex=2.2; ascaley=1; nptaxis=2;
+  profplot={
+    continuum closed
+    0	0	L
+    2	0	L
+    2	-0.2	L
+    -2	-0.2	L
+    -2	1.5	L
+    0	1.5	L
+    0	0	L
+  };
+$ Bodies, inertia parameters, images
+with body1; name="Body1"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    cpoints={
+      'w_body/2' '' '' 'Point' 
+      '-w_body/2' '' '' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body2; name="Body2"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    cpoints={
+      'w_body/2' '' '' 'Point' 
+      '-w_body/2' '' '' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body3; name="Body3"; ppjoint=0; igrobj=1; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=; 
+    cpoints={
+      'w_body/2' '' '' 'Point' 
+      '-w_body/2' '' '' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body4; name="leg11"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body5; name="leg12"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body6; name="leg13"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body7; name="leg21"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body8; name="leg22"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body9; name="leg23"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body10; name="leg31"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body11; name="leg32"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body12; name="leg33"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body13; name="leg41"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body14; name="leg42"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body15; name="leg43"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body16; name="leg51"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body17; name="leg52"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body18; name="leg53"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body19; name="leg61"; ppjoint=0; igrobj=2; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p1/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body20; name="leg62"; ppjoint=0; igrobj=3; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p2/2; 
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+with body21; name="leg63"; ppjoint=0; igrobj=4; 
+  m=1; ixx=1; ixy=; ixz=; iyy=1; iyz=; izz=1; rcx=; rcy=; rcz=p3/2; 
+    cpoints={
+      '' '' 'p3' 'Point' 
+    };
+    opoints={
+      '' '' '' 'LSC'  '0' '0' '0' '0' '0' '0'
+    };
+
+$ Joints, degrees of freedom, hinges, initial conditions
+with joint1; name="jBase0_Body1"; type=6dof; bd1="Base0"; bd2="Body2"; 
+  with jnt6dof; 
+  position=1;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  position=2;
+  p1x=; p1y=; p1z=; p2x=; p2y=; p2z=; 
+  position=0;
+  angles=Cardan(123); 
+  x0=0; 
+  y0=0; 
+  z0= 2.375E-1; 
+  angle10=0; 
+  angle20=0; 
+  angle30=0; 
+with joint2; name="jBody2_Body1"; type=comm; bd1="Body2"; bd2="Body1"; 
+  with et; type=tc; ex=; ey=l_body/2; ez=; 
+  with et; type=rv; ex= 1.; ey=0; ez=0; coord0=0; 
+with scalarforce; name="jBody2_Body1"; type=expression;
+  expression=-hi1*(x-delta1)-hi2*v; 
+  with et; type=rv; enabled = false; ex=0; ey=0; ez= 1.; coord0=0; 
+with scalarforce; name="jBody2_Body1"; type=expression;
+  expression=-hi1*(x-psi1)-hi2*v; 
+  with et; type=rv; enabled = false; ex=0; ey= 1.; ez=0; coord0=0; 
+with scalarforce; name="jBody2_Body1"; type=expression;
+  expression=-hi1*(x-phi1)-hi2*v; 
+  with et; type=tc; ex=; ey=l_body/2; ez=; 
+with joint3; name="jBody2_Body3"; type=comm; bd1="Body2"; bd2="Body3"; 
+  with et; type=tc; ex=; ey=-l_body/2; ez=; 
+  with et; type=rv; ex=-1.; ey=0; ez=0; coord0=0; 
+with scalarforce; name="jBody2_Body3"; type=expression;
+  expression=-hi1*(x-delta2)-hi2*v; 
+  with et; type=tc; ex=; ey=-l_body/2; ez=; 
+with joint4; name="jBody1_leg11"; type=rotat; bd1="Body1"; bd2="leg11"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta=0; x0=0; 
+with scalarforce; name="jBody1_leg11"; type=expression;
+  expression=-hi1*(x-alpha1)-hi2*v; 
+with joint5; name="jleg11_leg12"; type=rotat; bd1="leg11"; bd2="leg12"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg11_leg12"; type=expression;
+  expression=-hi1*(x-beta1)-hi2*v; 
+with joint6; name="jleg12_leg13"; type=rotat; bd1="leg12"; bd2="leg13"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg12_leg13"; type=expression;
+  expression=-hi1*(x-gamma1)-hi2*v; 
+with joint7; name="jBody1_leg21"; type=rotat; bd1="Body1"; bd2="leg21"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=-w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta= 1.8E2; x0=0; 
+with scalarforce; name="jBody1_leg21"; type=expression;
+  expression=-hi1*(x-alpha2)-hi2*v; 
+with joint8; name="jleg21_leg22"; type=rotat; bd1="leg21"; bd2="leg22"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg21_leg22"; type=expression;
+  expression=-hi1*(x-beta2)-hi2*v; 
+with joint9; name="jleg22_leg23"; type=rotat; bd1="leg22"; bd2="leg23"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg22_leg23"; type=expression;
+  expression=-hi1*(x-gamma2)-hi2*v; 
+with joint10; name="jBody2_leg31"; type=rotat; bd1="Body2"; bd2="leg31"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta=0; x0=0; 
+with scalarforce; name="jBody2_leg31"; type=expression;
+  expression=-hi1*(x-alpha3)-hi2*v; 
+with joint11; name="jleg31_leg32"; type=rotat; bd1="leg31"; bd2="leg32"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg31_leg32"; type=expression;
+  expression=-hi1*(x-beta3)-hi2*v; 
+with joint12; name="jleg32_leg33"; type=rotat; bd1="leg32"; bd2="leg33"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg32_leg33"; type=expression;
+  expression=-hi1*(x-gamma3)-hi2*v; 
+with joint13; name="jBody2_leg41"; type=rotat; bd1="Body2"; bd2="leg41"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=-w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta= 1.8E2; x0=0; 
+with scalarforce; name="jBody2_leg41"; type=expression;
+  expression=-hi1*(x-alpha4)-hi2*v; 
+with joint14; name="jleg41_leg42"; type=rotat; bd1="leg41"; bd2="leg42"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg41_leg42"; type=expression;
+  expression=-hi1*(x-beta4)-hi2*v; 
+with joint15; name="jleg42_leg43"; type=rotat; bd1="leg42"; bd2="leg43"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg42_leg43"; type=expression;
+  expression=-hi1*(x-gamma4)-hi2*v; 
+with joint16; name="jBody3_leg51"; type=rotat; bd1="Body3"; bd2="leg51"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta=0; x0=0; 
+with scalarforce; name="jBody3_leg51"; type=expression;
+  expression=-hi1*(x-alpha5)-hi2*v; 
+with joint17; name="jleg51_leg52"; type=rotat; bd1="leg51"; bd2="leg52"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg51_leg52"; type=expression;
+  expression=-hi1*(x-beta5)-hi2*v; 
+with joint18; name="jleg52_leg53"; type=rotat; bd1="leg52"; bd2="leg53"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg52_leg53"; type=expression;
+  expression=-hi1*(x-gamma5)-hi2*v; 
+with joint19; name="jBody3_leg61"; type=rotat; bd1="Body3"; bd2="leg61"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=-w_body/2; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=0; e1z= 1.; e2x=-1.; e2y=0; e2z=0; 
+  constx=0; consta= 1.8E2; x0=0; 
+with scalarforce; name="jBody3_leg61"; type=expression;
+  expression=-hi1*(x-alpha6)-hi2*v; 
+with joint20; name="jleg61_leg62"; type=rotat; bd1="leg61"; bd2="leg62"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p1; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0= 4.E1; 
+with scalarforce; name="jleg61_leg62"; type=expression;
+  expression=-hi1*(x-beta6)-hi2*v; 
+with joint21; name="jleg62_leg63"; type=rotat; bd1="leg62"; bd2="leg63"; 
+  with jnt1dof; canlinear = false; 
+    ro1x=; ro1y=; ro1z=p2; ro2x=; ro2y=; ro2z=; 
+  e1x=0; e1y=-1.; e1z=0; e2x=0; e2y=-1.; e2z=0; 
+  constx=0; consta=0; x0=-9.5E1; 
+with scalarforce; name="jleg62_leg63"; type=expression;
+  expression=-hi1*(x-gamma6)-hi2*v; 
+
+$ Contact forces
+  with cfrc; name="CFrc1"; type=plane_point; bd1="leg13"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc2"; type=plane_point; bd1="leg23"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=0.25; f0=0.3; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc3"; type=plane_point; bd1="leg33"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc4"; type=plane_point; bd1="leg43"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc5"; type=plane_point; bd1="leg53"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc6"; type=plane_point; bd1="leg63"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=; ex=0; ey=0; ez= 1.; minx=; maxx=; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc7"; type=plane_point; bd1="leg13"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc8"; type=plane_point; bd1="leg23"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc9"; type=plane_point; bd1="leg33"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=1; pz=0; ex=0; ey=-1.; ez=0; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=0; ymax=1.4; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc10"; type=plane_point; bd1="leg43"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=1; pz=0; ex=0; ey=-1.; ez=0; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=0; ymax=1.4; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc13"; type=plane_point; bd1="leg53"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=1; pz=0; ex=0; ey=-1.; ez=0; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=0; ymax=1.4; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc14"; type=plane_point; bd1="leg63"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=1; pz=0; ex=0; ey=-1.; ez=0; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=0; ymax=1.4; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc11"; type=plane_point; bd1="leg33"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1.01; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc12"; type=plane_point; bd1="leg43"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1.01; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc15"; type=plane_point; bd1="leg53"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1.01; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+  with cfrc; name="CFrc16"; type=plane_point; bd1="leg63"; bd2="Base0"; reverse=true; 
+    ro1x=; ro1y=; ro1z=; ro2x=; ro2y=; ro2z=; 
+    f=1; f0=1; cstiff=1E6; cdiss=1e4; kroll=; kspin=; vstribeck=0; delta=1; dissfactor=0; vstar=0.01; 
+    px=; py=; pz=1.5; ex=0; ey=0; ez= 1.; minx=; maxx=; planelimited=true; limitangle=0; xmin=-1.1; xmax=1.1; ymin=1.01; ymax=3; clearance=; 
+    points={
+      '' '' 'p3' 
+    };
+with sensor;
+  name ="Датчик1";
+  body="leg13";
+  point=,,p3,;
+with sensor;
+  name ="Датчик2";
+  body="leg23";
+  point=,,p3,;
+with sensor;
+  name ="Датчик3";
+  body="leg33";
+  point=,,p3,;
+with sensor;
+  name ="Датчик4";
+  body="leg43";
+  point=,,p3,;
+with sensor;
+  name ="Датчик5";
+  body="leg53";
+  point=,,p3,;
+with sensor;
+  name ="Датчик6";
+  body="leg63";
+  point=,,p3,;
+with end;
