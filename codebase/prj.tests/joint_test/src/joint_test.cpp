@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 
   PID::PIDcoeffs coeffs={1,0,1};
 
-  joint.init("my joint", 0, Joint::ROTATION_3D, coeffs, &parent, &child);
+  joint.init("my joint", 0, Joint::JOINT_TYPE::ROTATION_3D, coeffs, &parent, &child);
   
   VectorXd state(joint.getDOFnumber());
   state.fill(0);

@@ -14,6 +14,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+  Mozaik mozaikBody;
+
+  mozaikBody.printOut();
+
 	 return 0;
 }
 

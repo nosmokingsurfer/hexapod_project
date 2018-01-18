@@ -1,3 +1,4 @@
+add_subdirectory(articulated_test)
 add_subdirectory(leg_test)
 add_subdirectory(step_cycle_test)
 add_subdirectory(robot_test)
