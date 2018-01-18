@@ -1,3 +1,4 @@
+add_subdirectory(articulated_dll)
 add_subdirectory(flying_sphere_dll)
 add_subdirectory(step_cycle_dll)
 add_subdirectory(test_hexapod_dll)
