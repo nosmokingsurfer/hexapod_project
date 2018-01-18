@@ -27,8 +27,24 @@ using namespace Eigen;
 
 class Body{
 public: 
+  enum class BODY_TYPE{
+    SIMPLE,
+    ARTICULATED,
+    MOZAIK
+  };
+
   Body();
+  Body(BODY_TYPE bt);
   ~Body();
+private:
+  void initSimpleBody();
+  void initArticulatedBody();
+  void initMozaikBody();
+
+  VectorXd getSimpleBodyControls(double time);
+  VectorXd getArticulatedBodyControls(double time);
+  VectorXd getMozaikBodyControls(double time);
+
 public:
   vector<Segment> segments;
   Pose fbPose; //!< feedback pose of the robot's body
@@ -41,7 +57,11 @@ public:
   bool recieveFB(VectorXd& feedback);// get feedback from UM
   Pose getTargetPose(double time); // get target position of body in global RF
 
+  VectorXd getControls(double time);
+
   void printOut();//!< print all the element of the mozaik body into the console
+
+  BODY_TYPE body_type; //!< kinematics of the body
 };
 
 

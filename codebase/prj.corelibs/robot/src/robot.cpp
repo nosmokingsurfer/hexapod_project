@@ -21,57 +21,17 @@ Robot::~Robot()
 
 Eigen::VectorXd Robot::getControls(double time)
 {
-#if 0
-  VectorXd targetAngles(18);
-  targetAngles.fill(0);
-
-  //каким-либо образом считаем целевые шарнирные углы
-  for (int i = 0; i < 6; i++)
-  {
-    targetAngles.segment(3*i,3) = robotBody.legs[i].inverseKinematics(robotBody.legs[i].trajectoryGenerator(time));
-  }
-
-  this->calculatedjoints = targetAngles;
-
-#else
-  VectorXd targetAngles(18);
-  targetAngles.fill(0);
-
-  std::vector<Vector3d> goals;
-
-  //положение следовых точек в абсолютной системе координат
-  goals.push_back(Vector3d(-0.12,  0.1, 0.0)); //FL
-  goals.push_back(Vector3d(-0.12,  0.0, 0.0)); //ML
-  goals.push_back(Vector3d(-0.12, -0.1, 0.0)); //RL
-  goals.push_back(Vector3d( 0.12,  0.1, 0.0)); //FR
-  goals.push_back(Vector3d( 0.12,  0.0, 0.0)); //MR
-  goals.push_back(Vector3d( 0.12, -0.1, 0.0)); //RR
-
-  robotBody.tarPose = robotBody.getTargetPose(time);
-
-  for (int i = 0; i < 6; i++)
-  {
-    //для i-ноги считаем радиус вектор в СК связанной с ногой
-    Vector3d result = robotBody.segments[0].legs[i].pose.T*robotBody.tarPose.T*goals[i];
-    targetAngles.segment(3*i, 3) = robotBody.segments[0].legs[i].inverseKinematics(result);
-  }
-    this->calculatedjoints = targetAngles;
-
-
-#endif
-
-
-
-
+  this->calculatedjoints = this->robotBody.getControls(time);
+  
   //по рассчитанным углам считаем моменты
   VectorXd torques(controlTorques.size());
   torques.fill(0);
 
   for (int i = 0; i < 6; i++)
   {
-    torques.segment(3*i, 3) = robotBody.segments[0].legs[i].getTorques(targetAngles.segment(3*i, 3));
+    torques.segment(3*i, 3) = robotBody.segments[0].legs[i].getTorques(this->calculatedjoints.segment(3*i, 3));
   }
-  
+
   this->controlTorques = torques;
   return torques;
 }
