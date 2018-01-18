@@ -1,4 +1,7 @@
 # hexapod_project
+![picture](https://github.com/nosmokingsurfer/hexapod_project/blob/master/um_tests/mozaik/pics/18-Jan-18%205-50-22%20PM.png)
+
+
 ## Goal of this project
 
 * build up RL framework for multilegged robots to teach multilegged gaits w/o ground truth markup data
