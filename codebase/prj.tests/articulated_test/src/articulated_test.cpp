@@ -2,7 +2,7 @@
 //
 
 
-#include <articulated/articulated.h>
+#include <body/body.h>
 
 
 #include <vector>
@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-  Articulated articul;
+  Body articul(Body::BODY_TYPE::ARTICULATED);
 
   articul.printOut();
 	 return 0;

@@ -14,5 +14,5 @@ set(articulated_test_SRC
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_executable(articulated_test src/articulated_test.cpp ${articulated_test_HDRS} ${articulated_test_SRC})
-target_link_libraries (articulated_test Eigen3::Eigen articulated body)
+target_link_libraries (articulated_test Eigen3::Eigen body)
 set_property(TARGET articulated_test PROPERTY FOLDER "prj.tests")

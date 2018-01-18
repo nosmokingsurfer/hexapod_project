@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-  Mozaik mozaikBody;
+  Body mozaikBody(Body::BODY_TYPE::MOZAIK);
 
   mozaikBody.printOut();
 
