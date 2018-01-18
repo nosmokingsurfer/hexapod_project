@@ -1,6 +1,6 @@
 with main;
 with simulink;
-  filename=D:\_my_phd\codebase\build\prj.control_dlls\test_hexapod\Release\test_hexapod.dll;
+  filename=D:\_my_phd\codebase\build\prj.control_dlls\test_hexapod_dll\Release\test_hexapod_dll.dll;
   caption="Interface 0";
   modelname="Simple hexapod test";
   inputcount=48;
