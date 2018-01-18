@@ -40,6 +40,9 @@ public:
   
   bool recieveFB(VectorXd& feedback);// get feedback from UM
   Pose getTargetPose(double time); // get target position of body in global RF
+
+  void printOut();//!< print all the element of the mozaik body into the console
 };
+
 
 #endif

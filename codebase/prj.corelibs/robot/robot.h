@@ -12,7 +12,7 @@
 
 #include <leg/leg.h>
 #include <pid/pid.h>
-#include <body/body.h>
+#include <simple_body/simple_body.h>
 
 
 #include <Eigen/Dense>
@@ -30,7 +30,7 @@ public:
   Robot();
   ~Robot();
   private:
-    Body robotBody; // robot body.
+    SimpleBody robotBody; // robot body.
 
     VectorXd feedBack; // the whole feedback array from UM
 

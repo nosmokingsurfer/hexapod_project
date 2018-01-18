@@ -11,6 +11,6 @@ set(dummy_HDR mozaik.h)
 
 add_library(mozaik ${dummy_SRC} ${dummy_HDR})
 
-target_link_libraries (mozaik Eigen3::Eigen)
+target_link_libraries (mozaik body Eigen3::Eigen)
 
 SET_PROPERTY(TARGET mozaik PROPERTY FOLDER "prj.corelibs")

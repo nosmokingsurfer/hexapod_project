@@ -98,7 +98,7 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
 
   for (int i = 0; i < static_cast<int>(robotBody.segments[0].legs.size()); i++)
   {
-    robotBody.segments[0].legs[i].recieveFB(feedBack, 12 + i*6);
+    robotBody.segments[0].legs[i].recieveFB(feedBack);
   }
   return true;
 }

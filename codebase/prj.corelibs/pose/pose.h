@@ -36,6 +36,9 @@ public:
   bool setPosition(Eigen::Vector3d position);
   void getAngles();
 
+  static Pose getRotationAroundAxis(Vector3d axis, double angle);
+
+
 };
 
 #endif

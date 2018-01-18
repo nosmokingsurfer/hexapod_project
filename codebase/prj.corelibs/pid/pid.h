@@ -30,6 +30,7 @@ public:
    PID();
    PID(const double kP, const double kI, const double kD);
    PID(const Vector3d coeffs);
+   PID(const PIDcoeffs& coeffs);
   ~PID();
 private:
   PIDcoeffs coeffs;

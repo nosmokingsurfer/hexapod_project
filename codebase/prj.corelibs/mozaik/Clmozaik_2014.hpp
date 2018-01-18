@@ -96,67 +96,6 @@ void getTransform(int i, trans_matr &A)
 	GetAi0(Joints[i].ibody,Joints[i].isubs,A);
 }
 
-void PrintMatrix(trans_matr &A, char* name)
-{
-       fprintf(f,"Matrix ");
-       fprintf(f,name);
-       fprintf(f,":\n");
-       fprintf(f,"%lf\t%lf\t%lf\n",A[0][0],A[0][1],A[0][2]);
-       fprintf(f,"%lf\t%lf\t%lf\n",A[1][0],A[1][1],A[1][2]);
-       fprintf(f,"%lf\t%lf\t%lf\n\n\n",A[2][0],A[2][1],A[2][2]);
-}
-
-void PrintVector(coordin &A, char* name)
-{
-       fprintf(f,"Vector ");
-       fprintf(f,name);
-       fprintf(f,":\n %lf\t%lf\t%lf\n\n",A[0],A[1],A[2]);
-}
-
-void PrintScalar(double A, char* name)
-{
-       fprintf(f,"Parameter ");
-       fprintf(f,name);
-       fprintf(f,": %lf\n\n",A);
-}
-
-void PrintLine(char* line)
-{
-       fprintf(f,line);
-       fprintf(f,"\n");
-}
-
-void PrintJoint(Joint &J, char* name)
-{
-    fprintf(f,"Шарнир ");
-	fprintf(f,name);
-	fprintf(f,":\n");
-	PrintScalar(J.ibody,"ibody");
-	PrintScalar(J.isubs,"isubs");
-	PrintVector(J.point,"Шарнирная точка");
-	PrintVector(J.orient,"Углы ориентации СК шарнира");
-	PrintVector(J.angles,"Шарнирные углы");
-	PrintVector(J.angles_index,"Индексы шарнирных идентификаторов");
-	fprintf(f,"\n\n");
-}
-
-void PrintLeg(Leg &L, char* name)
-{
-	fprintf(f,"Нога ");
-	fprintf(f,name);
-	fprintf(f,":\n");
-	PrintScalar(L.ibody,"ibody");
-	PrintScalar(L.isubs,"isubs");
-	PrintScalar(L.contactBody,"contactBody");
-	PrintVector(L.point,"Точка крепления ноги");
-	PrintVector(L.orient,"Углы ориентации СК ноги");
-	PrintVector(L.angles,"Шарнирные углы ноги");
-	PrintVector(L.angles_index,"Индексы шарнирных идентификаторов");
-	PrintVector(L.segments,"Длины сегментов");
-	fprintf(f,"\n\n");
-	
-}
-
 void getAngles(trans_matr &A, coordin &a)
 {
     a[0] = atan2(-A[0][1],A[1][1]);
@@ -464,28 +403,6 @@ int getAxis(int J1, int J2, coordin &axis_1, coordin &axis_2)//нужно уйти от фун
 	return 1;
 }
 
-void setVector(double x, double y, double z, coordin &vector)
-{
-	vector[0] = x;
-	vector[1] = y;
-	vector[2] = z;
-}
-
-void AddVector(coordin &a,coordin &b,coordin &c)
-{
-	for(int i=0;i<3;i++)
-	{
-		c[i] = a[i]+b[i];
-	}
-}
-
-void SubVector(coordin &a, coordin &b, coordin &c)//разница веторов a и b
-{
-	for(int i=0;i<3;i++)
-	{
-		c[i] = a[i]-b[i];
-	}
-}
 
 void jointRotate(int j, coordin &n, double angle)
 {

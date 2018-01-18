@@ -24,17 +24,27 @@ using namespace std;
 using namespace Eigen;
 
 class Joint;
+class Leg;
 
 class Segment{
 public: 
   Segment();
+  Segment(const Segment&);
+  Segment & operator=(const Segment&);
   Segment(const std::string name, const Pose& pose);
   ~Segment();
-  bool init(const vector<Leg> &legs);
-public:
+  bool init(const vector<Leg> &legs, const vector<Joint> &joints);
+private:
+  bool initialized;
   string name; //!< name of the segment
   Pose segmentRF; //!< segment reference frame
   int fbIndex; //!< index of the segment coordinates in the FB array if any
+  
+public:
+  bool connectLeg(Leg& leg); //!< attach leg to the segment. Leg should already have a mounting pose
+  bool connectJoint(Joint& joint, const bool parent); //!< attach joint to the segment. Joint should already have a mounting pose
+  bool isInitialized();
+  string getName();
   vector<Leg> legs;//!< legs connected to the segment
   vector<Joint> joints; //!< joints connected to the segment
   

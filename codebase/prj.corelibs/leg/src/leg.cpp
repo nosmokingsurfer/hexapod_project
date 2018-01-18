@@ -5,41 +5,87 @@
 Leg::Leg()
 {
   this->segments.clear();
+
+  this->parent = new Segment();
+}
+
+
+Leg::Leg(const std::string name, const int fbIndex, const Vector3d& segments, const Pose& mountingPose)
+{ 
+  this->legName = name;
+
+
+  this->fbIndex = fbIndex;
+
+  for (int i = 0; i < segments.size(); i++)
+  {
+    this->segments.push_back(segments[i]);
+  }
+
+  this->pose = mountingPose;
+
+  this->pids.push_back(PID());
+  this->pids.push_back(PID());
+  this->pids.push_back(PID());
+}
+
+Leg::Leg(const Leg& L)
+{
+  this->segments = L.segments;
+  this->pids = L.pids;
+  this->pose = L.pose;
+  this->fbIndex = L.fbIndex;
+  this->legName = L.legName;
+  this->FBcoords = L.FBcoords;
+  this->FBvelocities = this->FBvelocities;
+  this->targetState = this->targetState;
+  this->parent = L.parent;
+}
+
+Leg & Leg::operator=(const Leg& L)
+{
+  if (this == &L) return (*this);
+  else
+  {
+    this->segments = L.segments;
+    this->pids = L.pids;
+    this->pose = L.pose;
+    this->fbIndex = L.fbIndex;
+    this->legName = L.legName;
+    this->FBcoords = L.FBcoords;
+    this->FBvelocities = this->FBvelocities;
+    this->targetState = this->targetState;  
+    this->parent = L.parent;
+
+    return *this;
+  }
 }
 
 
 Leg::~Leg()
 {
-
+  //delete parent;
 }
 
-bool Leg::init(const std::string name, const vector<double>& segments, const Eigen::Vector3d& mountingPoint, const Eigen::Vector3d& mountingAngles)
-{
-  for (size_t i = 0; i < segments.size(); i++)
-  {
-    this->segments.push_back(segments[i]);
-  }
 
-  pose = Pose(mountingAngles, mountingPoint);
-
-  //PID controller for all joints
-  pids.push_back(PID(Vector3d(0,0,0)));
-  pids.push_back(PID(Vector3d(0,0,0)));
-  pids.push_back(PID(Vector3d(0,0,0)));
-
-
-  return true;
-}
-
-bool Leg::init(const std::string name, const Eigen::Vector3d& segments, const Vector3d& mountingPoint, const Vector3d& mountingAngles)
-{
-  std::vector<double> segms;
-  segms.push_back(segments[0]);
-  segms.push_back(segments[1]);
-  segms.push_back(segments[2]);
-
-  return this->init(name, segms, mountingPoint ,mountingAngles);
-}
+//TODO сделать set/get методы для необходимых полей
+//bool Leg::init(const std::string name, const Vector3d& segments, const Pose& mountingPose)
+//{
+//  this->legName = name;
+//
+//  for (int i = 0; i < segments.size(); i++)
+//  {
+//    this->segments.push_back(segments[i]);
+//  }
+//  
+//  this->pose = mountingPose;
+//
+//  this->pids.push_back(PID());
+//  this->pids.push_back(PID());
+//  this->pids.push_back(PID());
+//
+//  return true;
+//}
 
 Eigen::Vector3d Leg::inverseKinematics(const Eigen::Vector3d& targetPoint)
 {
@@ -136,10 +182,10 @@ Eigen::Vector3d Leg::trajectoryGenerator(double time)
 
 }
 
-bool Leg::recieveFB(const VectorXd& feedback, int index)
+bool Leg::recieveFB(const VectorXd& feedback)
 {
-  this->FBcoords = feedback.segment<3>(index);
-  this->FBvelocities = feedback.segment<3>(index + 3);
+  this->FBcoords = feedback.segment<3>(this->fbIndex);
+  this->FBvelocities = feedback.segment<3>(this->fbIndex + 3);
   return true;
 }
 
@@ -149,6 +195,12 @@ bool Leg::setCoeffs(const PID::PIDcoeffs &coeffs)
   {
     pids[i].setCoeffs(coeffs);
   }
+  return true;
+}
+
+bool Leg::setFBindex(const int index)
+{
+  this->fbIndex = index;
   return true;
 }
 
@@ -162,6 +214,26 @@ Eigen::VectorXd Leg::getTorques(const VectorXd& targetAngles)
 
   //TODO torque saturation
 
-  
   return torques;
+}
+
+bool Leg::setParentSegment(Segment& seg)
+{
+  if(seg.isInitialized())
+  {
+    this->parent = &seg;
+    return true;
+  }
+  else
+    return false;
+}
+
+std::string Leg::getName()
+{
+  return this->legName;
+}
+
+std::string Leg::getParentName()
+{
+  return this->parent->getName();
 }

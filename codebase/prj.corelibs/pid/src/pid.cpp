@@ -29,6 +29,11 @@ PID::PID(const Vector3d coeffs)
   this->D = 0;
 }
 
+PID::PID(const PIDcoeffs& coeffs)
+{
+  this->coeffs = coeffs;
+}
+
 PID::~PID()
 {}
 

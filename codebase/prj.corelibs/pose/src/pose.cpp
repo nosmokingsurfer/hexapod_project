@@ -58,3 +58,12 @@ bool Pose::setPosition(Eigen::Vector3d position)
 }
 
 
+Pose Pose::getRotationAroundAxis(Vector3d axis, double angle)
+{
+  Pose result;
+
+  result.T = AngleAxis<double>(angle, axis);
+  result.T = result.T.inverse();
+
+  return result;
+}
