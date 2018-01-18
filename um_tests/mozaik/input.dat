@@ -63,9 +63,6 @@ with const;
   cnst=(gamma6# 0);
   cnst=(period# 2);
   cnst=(amplitude# 2);
-  cnst=(lidar_alpha# 45);
-  cnst=(lidar_beta# 45);
-  cnst=(lidar_range# 1);
 
 with cnstpages;
   page=("Leg", p1, p2, p3, radius, alpha1, beta1, gamma1, alpha2, beta2, gamma2, alpha3, beta3, gamma3, alpha4, beta4, gamma4, alpha5, beta5, gamma5, alpha6, beta6, gamma6);
