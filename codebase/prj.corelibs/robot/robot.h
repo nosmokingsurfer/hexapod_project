@@ -28,6 +28,7 @@ using namespace Eigen;
 class Robot{
 public: 
   Robot();
+  Robot(Body::BODY_TYPE bt);
   ~Robot();
   private:
     Body robotBody; // robot body.

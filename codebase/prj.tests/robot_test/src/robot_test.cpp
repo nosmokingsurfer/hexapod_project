@@ -14,7 +14,7 @@ using namespace Eigen;
 int main(int argc, char** argv)
 {
 
-  Robot myRobot;
+  Robot myRobot(Body::BODY_TYPE::SIMPLE);
 
   VectorXd result;
 

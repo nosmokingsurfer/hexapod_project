@@ -9,7 +9,7 @@ Body::Body()
 
 Body::Body(BODY_TYPE bt)
 {
-  Body();
+  *this = Body();
 
   switch(bt)
   {
@@ -30,6 +30,8 @@ Body::Body(BODY_TYPE bt)
     }
   }
 
+  this->body_type = bt;
+
 }
 
 Body::~Body()
@@ -41,12 +43,12 @@ void Body::initSimpleBody()
 
   this->segments.push_back(Segment("main", Pose()));
 
-  this->segments[0].connectLeg(Leg("FL", 0, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("ML", 0, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RL", 0, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0))));
-  this->segments[0].connectLeg(Leg("FR", 0, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("MR", 0, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RR", 0, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0))));
+  this->segments[0].connectLeg(Leg("FL", 12, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0))));
+  this->segments[0].connectLeg(Leg("ML", 18, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0))));
+  this->segments[0].connectLeg(Leg("RL", 24, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0))));
+  this->segments[0].connectLeg(Leg("FR", 30, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0))));
+  this->segments[0].connectLeg(Leg("MR", 36, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0))));
+  this->segments[0].connectLeg(Leg("RR", 42, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0))));
 }
 
 void Body::initArticulatedBody()

@@ -14,6 +14,13 @@ Robot::Robot()
   this->calculatedjoints.fill(0);
 }
 
+Robot::Robot(Body::BODY_TYPE bt)
+{
+  *this = Robot();
+
+  robotBody = Body(bt);
+}
+
 Robot::~Robot()
 {
 

@@ -14,7 +14,7 @@ typedef wchar_t*  WChar;
 
 #include <robot/robot.h>
 
-Robot myRobot;
+Robot myRobot(Body::BODY_TYPE::SIMPLE);
 
 void _cdecl EXT_Initialize( int& status)
 {

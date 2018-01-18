@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.4)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+
 option(BUILD_LIBRARIES "Build hexapod libraries" ON)
 option(BUILD_DLL "Build dll for UM intgeration" ON)
 option(BUILD_TESTS "Build test projects" ON)
