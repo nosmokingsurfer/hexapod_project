@@ -1,21 +1,27 @@
 #include <joint/joint.h>
 
 Joint::Joint():
-  currentState(0)
+  currentState(0),
+  fbIndex(0),
+  ctrlIndex(0)
 {
   this->pidControl.push_back(PID(0,0,0));
-  this->type = JOINT_TYPE::TRANSLATION_1D; //prun: either use enum class or don't use enum name::as a namespace
+  this->type = JOINT_TYPE::TRANSLATION_1D;
 }
 
-Joint::Joint(const string name, const int fbIndex, const JOINT_TYPE type)
+Joint::Joint(const string name_, const int fbIndex_, const int ctrlIndex_, const JOINT_TYPE type_, const Pose& parentMount, const Pose& childMount)
 {
   initialized = true;
 
-  this->name = name;
+  this->name = name_;
 
-  this->fbIndex = fbIndex;
+  this->fbIndex = fbIndex_;
+  this->ctrlIndex = ctrlIndex_;
 
-  this->type = type;
+  this->type = type_;
+
+  this->mountInChild = childMount;
+  this->mountInParent = parentMount;
 
 
   switch(type)
@@ -48,56 +54,24 @@ Joint::~Joint()
 
 }
 
-bool Joint::init(const string name, const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment *parent, Segment *child)
+bool Joint::recieveFB(const VectorXd& fb)
 {
-  initialized = true;
+  int N = getDOFnumber();
 
-  this->name = name;
+  this->currentState = fb.segment(this->fbIndex, N);
+  this->currentVelocities = fb.segment(this->fbIndex + N, N);
 
-  this->fbIndex = fbIndex;
-
-  this->type = type;
-  
-
-  switch(type)
-  {
-    case JOINT_TYPE::ROTATION_1D:    currentState.resize(1); break;
-    case JOINT_TYPE::ROTATION_2D:    currentState.resize(2); break;
-    case JOINT_TYPE::ROTATION_3D:    currentState.resize(3); break;
-    case JOINT_TYPE::TRANSLATION_1D: currentState.resize(1); break;
-    case JOINT_TYPE::TRANSLATION_2D: currentState.resize(2); break;
-    case JOINT_TYPE::TRANSLATION_3D: currentState.resize(3); break;
-  }
-
-  currentState.fill(0);
-
-  currentVelocities.resize(currentState.size());
-  currentVelocities.fill(0);
-
-  targetState.resize(currentState.size());
-  targetState.fill(0);
-
-  pidControl.resize(currentState.size());
-  for (int i = 0; i < static_cast<int>(pidControl.size()); i++)
-  {
-    initialized &= pidControl[i].setCoeffs(coeffs);
-  }
-
-  this->parent = parent;    
-  this->child = child;
-
-  return initialized;
-}
-
-bool Joint::recieveFB()
-{
-  cout << "NOT IMPLEMENTED" << endl;
   return true;
 }
 
 VectorXd Joint::getState()
 {
   return this->currentState;
+}
+
+void Joint::updateTransformMatrix(VectorXd state)
+{
+  cout << "NOT IMPLEMENTED" << endl;
 }
 
 bool Joint::updateTransformation()
@@ -160,6 +134,12 @@ bool Joint::setParentSegment(Segment& seg)
 }
 
 
+bool Joint::setMountInParent(const Pose& mountingPose)
+{
+  this->mountInParent = mountingPose;
+  return true;
+}
+
 bool Joint::setChildSegment(Segment& seg)
 {
   if(seg.isInitialized())
@@ -171,6 +151,12 @@ bool Joint::setChildSegment(Segment& seg)
     return false;
 }
 
+
+bool Joint::setMountInChild(const Pose& mountingPose)
+{
+  this->mountInChild = mountingPose;
+  return true;
+}
 
 bool Joint::setState(VectorXd state)
 {
@@ -213,3 +199,7 @@ int Joint::getDOFnumber()
 }
 
 
+int Joint::getCtrlIndex()
+{
+  return this->ctrlIndex;
+}

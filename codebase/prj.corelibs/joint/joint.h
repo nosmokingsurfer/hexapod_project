@@ -28,20 +28,19 @@ class Joint{
   public:
     enum class JOINT_TYPE
     { 
-      ROTATION_1D, //TODO not implemented
-      ROTATION_2D, //TODO not implemented
-      ROTATION_3D, //TODO not implemented
-      TRANSLATION_1D, //TODO not implemented
-      TRANSLATION_2D, //TODO not implemented
-      TRANSLATION_3D //TODO not implemented
+      ROTATION_1D, 
+      ROTATION_2D, 
+      ROTATION_3D, 
+      TRANSLATION_1D,
+      TRANSLATION_2D,
+      TRANSLATION_3D
     };
 public: 
-  Joint();//TODO сделать конструктор с необходимим набором параметров? или все сделать через Init функцию?
-  Joint(const string name, const int fbIndex, const JOINT_TYPE type);
+  Joint();
+  Joint(const string name, const int fbIndex, const int ctrlIndex, const JOINT_TYPE type, const Pose& parentMount, const Pose& childMount);
   ~Joint();
-  bool init(const string name, const int fbIndex, const JOINT_TYPE type, const PID::PIDcoeffs coeffs, Segment* parent, Segment* child);
   
-  bool recieveFB(); //!< receive FB from UM model
+  bool recieveFB(const VectorXd& feedback); //!< receive FB from UM model
 
 private:
   bool initialized;//!< initialization flag
@@ -51,6 +50,8 @@ private:
   vector<PID> pidControl;//!< PID controllers to calculate torques //TODO make abstract Controller class?
 
   int fbIndex;//!< index of joint coordinates inside the FB array
+  int ctrlIndex; //!< index of joint torques inside the control signals array
+
   JOINT_TYPE type;//!< joint type
 
   VectorXd currentState; //!< current joint state - to be used inside the PID controller
@@ -63,6 +64,9 @@ private:
   Pose transformation; //!< what transformation joint performs
   Pose mountInParent; //!< mounting pose in parent segment
   Pose mountInChild; //!< mounting pose in child segment
+
+  void updateTransformMatrix(VectorXd state);
+
 private:
   bool updateTransformation(); //!< updates the transformation Pose matrix with relevance to the current state
 public:
@@ -77,11 +81,15 @@ public:
   string getChildName();
 
   bool setParentSegment(Segment& seg);
+  bool setMountInParent(const Pose& mountingPose);
+
   bool setChildSegment(Segment& seg);
+  bool setMountInChild(const Pose& mountingPose);
 
   VectorXd getState(); //!< get current joint state of the joint
   VectorXd getTorques(); //!< get calculated torques from the joint control system
   int getDOFnumber(); //!< returns number of degrees of freedom
+  int getCtrlIndex();
 
 };
 
