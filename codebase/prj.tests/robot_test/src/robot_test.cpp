@@ -18,8 +18,8 @@ int main(int argc, char** argv)
 
   VectorXd result;
 
-  double inputArray[48];
-  for(int i = 0; i < 48; i++)
+  double inputArray[52];
+  for(int i = 0; i < 52; i++)
   {
     inputArray[i] = 0.05*i;
   }
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
   parameters[1] = 0;
   parameters[2] = 3;
 
-  myRobot.recieveFeedBack(inputArray, 48);
+  myRobot.recieveFeedBack(inputArray, 52);
   myRobot.recieveParameters(parameters, 3);
 
 
