@@ -4,21 +4,23 @@ using namespace Eigen;
 
 Robot::Robot()
 {
-  this->controlTorques = VectorXd(18);
-  this->controlTorques.fill(0);
-
-  this->feedBack = VectorXd(48);
-  this->feedBack.fill(0);
-
-  this->calculatedjoints = VectorXd(48);
-  this->calculatedjoints.fill(0);
+  
 }
 
 Robot::Robot(Body::BODY_TYPE bt)
 {
-  *this = Robot();
-
   robotBody = Body(bt);
+
+
+  this->controlTorques = VectorXd(robotBody.getNControls());
+  this->controlTorques.fill(0);
+
+  this->feedBack = VectorXd(robotBody.getNDOF());
+  this->feedBack.fill(0);
+
+  this->calculatedjoints = VectorXd(robotBody.getNControls());
+  this->calculatedjoints.fill(0);
+
 }
 
 Robot::~Robot()
@@ -34,9 +36,18 @@ Eigen::VectorXd Robot::getControls(double time)
   VectorXd torques(controlTorques.size());
   torques.fill(0);
 
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < static_cast<int>(robotBody.segments.size()); i++)
   {
-    torques.segment(3*i, 3) = robotBody.segments[0].legs[i].getTorques(this->calculatedjoints.segment(3*i, 3));
+    for (int j = 0; j < static_cast<int>(robotBody.segments[i].legs.size());j++)
+    {
+      Leg& curLeg = robotBody.segments[i].legs[j];
+      torques.segment(curLeg.getCtrlIndex(), 3) = curLeg.getTorques();
+    }
+    for(int j = 0; j < static_cast<int>(robotBody.segments[i].joints.size()); j++)
+    {
+      Joint& curJoint = robotBody.segments[i].joints[j];
+      torques.segment(curJoint.getCtrlIndex(), curJoint.getDOFnumber()) = curJoint.getTorques();
+    }
   }
 
   this->controlTorques = torques;
@@ -63,10 +74,6 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
 
   this->robotBody.recieveFB(signals);
 
-  for (int i = 0; i < static_cast<int>(robotBody.segments[0].legs.size()); i++)
-  {
-    robotBody.segments[0].legs[i].recieveFB(feedBack);
-  }
   return true;
 }
 
