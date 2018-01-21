@@ -27,9 +27,7 @@ class Segment;
 class Leg{
 public: 
   Leg();
-  Leg(const Leg& L);
-  Leg & operator=(const Leg&);
-  Leg(const std::string name, const int fbIndex, const Vector3d& segments, const Pose& mountingPose);
+  Leg(const std::string name, const int fbIndex, const int ctrlIndex, const Vector3d& segments, const Pose& mountingPose);
   ~Leg();
 
  //bool init(const std::string name, const Vector3d& segments, const Pose& mountingPose); //TODO выилиить такую инициализацию - сделать set/get методы
@@ -41,10 +39,11 @@ public:
   bool recieveFB(const VectorXd& feedback);
   bool setCoeffs(const PID::PIDcoeffs &coeffs);
   bool setFBindex(const int index);
+  int getCtrlIndex();
 
 
   Eigen::Vector3d trajectoryGenerator(double time);
-  Eigen::VectorXd getTorques(const VectorXd& targetAngles);
+  Eigen::VectorXd getTorques();
 
   std::vector<PID> pids; // all PID controllers of the leg
 
@@ -54,9 +53,11 @@ public:
 
   string getName();
   string getParentName();
+  bool setTargetState(const Vector3d& targetstate);
 
 private:
-  int fbIndex; //TODO: протащить в конструктор
+  int fbIndex; // todo move to the basic class
+  int ctrlIndex; //todo move to the basic class
   std::string legName; //!< leg name
   Vector3d FBcoords; //!< leg state - array of joint angles
   Vector3d FBvelocities; //!< leg coordinate velocities

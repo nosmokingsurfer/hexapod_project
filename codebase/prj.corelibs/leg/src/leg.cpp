@@ -10,12 +10,13 @@ Leg::Leg()
 }
 
 
-Leg::Leg(const std::string name, const int fbIndex, const Vector3d& segments, const Pose& mountingPose)
+Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, const Vector3d& segments, const Pose& mountingPose)
 { 
-  this->legName = name;
+  this->legName = name_;
 
 
-  this->fbIndex = fbIndex;
+  this->fbIndex = fbIndex_;
+  this->ctrlIndex = ctrlIndex_;
 
   for (int i = 0; i < segments.size(); i++)
   {
@@ -29,63 +30,11 @@ Leg::Leg(const std::string name, const int fbIndex, const Vector3d& segments, co
   this->pids.push_back(PID());
 }
 
-Leg::Leg(const Leg& L)
-{
-  this->segments = L.segments;
-  this->pids = L.pids;
-  this->pose = L.pose;
-  this->fbIndex = L.fbIndex;
-  this->legName = L.legName;
-  this->FBcoords = L.FBcoords;
-  this->FBvelocities = this->FBvelocities;
-  this->targetState = this->targetState;
-  this->parent = L.parent;
-}
-
-Leg & Leg::operator=(const Leg& L)
-{
-  if (this == &L) return (*this);
-  else
-  {
-    this->segments = L.segments;
-    this->pids = L.pids;
-    this->pose = L.pose;
-    this->fbIndex = L.fbIndex;
-    this->legName = L.legName;
-    this->FBcoords = L.FBcoords;
-    this->FBvelocities = this->FBvelocities;
-    this->targetState = this->targetState;  
-    this->parent = L.parent;
-
-    return *this;
-  }
-}
-
 
 Leg::~Leg()
 {
-  //delete parent;
 }
 
-
-//TODO сделать set/get методы для необходимых полей
-//bool Leg::init(const std::string name, const Vector3d& segments, const Pose& mountingPose)
-//{
-//  this->legName = name;
-//
-//  for (int i = 0; i < segments.size(); i++)
-//  {
-//    this->segments.push_back(segments[i]);
-//  }
-//  
-//  this->pose = mountingPose;
-//
-//  this->pids.push_back(PID());
-//  this->pids.push_back(PID());
-//  this->pids.push_back(PID());
-//
-//  return true;
-//}
 
 Eigen::Vector3d Leg::inverseKinematics(const Eigen::Vector3d& targetPoint)
 {
@@ -204,12 +153,17 @@ bool Leg::setFBindex(const int index)
   return true;
 }
 
-Eigen::VectorXd Leg::getTorques(const VectorXd& targetAngles)
+int Leg::getCtrlIndex()
+{
+  return this->ctrlIndex;
+}
+
+Eigen::VectorXd Leg::getTorques()
 {
   VectorXd torques(3);
   for(size_t i = 0; i < pids.size(); i++)
   {
-    torques[i] = pids[i].getValue(targetAngles[i], FBcoords[i], FBvelocities[i]);
+    torques[i] = pids[i].getValue(targetState[i], FBcoords[i], FBvelocities[i]);
   }
 
   //TODO torque saturation
@@ -236,4 +190,10 @@ std::string Leg::getName()
 std::string Leg::getParentName()
 {
   return this->parent->getName();
+}
+
+bool Leg::setTargetState(const Vector3d& targetstate_)
+{
+  this->targetState = targetstate_;
+  return true;
 }
