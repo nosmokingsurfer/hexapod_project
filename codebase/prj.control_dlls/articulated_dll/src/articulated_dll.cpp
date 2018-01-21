@@ -14,7 +14,7 @@ typedef wchar_t*  WChar;
 
 #include <robot/robot.h>
 
-Robot myRobot;
+Robot myRobot(Body::BODY_TYPE::ARTICULATED);
 
 void _cdecl EXT_Initialize( int& status)
 {
@@ -50,8 +50,13 @@ void _cdecl EXT_GetNumU(int& num, int& status)
   // num is the count of input signals
   // status is the exit code 
   //   status==0 means no errors occured
-    
-  num    = 48;
+
+  num = 1*(6 + 6); // for the mainBody
+  num += 6*(3 + 3); //for six legs with 3 d.o.f. in each leg + velocities
+  num += 2*(1 + 1); //for two joints with 1 d.o.f. + velocities
+
+  // the total number of input signals is 52
+
   status = 0;
 }
 
@@ -120,6 +125,13 @@ void _cdecl EXT_GetUName( int i, WChar name, int& status)
   case 45: wcscpy(name, L"FB_RR_alpha_v"); break;
   case 46: wcscpy(name, L"FB_RR_beta_v"); break;
   case 47: wcscpy(name, L"FB_RR_gamma_v"); break;
+
+  case 48: wcscpy(name, L"FB_j_1_2"); break;
+  case 49: wcscpy(name, L"FB_j_1_2_v"); break;
+
+  case 50: wcscpy(name, L"FB_j_2_3"); break;
+  case 51: wcscpy(name, L"FB_j_2_3_v"); break;
+
   default: status = 1;
   }
 }
@@ -130,7 +142,13 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   // status is the exit code 
   //   status==0 means no errors occured
 
-  num    = 36;
+  num = 6*3; // control torques for leg's joints
+  num += 6*3; // target angles for leg joints
+  num += 2; // control torques for body joints
+  num += 2; // desired angles for body joints
+
+  //total number of output signals is 40
+
   status = 0;
 }
 
@@ -195,6 +213,15 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   case 33: wcscpy(name, L"RR_alpha_target"); break;
   case 34: wcscpy(name, L"RR_beta_target"); break;
   case 35: wcscpy(name, L"RR_gamma_target"); break;
+
+
+  //control torques for body joints
+  case 36:  wcscpy(name, L"j_1_2_torque"); break;
+  case 37:  wcscpy(name, L"j_2_3_torque"); break;
+
+  //target angles for body joints
+  case 38:  wcscpy(name, L"j_1_2_target"); break;
+  case 39:  wcscpy(name, L"j_2_3_target"); break;
 
   default: status = 1;
   }
