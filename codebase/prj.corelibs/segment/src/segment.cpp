@@ -14,43 +14,9 @@ Segment::Segment(const std::string name_, const Pose& pose_)
   this->initialized = true;
 }
 
-Segment::Segment(const Segment& L)
-{
-  this->name = L.name;
-  this->initialized = L.initialized;
-  this->segmentRF = L.segmentRF;
-  this->fbIndex = L.fbIndex;
-  this->legs = L.legs;
-  this->joints = L.joints;
-}
-
-Segment & Segment::operator=(const Segment& L)
-{
-  if (this == &L) return (*this);
-  else
-  {
-    this->name = L.name;
-    this->initialized = L.initialized;
-    this->segmentRF = L.segmentRF;
-    this->fbIndex = L.fbIndex;
-    this->legs = L.legs;
-    this->joints = L.joints;
-
-    return *this;
-  }
-}
-
 
 Segment::~Segment()
 {}
-
-bool Segment::init(const vector<Leg> &legs, const vector<Joint> &joints)
-{
-  this->legs = legs;
-  this->joints = joints;
-
-  return true;
-}
 
 bool Segment::connectLeg(Leg& leg)
 {
@@ -78,6 +44,20 @@ bool Segment::connectJoint(Joint& joint, const bool parent)
 bool Segment::isInitialized()
 {
   return this->initialized;
+}
+
+bool Segment::recieveFB(const VectorXd fb)
+{
+  for(int i = 0; i < static_cast<int>(legs.size()); i++)
+  {
+    legs[i].recieveFB(fb);
+  }
+
+  for(int i = 0; i < static_cast<int>(joints.size()); i++)
+  {
+    joints[i].recieveFB(fb);
+  }
+  return true;
 }
 
 std::string Segment::getName()
