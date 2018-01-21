@@ -45,6 +45,9 @@ private:
   VectorXd getArticulatedBodyControls(double time);
   VectorXd getMozaikBodyControls(double time);
 
+  int nDOF; //!< number of degrees of freedom from FB
+  int nControls; //!< number of control toruques
+
 public:
   vector<Segment> segments;
   Pose fbPose; //!< feedback pose of the robot's body
@@ -52,9 +55,8 @@ public:
 
   VectorXd FBcoords;
   VectorXd FBvelocities;
-  int fbIndex; //index in FB array
   
-  bool recieveFB(VectorXd& feedback);// get feedback from UM
+  bool recieveFB(const VectorXd& feedback);// get feedback from UM
   Pose getTargetPose(double time); // get target position of body in global RF
 
   VectorXd getControls(double time);
@@ -62,6 +64,9 @@ public:
   void printOut();//!< print all the element of the mozaik body into the console
 
   BODY_TYPE body_type; //!< kinematics of the body
+
+  int getNDOF(); //!< returns number of DOF
+  int getNControls(); //!< returns number of controls
 };
 
 

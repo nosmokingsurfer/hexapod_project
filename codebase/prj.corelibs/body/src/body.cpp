@@ -1,9 +1,10 @@
 #include <body/body.h>
 
 
-Body::Body()
+Body::Body():
+nDOF(0),
+nControls(0)
 {
-  this->fbIndex = 0;
   this->segments.clear();
 }
 
@@ -43,12 +44,15 @@ void Body::initSimpleBody()
 
   this->segments.push_back(Segment("main", Pose()));
 
-  this->segments[0].connectLeg(Leg("FL", 12, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("ML", 18, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RL", 24, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0))));
-  this->segments[0].connectLeg(Leg("FR", 30, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("MR", 36, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RR", 42, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0))));
+  this->segments[0].connectLeg(Leg("FL", 12,  0, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0))));
+  this->segments[0].connectLeg(Leg("ML", 18,  3, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0))));
+  this->segments[0].connectLeg(Leg("RL", 24,  6, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0))));
+  this->segments[0].connectLeg(Leg("FR", 30,  9, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0))));
+  this->segments[0].connectLeg(Leg("MR", 36, 12, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0))));
+  this->segments[0].connectLeg(Leg("RR", 42, 15, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0))));
+
+  this->nDOF = 24;
+  this->nControls = 18;
 }
 
 void Body::initArticulatedBody()
@@ -62,19 +66,19 @@ void Body::initArticulatedBody()
   // Defining all segments of the body
   //
   //
-  //       RR - rare  - RL
+  //       FL - front - FR
   //              |   
-  //              ^   
-  //            j_2_3 
-  //              ^   
-  //              |   
-  //       MR -  mid  - ML
-  //              |   
-  //              ^   
+  //              p   
   //            j_1_2 
-  //              ^   
+  //              c   
   //              |   
-  //       FR - front - FL
+  //       ML -  mid  - MR
+  //              |   
+  //              p   
+  //            j_2_3 
+  //              c   
+  //              |   
+  //       RL - rear  - RR  
   //
   //
   //////////////////////////////////////////////////////////////////////////
@@ -86,26 +90,29 @@ void Body::initArticulatedBody()
   /********************************************************/
   /*                   Front Segment                      */
   /********************************************************/
-  this->segments[0].connectLeg(Leg("FL", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[0].connectLeg(Leg("FR", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
-  this->segments[0].connectJoint(Joint("j_1_2", 0, Joint::JOINT_TYPE::ROTATION_1D), true);
+  this->segments[0].connectLeg(Leg("FL", 12, 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
+  this->segments[0].connectLeg(Leg("FR", 30, 9, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+  this->segments[0].connectJoint(Joint("j_1_2", 48, 36, Joint::JOINT_TYPE::ROTATION_1D, Pose(Vector3d(0,0,0), Vector3d(0,-0.15,0)), Pose(Vector3d(0,0,0),Vector3d(0,0.15,0))), true);
 
 
   /********************************************************/
   /*                   Middle Segment                     */
   /********************************************************/
-  this->segments[1].connectLeg(Leg("ML", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[1].connectLeg(Leg("MR", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+  this->segments[1].connectLeg(Leg("ML", 18, 3, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
+  this->segments[1].connectLeg(Leg("MR", 36, 12, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
   this->segments[1].connectJoint(segments[0].joints[0], false);
-  this->segments[1].connectJoint(Joint("j_2_3", 0, Joint::JOINT_TYPE::ROTATION_1D), true);
+  this->segments[1].connectJoint(Joint("j_2_3", 50, 37, Joint::JOINT_TYPE::ROTATION_1D, Pose(Vector3d(0,0,0), Vector3d(0,-0.15,0)), Pose(Vector3d(0,0,0),Vector3d(0,0.15,0))), true);
 
 
   /********************************************************/
   /*                     Rare Segment                     */
   /********************************************************/
-  this->segments[2].connectLeg(Leg("RL", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[2].connectLeg(Leg("RR", 0, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
-  this->segments[2].connectJoint(segments[1].joints[1], false);
+  this->segments[2].connectLeg(Leg("RL", 24, 6, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
+  this->segments[2].connectLeg(Leg("RR", 42, 15, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+  this->segments[2].connectJoint(segments[1].joints[0], false);
+
+  this->nDOF = 26;
+  this->nControls = 20;
 }
 
 void Body::initMozaikBody()
@@ -148,39 +155,42 @@ void Body::initMozaikBody()
   //Legs
   double a = 0.2;
   double sqrt_2 = sqrt(2);
-  this->segments[2].connectLeg(Leg("FL", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
-  this->segments[1].connectLeg(Leg("ML", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
-  this->segments[0].connectLeg(Leg("RL", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
-  this->segments[3].connectLeg(Leg("FR", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
-  this->segments[4].connectLeg(Leg("MR", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
-  this->segments[5].connectLeg(Leg("RR", 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
+  this->segments[2].connectLeg(Leg("FL", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
+  this->segments[1].connectLeg(Leg("ML", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
+  this->segments[0].connectLeg(Leg("RL", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-sqrt_2*a,0,0))));
+  this->segments[3].connectLeg(Leg("FR", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
+  this->segments[4].connectLeg(Leg("MR", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
+  this->segments[5].connectLeg(Leg("RR", 0, 0, Vector3d(0.05,0.1,0.2), Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( sqrt_2*a,0,0))));
 
   //Joints
-  this->segments[0].connectJoint(Joint("j_1_2", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[0].connectJoint(Joint("j_1_2", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(0,0,0),Vector3d(0,sqrt_2*a,0)), Pose(Vector3d(0,0,0),Vector3d(0,-sqrt_2*a,0))), true);
   this->segments[1].connectJoint(this->segments[0].joints[0], false);
 
-  this->segments[1].connectJoint(Joint("j_2_3", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[1].connectJoint(Joint("j_2_3", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(0,0,0),Vector3d(0,sqrt_2*a,0)), Pose(Vector3d(0,0,0),Vector3d(0,-sqrt_2*a,0))), true);
   this->segments[2].connectJoint(this->segments[1].joints[0], false);
 
-  this->segments[2].connectJoint(Joint("j_3_4", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[2].connectJoint(Joint("j_3_4", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(-EIGEN_PI/2,0,0), Vector3d(sqrt_2*a,0,0)), Pose(Vector3d(EIGEN_PI/2,0,0),Vector3d(-sqrt_2*a,0,0))), true);
   this->segments[3].connectJoint(this->segments[2].joints[0], false);
 
-  this->segments[3].connectJoint(Joint("j_4_5", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[3].connectJoint(Joint("j_4_5", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(EIGEN_PI,0,0),Vector3d(0,-sqrt_2*a,0)),Pose(Vector3d(0,0,0), Vector3d(0,sqrt_2*a,0))), true);
   this->segments[4].connectJoint(this->segments[3].joints[0], false);
 
-  this->segments[4].connectJoint(Joint("j_5_6", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[4].connectJoint(Joint("j_5_6", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(EIGEN_PI,0,0),Vector3d(0,-sqrt_2*a,0)),Pose(Vector3d(0,0,0), Vector3d(0,sqrt_2*a,0))), true);
   this->segments[5].connectJoint(this->segments[4].joints[0], false);
 
-  this->segments[5].connectJoint(Joint("j_6_1", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[5].connectJoint(Joint("j_6_1", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(EIGEN_PI/2,0,0),Vector3d(-sqrt_2*a,0,0)), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d(sqrt_2*a,0,0))), true);
   this->segments[0].connectJoint(this->segments[5].joints[0], false);
 
-  this->segments[1].connectJoint(Joint("j_2_5", 0, Joint::JOINT_TYPE::ROTATION_3D), true);
+  this->segments[1].connectJoint(Joint("j_2_5", 0,0, Joint::JOINT_TYPE::ROTATION_3D, Pose(Vector3d(-EIGEN_PI/2,0,0), Vector3d(sqrt_2*a,0,0)), Pose(Vector3d(EIGEN_PI/2,0,0),Vector3d(-sqrt_2*a,0,0))), true);
   this->segments[4].connectJoint(this->segments[1].joints[1], false);
+
+  this->nDOF = 28; //TODO check this number
+  this->nControls = 39; //TODO check this number
 }
 
 VectorXd Body::getSimpleBodyControls(double time)
 {
-  VectorXd targetAngles(18);
+  VectorXd targetAngles(nControls);
   targetAngles.fill(0);
 
   std::vector<Vector3d> goals;
@@ -200,13 +210,15 @@ VectorXd Body::getSimpleBodyControls(double time)
     //для i-ноги считаем радиус вектор в СК связанной с ногой
     Vector3d result = segments[0].legs[i].pose.T*tarPose.T*goals[i];
     targetAngles.segment(3*i, 3) = segments[0].legs[i].inverseKinematics(result);
+    segments[0].legs[i].setTargetState(targetAngles.segment(3*i,3));
   }
   return targetAngles;
 }
 
 VectorXd Body::getArticulatedBodyControls(double time)
 {
-  VectorXd result;
+  VectorXd result(nControls);
+  result.fill(0);
 
   cout << "NOT IMPLEMENTED: " << "Body::getArticulatedBodyControls" << endl;
 
@@ -215,20 +227,20 @@ VectorXd Body::getArticulatedBodyControls(double time)
 
 VectorXd Body::getMozaikBodyControls(double time)
 {
-  VectorXd result;
+  VectorXd result(nControls);
+  result.fill(0);
 
   cout << "NOT IMPLEMENTED: " << "Body::getMozaikBodyControls" << endl;
 
   return result;
 }
 
-bool Body::recieveFB(VectorXd& feedback)
+bool Body::recieveFB(const VectorXd& feedback)
 {
-  this->FBcoords = feedback.segment<6>(this->fbIndex);
-  this->FBvelocities = feedback.segment<6>(this->fbIndex + 6);
-
-  this->fbPose = Pose(FBcoords.tail(3), FBcoords.head(3));
-
+  for (int i = 0; i < static_cast<int>(segments.size()); i++)
+  {
+    segments[i].recieveFB(feedback);
+  }
   return true;
 }
 
@@ -291,4 +303,14 @@ void Body::printOut()
       cout << "\tchild: " << this->segments[i].joints[j].getChildName() << endl;
     }
   }
+}
+
+int Body::getNDOF()
+{
+  return this->nDOF;
+}
+
+int Body::getNControls()
+{
+  return this->nControls;
 }
