@@ -41,12 +41,12 @@ private:
   void initArticulatedBody();
   void initMozaikBody();
 
-  VectorXd getSimpleBodyControls(double time);
-  VectorXd getArticulatedBodyControls(double time);
-  VectorXd getMozaikBodyControls(double time);
+  VectorXd getSimpleBodyControlAngles(double time);
+  VectorXd getArticulatedBodyControlAngles(double time);
+  VectorXd getMozaikBodyControlAngles(double time);
 
   int nDOF; //!< number of degrees of freedom from FB
-  int nControls; //!< number of control toruques
+  int nControls; //!< number of control torques
 
 public:
   vector<Segment> segments;
@@ -59,7 +59,7 @@ public:
   bool recieveFB(const VectorXd& feedback);// get feedback from UM
   Pose getTargetPose(double time); // get target position of body in global RF
 
-  VectorXd getControls(double time);
+  VectorXd getControlAngles(double time);
 
   void printOut();//!< print all the element of the mozaik body into the console
 

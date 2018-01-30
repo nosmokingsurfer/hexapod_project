@@ -9,7 +9,7 @@ Joint::Joint():
   this->type = JOINT_TYPE::TRANSLATION_1D;
 }
 
-Joint::Joint(const string name_, const int fbIndex_, const int ctrlIndex_, const JOINT_TYPE type_, const Pose& parentMount, const Pose& childMount)
+Joint::Joint(const string name_, const int fbIndex_, const int ctrlIndex_, const int debugIndex_, const JOINT_TYPE type_, const Pose& parentMount, const Pose& childMount)
 {
   initialized = true;
 
@@ -17,6 +17,7 @@ Joint::Joint(const string name_, const int fbIndex_, const int ctrlIndex_, const
 
   this->fbIndex = fbIndex_;
   this->ctrlIndex = ctrlIndex_;
+  this->debugIndex = debugIndex_;
 
   this->type = type_;
 
@@ -69,14 +70,18 @@ VectorXd Joint::getState()
   return this->currentState;
 }
 
-void Joint::updateTransformMatrix(VectorXd state)
-{
-  cout << "NOT IMPLEMENTED" << endl;
-}
 
 bool Joint::updateTransformation()
 {
-  cout << "NOT IMPLEMENTED" << endl;
+  switch (this->type)
+  {
+    case JOINT_TYPE::ROTATION_1D:
+    {
+      this->transformation = Pose(Vector3d(0, this->targetState[0], 0), Vector3d(0,0,0));
+      break;
+    }
+    default: cout << "NOT IMPLEMENTED" << endl; return false;
+  }
   return true;
 }
 
@@ -117,11 +122,6 @@ std::string Joint::getParentName()
   return this->parent->getName();
 }
 
-std::string Joint::getChildName()
-{
-  return this->child->getName();
-}
-
 bool Joint::setParentSegment(Segment& seg)
 {
   if(seg.isInitialized())
@@ -138,17 +138,6 @@ bool Joint::setMountInParent(const Pose& mountingPose)
 {
   this->mountInParent = mountingPose;
   return true;
-}
-
-bool Joint::setChildSegment(Segment& seg)
-{
-  if(seg.isInitialized())
-  {
-    this->child = &seg;
-    return true;
-  }
-  else
-    return false;
 }
 
 
@@ -174,10 +163,16 @@ bool Joint::setTargetState(VectorXd targetState)
   if(targetState.size() == this->targetState.size())
   {
     this->targetState = targetState;
+    this->updateTransformation();
     return true;
   }
   else
   return false;
+}
+
+Eigen::VectorXd Joint::getTargetState()
+{
+  return this->targetState;
 }
 
 VectorXd Joint::getTorques()
@@ -202,4 +197,35 @@ int Joint::getDOFnumber()
 int Joint::getCtrlIndex()
 {
   return this->ctrlIndex;
+}
+
+int Joint::getDebIndex()
+{
+  return this->debugIndex;
+}
+
+Pose Joint::getMountInParent()
+{
+  return this->mountInParent;
+}
+
+Pose Joint::getMountInChild()
+{
+  return this->mountInChild;
+}
+
+Pose Joint::getTransformation()
+{
+  //todo forward or inverse transform?
+
+  return this->transformation;
+}
+
+bool Joint::setCoeffs(const PID::PIDcoeffs& coeffs)
+{
+    for (int i = 0; i < static_cast<int>(pidControl.size());i++)
+    {
+      pidControl[i].setCoeffs(coeffs);
+    }
+    return true;
 }

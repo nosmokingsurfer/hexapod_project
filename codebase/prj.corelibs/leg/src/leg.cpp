@@ -10,13 +10,14 @@ Leg::Leg()
 }
 
 
-Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, const Vector3d& segments, const Pose& mountingPose)
+Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, const int debIndex_, const Vector3d& segments, const Pose& mountingPose)
 { 
   this->legName = name_;
 
 
   this->fbIndex = fbIndex_;
   this->ctrlIndex = ctrlIndex_;
+  this->debIndex = debIndex_;
 
   for (int i = 0; i < segments.size(); i++)
   {
@@ -107,7 +108,7 @@ bool Leg::checkReachability(const Vector3d& targetPoint)
 {
   Eigen::Vector3d segm(segments[0], segments[1], segments[2]);
 
-  if (targetPoint.lpNorm<1>() > segm.lpNorm<1>())
+  if (targetPoint.lpNorm<2>() > segm.lpNorm<1>())
     return false;
 
   return true;
@@ -158,6 +159,11 @@ int Leg::getCtrlIndex()
   return this->ctrlIndex;
 }
 
+int Leg::getDebIndex()
+{
+  return this->debIndex;
+}
+
 Eigen::VectorXd Leg::getTorques()
 {
   VectorXd torques(3);
@@ -196,4 +202,9 @@ bool Leg::setTargetState(const Vector3d& targetstate_)
 {
   this->targetState = targetstate_;
   return true;
+}
+
+Eigen::Vector3d Leg::getTargetState()
+{
+  return this->targetState;
 }

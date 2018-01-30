@@ -35,7 +35,6 @@ public:
 
     VectorXd feedBack; // the whole feedback array from UM
 
-    VectorXd controlTorques; // the whole output array from control system
 
     VectorXd calculatedjoints; // calculated join angles
 
@@ -43,7 +42,7 @@ public:
 
 public: 
   Eigen::VectorXd getControls(double time);
-  Eigen::VectorXd getCalculatedJoints();
+  Eigen::VectorXd getControls();
 
   bool recieveFeedBack(double* inputs, int numberOfInputs);
   bool recieveParameters(double* params, int numberOfParams);

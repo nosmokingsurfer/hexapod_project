@@ -30,6 +30,8 @@ class Segment{
 public: 
   Segment();
   Segment(const std::string name, const Pose& pose);
+  Segment(const Segment& L);
+  Segment & operator=(const Segment& L);
   ~Segment();
 private:
   bool initialized;
@@ -38,7 +40,7 @@ private:
   int fbIndex; //!< index of the segment coordinates in the FB array if any
   
 public:
-  bool connectLeg(Leg& leg); //!< attach leg to the segment. Leg should already have a mounting pose
+  bool connectLeg(Leg leg); //!< attach leg to the segment. Leg should already have a mounting pose
   bool connectJoint(Joint& joint, const bool parent); //!< attach joint to the segment. Joint should already have a mounting pose
   bool isInitialized();
   bool recieveFB(const VectorXd fb);

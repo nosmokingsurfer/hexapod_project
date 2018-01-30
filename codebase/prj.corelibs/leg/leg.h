@@ -27,10 +27,8 @@ class Segment;
 class Leg{
 public: 
   Leg();
-  Leg(const std::string name, const int fbIndex, const int ctrlIndex, const Vector3d& segments, const Pose& mountingPose);
+  Leg(const std::string name, const int fbIndex, const int ctrlIndex, const int debIndex, const Vector3d& segments, const Pose& mountingPose);
   ~Leg();
-
- //bool init(const std::string name, const Vector3d& segments, const Pose& mountingPose); //TODO выилиить такую инициализацию - сделать set/get методы
 public:
   vector<double> segments;
   Eigen::Vector3d inverseKinematics(const Vector3d& targetPoint);
@@ -40,6 +38,7 @@ public:
   bool setCoeffs(const PID::PIDcoeffs &coeffs);
   bool setFBindex(const int index);
   int getCtrlIndex();
+  int getDebIndex();
 
 
   Eigen::Vector3d trajectoryGenerator(double time);
@@ -54,11 +53,13 @@ public:
   string getName();
   string getParentName();
   bool setTargetState(const Vector3d& targetstate);
+  Vector3d getTargetState();
 
 private:
   int fbIndex; // todo move to the basic class
   int ctrlIndex; //todo move to the basic class
-  std::string legName; //!< leg name
+  int debIndex; //!< debug index of the leg
+  std::string legName; //!< leg name // todo move to the basic class as name
   Vector3d FBcoords; //!< leg state - array of joint angles
   Vector3d FBvelocities; //!< leg coordinate velocities
   Vector3d targetState; //!< current leg target position
