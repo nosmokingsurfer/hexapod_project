@@ -244,20 +244,13 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
   EXT_GetNumU(numberOfInputs, status);
   myRobot.recieveFeedBack(U, numberOfInputs);
 
-  Eigen::VectorXd controlTorques(18);
-  controlTorques.fill(0); 
+  Eigen::VectorXd output(40);
+  output.fill(0); 
 
-  controlTorques = myRobot.getControls(time);
-  for(int i = 0; i < 18; i++)
+  output = myRobot.getControls(time);
+  for(int i = 0; i < output.size(); i++)
   {
-    Y[i] = controlTorques[i];
-  }
-
-  //передаем рассчетные значения углов которые выдала система управления
-  Eigen::VectorXd targetJointAngles = myRobot.getCalculatedJoints();
-  for (int i = 0; i < 18; i++)
-  {
-    Y[18 + i] = targetJointAngles[i];
+    Y[i] = output[i];
   }
 
   status = 0;
