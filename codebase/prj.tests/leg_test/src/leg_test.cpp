@@ -23,7 +23,7 @@ int main(int argc, char** argv)
   Vector3d solution;
   solution.fill(0);
 
-  Leg testLeg("The Leg", 0, 0, segs, Pose(mountingAngles,mountingPoint));
+  Leg testLeg("The Leg", 0, 0, 0, segs, Pose(mountingAngles,mountingPoint));
 
   double dt = 0.01;
   for(int i = 0; i < 1000; i++)

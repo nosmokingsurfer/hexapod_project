@@ -14,7 +14,7 @@ using namespace Eigen;
 int main(int argc, char** argv)
 {
 
-  Robot myRobot(Body::BODY_TYPE::SIMPLE);
+  Robot myRobot(Body::BODY_TYPE::ARTICULATED);
 
   VectorXd result;
 
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
   myRobot.recieveParameters(parameters, 3);
 
 
-  result = myRobot.getControls(100);
+  result = myRobot.getControls(10);
 
   cout << result << endl;
 
