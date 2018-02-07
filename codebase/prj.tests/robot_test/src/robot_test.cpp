@@ -14,10 +14,10 @@ using namespace Eigen;
 int main(int argc, char** argv)
 {
 
-  Robot myRobot(Body::BODY_TYPE::ARTICULATED);
+  Robot myRobot(Body::BODY_TYPE::MOZAIK);
 
   VectorXd result;
-
+  
   double inputArray[52];
   for(int i = 0; i < 52; i++)
   {
