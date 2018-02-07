@@ -218,7 +218,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   result.fill(0);
 
   //положение следовых точек в абсолютной системе координат
-  //TODO нужно исправить для ломающегося корпуса
+  //TODO get points from planner
   Vector3d FL_goal(-0.5,  0.5, 0.0); //FL
   Vector3d ML_goal(-0.5,  0.0, 0.0); //ML
   Vector3d RL_goal(-0.5, -0.5, 0.0); //RL
@@ -245,7 +245,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //FL
   temp =  segments[0].legs[0].pose.T*
           segments[0].joints[0].getMountInParent().T.inverse()*
-          segments[0].joints[0].getTransformation().T*
+          segments[0].joints[0].getTransformation().T*//TODO check the transformation
           segments[0].joints[0].getMountInChild().T*
           tarPose.T*
           FL_goal;
@@ -256,7 +256,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //FR
   temp =  segments[0].legs[1].pose.T*
           segments[0].joints[0].getMountInParent().T.inverse()*
-          segments[0].joints[0].getTransformation().T*
+          segments[0].joints[0].getTransformation().T*//TODO check the transformation
           segments[0].joints[0].getMountInChild().T*
           tarPose.T*
           FR_goal;
@@ -285,7 +285,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //RL
   temp =  segments[2].legs[0].pose.T*
           segments[1].joints[0].getMountInChild().T.inverse()*
-          segments[1].joints[0].getTransformation().T*
+          segments[1].joints[0].getTransformation().T*//TODO check the transformation
           segments[1].joints[0].getMountInParent().T*
           tarPose.T*
           RL_goal;
@@ -296,30 +296,13 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //RR
   temp =  segments[2].legs[1].pose.T*
           segments[1].joints[0].getMountInChild().T.inverse()*
-          segments[1].joints[0].getTransformation().T*
+          segments[1].joints[0].getTransformation().T*//TODO check the transformation
           segments[1].joints[0].getMountInParent().T*
           tarPose.T*
           RR_goal;
 
   segments[2].legs[1].setTargetState(segments[2].legs[1].inverseKinematics(temp));
   result.segment(segments[2].legs[1].getDebIndex(), 3) = segments[2].legs[1].inverseKinematics(temp);
-
-
-  //for (auto i = 0; i < segments.size(); i++)
-  //{
-  //  for(auto j = 0; j < segments[i].legs.size(); j++)
-  //  {
-  //    Leg& leg = segments[i].legs[j];
-  //    result.segment(leg.getCtrlIndex(), 3) = leg.getTargetState();
-  //  }
-  //
-  //  for(auto j = 0; j < segments[i].joints.size(); j++)
-  //  {
-  //    Joint& joint = segments[i].joints[j];
-  //    result.segment(joint.getCtrlIndex(), joint.getDOFnumber()) = joint.getTargetState();
-  //  }
-  //}
-
 
   return result;
 }
@@ -370,16 +353,16 @@ Pose Body::getTargetPose(double time)
     {
       xyz <<
         0.05*sin(2*EIGEN_PI/2*time),
-        0.05*sin(2*EIGEN_PI/2*time),
-        0.3 + 0.01*sin(2*EIGEN_PI/2*time);
+        0.05*sin(2*EIGEN_PI/3*time),
+        0.3 + 0.01*sin(2*EIGEN_PI/5*time);
 
 
       //xyz << 0, 0, 0.3;
 
       YawPitchRoll << 
-        0.05*sin(2*EIGEN_PI/2*time),
-        0.05*sin(2*EIGEN_PI/2*time),
-        0.05*sin(2*EIGEN_PI/2*time);    
+        0.05*sin(2*EIGEN_PI/7*time),
+        0.05*sin(2*EIGEN_PI/11*time),
+        0.05*sin(2*EIGEN_PI/13*time);    
 
 
       //YawPitchRoll << 0,0,0;
