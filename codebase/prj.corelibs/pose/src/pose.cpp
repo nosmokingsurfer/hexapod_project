@@ -23,19 +23,13 @@ Pose::Pose(Vector3d angles, Vector3d t)
             *AngleAxis<double>(angles[0], Vector3d::UnitZ())
             *AngleAxis<double>(angles[1], Vector3d::UnitX())
             *AngleAxis<double>(angles[2], Vector3d::UnitY());
-            
-  //std::cout << "Translation = " << endl<< Translation<double,3>(t).vector() << std::endl;                      
-  //std::cout << "Rotation_Z = " << endl << AngleAxis<double>(angles[0], Vector3d::UnitZ()).matrix() << std::endl;
-  //std::cout << "Rotation_X = " << endl << AngleAxis<double>(angles[1], Vector3d::UnitX()).matrix() << std::endl;
-  //std::cout << "Rotation_Y = " << endl << AngleAxis<double>(angles[2], Vector3d::UnitY()).matrix() << std::endl;
 
-  this->T = this->T.inverse();
+  this->T = this->T.inverse();  
+}
 
-  //std::cout << "T = " << endl << this->T.matrix() << endl;
-  //std::cout << "T_Inverse = " << endl << this->T.inverse().matrix() << endl;
-  //std::cout << "T*T_inverse = " << endl << (this->T*this->T.inverse()).matrix() << endl;
-
-  
+Pose::Pose(const Transform<double, 3, Affine>& _T)
+{
+  this->T = _T;
 }
 
 Pose::~Pose()
@@ -66,4 +60,14 @@ Pose Pose::getRotationAroundAxis(Vector3d axis, double angle)
   result.T = result.T.inverse();
 
   return result;
+}
+
+Pose Pose::operator*(Pose pose)
+{
+  return Pose(this->T*pose.T);
+}
+
+Pose Pose::inverse()
+{
+  return Pose(this->T.inverse());
 }

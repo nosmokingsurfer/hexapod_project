@@ -24,6 +24,7 @@ public:
   Pose();
   Pose(Vector3d angles);
   Pose(Vector3d angles, Vector3d t);
+  Pose(const Transform<double, 3, Affine>& T);
   ~Pose();  
 
 public:
@@ -37,7 +38,8 @@ public:
   void getAngles();
 
   static Pose getRotationAroundAxis(Vector3d axis, double angle);
-
+  Pose operator*(Pose);
+  Pose inverse();
 
 };
 
