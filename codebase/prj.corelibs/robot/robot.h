@@ -35,7 +35,6 @@ public:
 
     VectorXd feedBack; // the whole feedback array from UM
 
-
     VectorXd calculatedjoints; // calculated join angles
 
     VectorXd parameters; // the whole list of parameters coming from UM

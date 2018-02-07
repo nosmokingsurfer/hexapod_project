@@ -245,7 +245,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //FL
   temp =  segments[0].legs[0].pose.T*
           segments[0].joints[0].getMountInParent().T.inverse()*
-          segments[0].joints[0].getTransformation().T*//TODO check the transformation
+          segments[0].joints[0].getTransformation().T* //TODO check the transformation
           segments[0].joints[0].getMountInChild().T*
           tarPose.T*
           FL_goal;
@@ -256,7 +256,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //FR
   temp =  segments[0].legs[1].pose.T*
           segments[0].joints[0].getMountInParent().T.inverse()*
-          segments[0].joints[0].getTransformation().T*//TODO check the transformation
+          segments[0].joints[0].getTransformation().T* //TODO check the transformation
           segments[0].joints[0].getMountInChild().T*
           tarPose.T*
           FR_goal;
@@ -285,7 +285,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //RL
   temp =  segments[2].legs[0].pose.T*
           segments[1].joints[0].getMountInChild().T.inverse()*
-          segments[1].joints[0].getTransformation().T*//TODO check the transformation
+          segments[1].joints[0].getTransformation().T* //TODO check the transformation
           segments[1].joints[0].getMountInParent().T*
           tarPose.T*
           RL_goal;
@@ -296,7 +296,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //RR
   temp =  segments[2].legs[1].pose.T*
           segments[1].joints[0].getMountInChild().T.inverse()*
-          segments[1].joints[0].getTransformation().T*//TODO check the transformation
+          segments[1].joints[0].getTransformation().T* //TODO check the transformation
           segments[1].joints[0].getMountInParent().T*
           tarPose.T*
           RR_goal;
