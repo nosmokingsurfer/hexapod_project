@@ -24,13 +24,16 @@ using namespace Eigen;
 
 struct Vertex {
 
-  vector<Vertex*> adj; // edges
-  bool used; // was this vertex visited
-  string name; // vertex name
-  Vertex(const string s): name(s) {}
-  //payload goes here
-  Pose vertexPose;
+  typedef pair<Pose, Vertex*> ve;
+  vector<ve> adj;
+  bool used;
+  string name;
+  Pose pose;
+  Vertex(const string s, const Pose p) : name(s), pose(p) {}
 };
+
+
+
 
 
 class Graph{
@@ -38,17 +41,21 @@ public:
   Graph();
   ~Graph();
 
-  typedef map<string, Vertex *> vmap; 
-  vmap g;
+  typedef map<string, Vertex *> vmap; // определяем новый тип данных
+  vmap g; //вершины графа хранятся здесь
 
 
 
-  void addVertex(const string&);
-  void addEdge(const string& from, const string& to); //Pose?
+  void addVertex(const string&, const Pose& pose); //добавляем вершину
+  void addEdge(const string& from, const string& to, const Pose& pose); //добавляем ребро
+  void addBidirectional(const string& from, const string& to, const Pose& pose); //добавляем двунаправленное ребро
 
-  void DFS(const string name);
+  void DFS(const string name); //обход графа из этой вершины
 
-  void setNotUsed();
+  Pose DFS(const string from, const string to, Pose = Pose()); // находим Pose из вершины from в вершину to
+
+  void setNotUsed(); // выставляем вершине не посещенными
+
 };
 
 #endif

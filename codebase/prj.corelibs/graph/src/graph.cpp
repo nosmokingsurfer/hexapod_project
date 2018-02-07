@@ -6,13 +6,14 @@ Graph::Graph()
 Graph::~Graph()
 {}
 
-void Graph::addvertex(const string& name)
+
+void Graph::addVertex(const string& name, const Pose& pose)
 {
   vmap::iterator itr = g.find(name);
   if (itr == g.end())
   {
     Vertex *v;
-    v = new Vertex(name);
+    v = new Vertex(name, pose);
     v->used = false;
     g[name] = v;
     return;
@@ -20,12 +21,19 @@ void Graph::addvertex(const string& name)
   cout << "\nVertex already exists!";
 }
 
-void Graph::addedge(const string& from, const string& to, double cost)
+void Graph::addEdge(const string& from, const string& to, const Pose& pose)
 {
   Vertex *f = (g.find(from)->second);
   Vertex *t = (g.find(to)->second);
-  pair<int, Vertex *> edge = make_pair(cost, t);
+  pair<Pose, Vertex *> edge = make_pair(pose, t);
   f->adj.push_back(edge);
+}
+
+void Graph::addBidirectional(const string& from, const string& to, const Pose& pose)
+{
+  Pose temp(pose);
+  addEdge(from,to, temp);
+  addEdge(to,from, temp.inverse());
 }
 
 void Graph::DFS(const string name)
@@ -45,11 +53,20 @@ Pose Graph::DFS(const string from, const string to, Pose pose)
 {
   g.find(from)->second->used = true;
 
-  for (auto it = g.find(from)->second->adj.begin(); it != g.find(from)->second->adj.end(); ++it)
+  if (from == to)
+  {
+    return g.find(from)->second->pose*pose;
+  }
+
+  Vertex& curVertex = *g.find(from)->second;
+
+  for (auto it = curVertex.adj.begin(); it != curVertex.adj.end(); ++it)
   {
     if (!it->second->used)
     {
+      Pose result = DFS(it->second->name, to, it->first*curVertex.pose*pose);
       cout << it->second->name << endl;
+      return result;
     }
   }
 
