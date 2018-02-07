@@ -1,6 +1,7 @@
 clear variables
 
 syms N_1 N_2 N_3 N_4 real
+syms F_1 F_2 F_3 F_4 real
 syms alpha d h l real
 
 syms kx_1 kx_2 kx_3 kx_4 real
@@ -16,26 +17,41 @@ r_3 = [  d, l, 0]';
 r_4 = [ -d, l, 0]';
 r_c = [0, y_c, z_c]';
 
-R_1 = N_1*[ kx_1, cos(alpha) + kz_1*sin(alpha), -sin(alpha) + kz_1*cos(alpha)]';
-R_2 = N_2*[ kx_2, cos(alpha) + kz_2*sin(alpha), -sin(alpha) + kz_2*cos(alpha)]';
-R_3 = N_3*[ kx_3, ky_3, 1]';
-R_4 = N_4*[ kx_4, ky_4, 1]';
+N_1_vec = N_1*[0, cos(alpha), -sin(alpha)]';
+N_2_vec = N_2*[0, cos(alpha), -sin(alpha)]';
+N_3_vec = N_3*[0, 0, 1]';
+N_4_vec = N_4*[0, 0, 1]';
+
+F_1_vec = F_1*[0, sin(alpha), cos(alpha)]';
+F_2_vec = F_2*[0, sin(alpha), cos(alpha)]';
+F_3_vec = F_3*[0, -1, 0]';
+F_4_vec = F_4*[0, -1, 0]';
+
 F_c = [0, 0, -P]';
 
 
-eq1 = R_1(1) + R_2(1) + R_3(1) + R_4(1) + F_c(1) == 0
-eq2 = R_1(2) + R_2(2) + R_3(2) + R_4(2) + F_c(2) == 0
-eq3 = R_1(3) + R_2(3) + R_3(3) + R_4(3) + F_c(3) == 0
+eq1 = N_1_vec(1) + N_2_vec(1) + N_3_vec(1) + N_4_vec(1) + F_1_vec(1) + F_2_vec(1) + F_3_vec(1) + F_4_vec(1) + F_c(1) == 0
+eq2 = N_1_vec(2) + N_2_vec(2) + N_3_vec(2) + N_4_vec(2) + F_1_vec(2) + F_2_vec(2) + F_3_vec(2) + F_4_vec(2) + F_c(2) == 0
+eq3 = N_1_vec(3) + N_2_vec(3) + N_3_vec(3) + N_4_vec(3) + F_1_vec(3) + F_2_vec(3) + F_3_vec(3) + F_4_vec(3) + F_c(3) == 0
 
-mom_R_1 = cross(r_1, R_1);
-mom_R_2 = cross(r_2, R_2);
-mom_R_3 = cross(r_3, R_3);
-mom_R_4 = cross(r_4, R_4);
+mom_N_1_vec = cross(r_1, N_1_vec);
+mom_N_2_vec = cross(r_2, N_2_vec);
+mom_N_3_vec = cross(r_3, N_3_vec);
+mom_N_4_vec = cross(r_4, N_4_vec);
+mom_F_1_vec = cross(r_1, F_1_vec);
+mom_F_2_vec = cross(r_2, F_2_vec);
+mom_F_3_vec = cross(r_3, F_3_vec);
+mom_F_4_vec = cross(r_4, F_4_vec);
 mom_F_c = cross(r_c, F_c);
 
-eq4 = mom_R_1(1) + mom_R_2(1) + mom_R_3(1) + mom_R_4(1) + mom_F_c(1) == 0
-eq5 = mom_R_1(2) + mom_R_2(2) + mom_R_3(2) + mom_R_4(2) + mom_F_c(2) == 0
-eq6 = mom_R_1(3) + mom_R_2(3) + mom_R_3(3) + mom_R_4(3) + mom_F_c(3) == 0
+eq4 = mom_N_1_vec(1) + mom_N_2_vec(1) + mom_N_3_vec(1) + mom_N_4_vec(1) + ...
+    mom_F_1_vec(1) + mom_F_2_vec(1) + mom_F_3_vec(1) + mom_F_4_vec(1) + mom_F_c(1) == 0
+
+eq5 = mom_N_1_vec(2) + mom_N_2_vec(2) + mom_N_3_vec(2) + mom_N_4_vec(2) + ...
+    mom_F_1_vec(2) + mom_F_2_vec(2) + mom_F_3_vec(2) + mom_F_4_vec(2) + mom_F_c(2) == 0
+
+eq6 = mom_N_1_vec(3) + mom_N_2_vec(3) + mom_N_3_vec(3) + mom_N_4_vec(3) + ...
+    mom_F_1_vec(3) + mom_F_2_vec(3) + mom_F_3_vec(3) + mom_F_4_vec(3) + mom_F_c(3) == 0
 
 
 eq7 = N_1 > 0
@@ -50,12 +66,16 @@ eq15 = l > 0
 eq16 = alpha >= 0
 eq17 = alpha < pi/2
 
-equations = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11, eq12, eq13, eq14, eq15]%, eq16, eq17];
+equations = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11, eq12, eq13, eq14, eq15];%, eq16, eq17];
 
 disp('Initial equations:')
 for i = 1:6
     pretty(simplify(equations(i)))    
 end
+
+
+equations = subs(equations, [F_1, F_2, F_3, F_4], [kz_1*N_1, kz_2*N_2, ky_3*N_3, ky_4*N_4]);
+
 
 syms kx real
 syms kz real
@@ -82,7 +102,7 @@ end
 
 syms k real
 
-equations = subs(equations, [ky, kz], [-k, k]);
+%equations = subs(equations, [ky, kz], [-k, k]);
 %equations = subs(equations, P, 10);
 %equations = subs(equations, [l, y_c, h], [1, 0.5, 1]);
 
