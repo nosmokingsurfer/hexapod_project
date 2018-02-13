@@ -41,20 +41,20 @@ public:
   Graph();
   ~Graph();
 
-  typedef map<string, Vertex *> vmap; // определяем новый тип данных
-  vmap g; //вершины графа хранятся здесь
+  typedef map<string, Vertex *> vmap; // container with verticies 
+  vmap g;
 
 
 
-  void addVertex(const string&, const Pose& pose); //добавляем вершину
-  void addEdge(const string& from, const string& to, const Pose& pose); //добавляем ребро
-  void addBidirectional(const string& from, const string& to, const Pose& pose); //добавляем двунаправленное ребро
+  void addVertex(const string&, const Pose& pose); //add vertex
+  void addEdge(const string& from, const string& to, const Pose& pose); //add edge
+  void addBidirectional(const string& from, const string& to, const Pose& pose); //add bidirectional edge
 
-  void DFS(const string name); //обход графа из этой вершины
+  void DFS(const string name); //DFS - Depth First Search
 
-  Pose DFS(const string from, const string to, Pose = Pose()); // находим Pose из вершины from в вершину to
+  Pose DFS(const string from, const string to, Pose = Pose()); // find the transformation Pose between two verticies
 
-  void setNotUsed(); // выставляем вершине не посещенными
+  void setNotUsed(); // reset all visited flags in verticies
 
 };
 
