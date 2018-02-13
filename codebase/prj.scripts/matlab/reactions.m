@@ -116,7 +116,7 @@ syms kt_u real
 syms kt_d real
 
 
-%assumptoin that the configuretion is symmetric in term of friction
+%assumption that the configuration is symmetric in terms of friction
 equations = subs(equations, [knu_1, knu_2, knu_3, knu_4],[knu, -knu, knu, -knu]);
 equations = subs(equations, [kt_1, kt_2], [kt_u, kt_u]);
 equations = subs(equations, [kt_3, kt_4], [kt_d, kt_d]);
