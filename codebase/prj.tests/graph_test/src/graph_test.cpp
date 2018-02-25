@@ -24,7 +24,10 @@ int main(int argc, char** argv)
   myGraph.addBidirectional("b3", "b4", Pose(Vector3d(EIGEN_PI/2, 0, 0), Vector3d(10,0,0)));
   myGraph.addBidirectional("b4", "b5", Pose(Vector3d(EIGEN_PI/2, 0, 0), Vector3d(-10,0,0)));
 
-  Pose result = myGraph.DFS("b1", "b5"); // should be E matrix here
+  myGraph.deleteEdge("b2", "b3");
+
+
+  Pose result = myGraph.DFS("b5", "b1"); // should be E matrix here
 
 	 return 0;
 }

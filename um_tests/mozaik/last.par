@@ -52,6 +52,3 @@ beta6 = 0
 gamma6 = 0
 period = 2
 amplitude = 2
-lidar_alpha = 45
-lidar_beta = 45
-lidar_range = 1

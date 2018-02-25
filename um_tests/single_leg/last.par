@@ -2,6 +2,6 @@ par
 p1 = 1
 p2 = 2
 p3 = 3
-torque_alpha = -3.29368163664327
-torque_beta = 9.35609420663263
-torque_gamma = 10.6382339441306
+torque_alpha = 0
+torque_beta = 0
+torque_gamma = 0

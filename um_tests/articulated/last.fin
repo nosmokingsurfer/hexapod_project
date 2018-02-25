@@ -1,7 +1,7 @@
 with finishcondition;
   enabled=true; 
   opcode=0; 
-  value=4; 
+  value=1000; 
   operator=0; 
   grouped=false;
 with finishcondition;

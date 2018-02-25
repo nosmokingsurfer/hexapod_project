@@ -36,6 +36,24 @@ void Graph::addBidirectional(const string& from, const string& to, const Pose& p
   addEdge(to,from, temp.inverse());
 }
 
+void Graph::deleteVertex(const string& name)
+{
+  
+}
+
+void Graph::deleteEdge(const string& from, const string& to)
+{
+  auto temp = g.find(from);
+  for (auto it = temp->second->adj.begin(); it != temp->second->adj.end(); ++it)
+  {
+    if (it->second->name == to)
+    {
+      temp->second->adj.erase(temp->second->adj.begin(), it);
+    }
+  }
+  cout << "There is no Edge " << from << " -> " << to << endl;
+}
+
 void Graph::DFS(const string name)
 {
   g.find(name)->second->used = true;
