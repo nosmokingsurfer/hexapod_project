@@ -1,5 +1,4 @@
-TODO
-
+%TODO
 syms N_u N_d k P h y_c l real
 syms alpha real
 

@@ -77,20 +77,25 @@ eq6 = mom_N_1_vec(3) + mom_N_2_vec(3) + mom_N_3_vec(3) + mom_N_4_vec(3) + ...
       mom_Ft_1_vec(3) + mom_Ft_2_vec(3) + mom_Ft_3_vec(3) + mom_Ft_4_vec(3) + mom_F_c(3) + ...
       mom_Fnu_1_vec(3) + mom_Fnu_2_vec(3) + mom_Fnu_3_vec(3) + mom_Fnu_4_vec(3)== 0;
 
-eq7 = N_1 > 0;
-eq8 = N_2 > 0;
-eq9 = N_3 > 0;
-eq10 = N_4 > 0;
-eq11 = P > 0;
-%eq12 = y_c > 0;
-eq13 = z_c > 0;
-eq14 = h > 0;
-eq15 = y_c > l;
-eq16 = alpha > 0;
-eq17 = alpha < pi/2;
-eq18 = H > 0;
+equations = [eq1; eq2; eq3; eq4; eq5; eq6];
 
-equations = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11, eq13, eq14, eq15, eq16, eq17, eq18];
+equations = [equations;
+    N_1 > 0;
+    N_2 > 0;
+    N_3 > 0;
+    N_4 > 0;
+    P > 0;
+    z_c > 0;
+    h > 0;
+    y_c > l;
+    l < 0;
+    alpha > 0;
+    alpha < pi/2;
+    H > 0;
+    H > h;
+];
+
+
 
 
 %switching into the right angle cliff case
@@ -142,7 +147,7 @@ disp('N_1 = N_2 = N_u; N_3 = N_4 = N_d')
 for i = 1:6
     pretty(simplify(equations(i)));   
 end
-
+disp('---------------------------------------')
 syms kt real
 
 %assumption that front and rear legs loaded equally
@@ -154,6 +159,7 @@ disp('Final system:')
 for i = 1:6
    pretty(simplify(equations(i)))    
 end
+disp('---------------------------------------')
 
 solution = solve(equations, [N_u, N_d, kt], 'ReturnConditions', true)
 solution.conditions

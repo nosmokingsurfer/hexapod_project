@@ -1,3 +1,6 @@
+%Good
+
+clc
 syms N_u N_d k P h y_c l real
 
 
