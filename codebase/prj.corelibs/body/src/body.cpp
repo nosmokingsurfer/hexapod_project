@@ -220,19 +220,83 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   //положение следовых точек в абсолютной системе координат
   //TODO get points from planner
   Vector3d FL_goal(-0.5,  0.5, 0.0); //FL
-  Vector3d ML_goal(-0.5,  0.0, 0.0); //ML
+  Vector3d ML_goal(-0.5,  0.3, 0.0); //ML
   Vector3d RL_goal(-0.5, -0.5, 0.0); //RL
   Vector3d FR_goal( 0.5,  0.5, 0.0); //FR
-  Vector3d MR_goal( 0.5,  0.0, 0.0); //MR
+  Vector3d MR_goal( 0.5,  0.3, 0.0); //MR
   Vector3d RR_goal( 0.5, -0.5, 0.0); //RR
+  
+  
+
     
   this->tarPose = getTargetPose(time);
 
   VectorXd j_1_2_state(1);
-  j_1_2_state << 0.1*sin(2*EIGEN_PI/2*time);  
+  j_1_2_state << 0; //0.1*sin(2*EIGEN_PI/2*time);  
 
   VectorXd j_2_3_state(1);
-  j_2_3_state << 0.2*sin(2*EIGEN_PI/2*time);
+  j_2_3_state << 0; //0.2*sin(2*EIGEN_PI/2*time);
+
+
+  //front left leg
+  LinearPlayer FL_1(Vector3d(-0.5, 0.5, 0.0), Vector3d(-0.5, 0.5, 0.1), 1.0, 0);
+  LinearPlayer FL_2(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1);
+
+  //front right leg
+  LinearPlayer FR_1(Vector3d(0.5, 0.5, 0.0), Vector3d(0.5, 0.5, 0.1), 1.0, 0);
+  LinearPlayer FR_2(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1);
+
+  //middle left
+  LinearPlayer ML_3(Vector3d(-0.5, 0.3, 0.0), Vector3d(-0.5, 0.3, 0.1), 1.0, 3);
+
+  //middle right
+  LinearPlayer MR_3(Vector3d(0.5, 0.3, 0.0), Vector3d(0.5,0.3,0.1), 1.0, 3);
+
+  
+  int phase = int(time);
+
+  switch(phase)
+  {
+    case 0:
+    {
+      this->tarPose = getTargetPose(0);
+      FL_goal = FL_1.getCurTargetState(time);
+      FR_goal = FR_1.getCurTargetState(time);
+      break;
+    }
+    case 1:
+    {
+      this->tarPose = getTargetPose(0);
+      FL_goal = FL_2.getCurTargetState(time);
+      FR_goal = FR_2.getCurTargetState(time);
+      break;
+    }
+
+    case 2:
+    {
+      this->tarPose = getTargetPose(0);
+      FL_goal = FL_2.getCurTargetState(time);
+      FR_goal = FR_2.getCurTargetState(time);
+
+      ML_goal = ML_3.getCurTargetState(time);
+      MR_goal = MR_3.getCurTargetState(time);
+      break;
+    }
+    default:
+    {
+      this->tarPose = getTargetPose(0);
+      FL_goal = FL_2.getCurTargetState(time);
+      FR_goal = FR_2.getCurTargetState(time);
+
+      ML_goal = ML_3.getCurTargetState(time);
+      MR_goal = MR_3.getCurTargetState(time);
+      break;
+    }
+
+  }
+
+
+
 
   this->segments[0].joints[0].setTargetState(j_1_2_state);
   this->segments[1].joints[0].setTargetState(j_2_3_state);

@@ -16,6 +16,7 @@
 #include <pid/pid.h>
 #include <pose/pose.h>
 #include <segment/segment.h>
+#include <linear_player/linear_player.h>
 
 
 #include <vector>
