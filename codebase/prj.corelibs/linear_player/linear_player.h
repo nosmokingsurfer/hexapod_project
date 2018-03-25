@@ -23,6 +23,7 @@ class LinearPlayer{
 public: 
   LinearPlayer();
   LinearPlayer(const VectorXd& start, const VectorXd& finish, const double T, const double startTime);
+  LinearPlayer(const double a, const double b, const double T, const double startTime);
   ~LinearPlayer();
   private:
     int nDim;

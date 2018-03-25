@@ -19,6 +19,16 @@ LinearPlayer::LinearPlayer(const VectorXd& start, const VectorXd& finish, const 
   this->init(start,finish,T,startTime);
 }
 
+LinearPlayer::LinearPlayer(const double a, const double b, const double T, const double startTime)
+{
+  VectorXd A(1);
+  A << a;
+
+  VectorXd B(1);
+  B << b;
+  this->init(A, B, T, startTime);
+}
+
 LinearPlayer::~LinearPlayer()
 {}
 
@@ -60,9 +70,9 @@ VectorXd LinearPlayer::getCurTargetState(double time)
     lambda = 1;
   }
 
-  cout << lambda << endl;
+//  cout << lambda << endl;
 
-  return ((1-lambda)*startState + lambda*finishState);
+  return ((1 - lambda)*startState + lambda*finishState);
 }
 
 bool LinearPlayer::init(const VectorXd& start, const VectorXd& finish, const double T, const double startTime)

@@ -12,8 +12,11 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <control/task/task.h>
+#include <linear_player/linear_player.h>
+#include <../thirdparty/jsoncpp_headers/json/json.h>
 
 #include <vector>
+#include <map>
 #include <queue>
 #include <iostream>
 
@@ -26,10 +29,18 @@ public:
   TaskQueue();
   ~TaskQueue();
 
-  std::queue<Task> tasks;
+  bool init(const std::string scriptname);
 
   bool addTask(const Task&);
+  bool readCommand(const double time);
+  VectorXd getControls(const std::string objectName, const double time);
+
+  static Json::Value setLeg(const Vector3d& from, const Vector3d& to, const double duration, const double start_time);
+  std::map<std::string, LinearPlayer> controlSignals;
+
+private:
   
+  Json::Value controlScript;
 };
 
 #endif
