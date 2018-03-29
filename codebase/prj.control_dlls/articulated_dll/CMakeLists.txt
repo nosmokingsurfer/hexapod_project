@@ -18,5 +18,5 @@ set(articulated_dll_SRC
 
 add_library(articulated_dll SHARED ${articulated_dll_SRC})
 
-target_link_libraries(articulated_dll robot leg body Eigen3::Eigen)
+target_link_libraries(articulated_dll robot leg body linear_player Eigen3::Eigen)
 set_property(TARGET articulated_dll PROPERTY FOLDER "prj.control_dlls")
