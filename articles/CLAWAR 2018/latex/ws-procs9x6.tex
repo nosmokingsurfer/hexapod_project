@@ -13,7 +13,7 @@ $^*$E-mail: PanchenkoAV@vap.ru\\
 $^{**}$E-mail: vlpavl@mail.ru}
 
 \begin{abstract}
-The paper describes kinematic control for hexapod robot with three segments articulated body. Forward and inverse kinematics for articulated body studied. Static stability studied in case of climbing the so--called cliff obstacle. Necessary conditions for static stability during climbing sequence provided.
+The paper describes kinematic control for hexapod robot with three segments articulated body. Forward and inverse kinematics for articulated body described. Static stability studied in case of climbing the so--called cliff obstacle. Conditions for static stability during climbing sequence provided.
 \end{abstract}
 
 \keywords{Multi--legged robot; obstacle climbing; articulated body; simulation.}
@@ -22,8 +22,9 @@ The paper describes kinematic control for hexapod robot with three segments arti
 
 \section{Introduction}\label{aba:intoduction}
 Study of walking machines is rather old question. Starting in 
-Ancient China primitive mechanical designs\cite{yan2005historical} and ending with state of the art reinforcement learning \cite{peng2017deeploco} and model predictive control approaches\cite{diedam2008online}. Multi--leged walking robots are very complicated systems in terms of control and planning due to significant number of degrees of freedom (d.o.f.) and actuators, complexity of the environment and etc. Nowadays the most complex and robust walking machines are made by Boston Dynamics company\cite{raibert2008bigdog}. Its robots are capable of working in human environment and outdoors. The basis of their solution is model predictive control and non-linear optimization. Their robots are based on the kinematics of mammals - dogs or horses. The kinematics of hexapod robots in turn is based on insects and spiders.
-The main idea of the article –-- conventional mainstream hexapods have rigid body with legs attached symmetrically. This arrangement has its limitations but still can be surprisingly agile and overcomes complex obstacles as it was demonstrated in articles\cite{golubev2008control,golubev2009motion,golubev2013motion}. Introducing additional degrees of freedom – making multiple rigid segments to be a body instead of one rigid body segment increases robot’s geometric patency. On the other hand there is going to be trade off – the complexity of control will increase\cite{panchenko2016control} along with number of d.o.f. and actuators but the robot will climb up higher obstacles or do maneuvers that robots with rigid body are not capable of. For example, go through narrow passage, sharp ditch and windrows.
+Ancient China primitive mechanical designs\cite{yan2005historical} and ending with state of the art reinforcement learning \cite{peng2017deeploco} and model predictive control approaches\cite{diedam2008online}. Multi--leged walking robots are complicated systems in terms of control and planning due to significant number of degrees of freedom (d.o.f.) and actuators, complexity of the environment and etc. Nowadays the most complex and robust walking machines are made by Boston Dynamics company\cite{raibert2008bigdog}. Its robots are capable of working in human environment and outdoors. The basis of their solution is model predictive control and non-linear optimization. Their robots are based on the kinematics of mammals - dogs or horses. The kinematics of hexapod robots in turn is based on insects and spiders.
+
+The main idea of the article – to study robot with articulated body, that differs from conventional mainstream hexapods have rigid body with legs attached symmetrically. This arrangement has its limitations but still can be surprisingly agile and overcomes complex obstacles as it was demonstrated in articles\cite{golubev2008control,golubev2009motion,golubev2013motion}. Introducing additional degrees of freedom – making multiple rigid segments to be a body instead of one rigid body segment increases robot’s geometric patency. On the other hand there is going to be trade off – the complexity of control will increase\cite{panchenko2016control} along with number of d.o.f. and actuators but the robot will climb up higher obstacles or do maneuvers that robots with rigid body are not capable of. For example, go through narrow passage, sharp ditch and windrows.
 
 %The class file loads the packages {\tt amsfonts, amsmath, amssymb,
 %chapterbib, cite, dcolumn, epsfig, rotating} and {\tt url} at
@@ -70,7 +71,7 @@ Cliff obstacle consists of three planes two of which are horizontal and one is v
 
 \begin{figure}
   \begin{center}
-    \psfig{file=pics/cliff.eps,width=2in}
+    \psfig{file=pics/cliff.eps,width=2.5in}
   \end{center}
   \caption{Cliff obstacle.}
   \label{aba:cliff}
@@ -101,7 +102,7 @@ The following procedure is defined to calculated body joint angles. Initial and 
   \label{aba:spline}
 \end{figure}
 
-To keep the contact points on the goal trajectory all joints should act in a coordinated way. At every moment of time all joint coordinates must be updated to keep the end effector at the goal position. Additional mobility inside the robots body should be taken into account because all legs are connected to the different segments.  Target point $\overline{R}_i$ for $i$-th leg is given in global reference frame. To obtain leg joint angles the inverse kinematic equations are used, point $\overline{R}_i$ must be translated into leg’s reference frame. To manage all relative coordinate transformations of shifts and rotations between body segments, legs and joints, homogeneous coordinates are used. Calculation of all coordinate transformation for each leg at every moment of time can be easily done automatically through well-known kinematics of a robot.
+To keep the contact points on the goal trajectory all joints should act in a coordinated way. At every moment of time all joint coordinates must be updated to keep the end effectors at the goal position. Additional mobility inside the robots body should be taken into account because all legs are connected to the different segments.  Target point $\overline{R}_i$ for $i$-th leg is given in global reference frame. To obtain leg joint angles the inverse kinematic equations are used, point $\overline{R}_i$ must be translated into leg’s reference frame. To manage all relative coordinate transformations of shifts and rotations between body segments, legs and joints, homogeneous coordinates are used. Calculation of all coordinate transformation for each leg at every moment of time can be easily done automatically through well-known kinematics of a robot.
 The main differences of articulated body from single segment body are:
 \begin{itemlist}
   \item Higher ability to overcome obstacles –-- segments follow the surface;
@@ -130,13 +131,13 @@ The system is stable when sums of all external forces and all momentums are equa
   
 The following configurations of supporting legs displacement should be studied for static stability:
 \begin{itemlist}
-  \item All legs on some horizontal plane. This case is already well studied in ;
+  \item All legs on some horizontal plane. This case is already well studied;
   \item Front legs lean against the vertical plane and rear legs stand on the lower horizontal plane. Let us numerate this configuration as Number One.
   \item Front legs are placed at the upper horizontal plane, while the rear legs stand on the vertical plane. Let us numerate this configuration as Number Two.
   \item All legs stand on the upper horizontal plane –-- this case is similar to the initial one.
 \end{itemlist}
   
-  Considering the robot as a slow moving system at every moment of time let us find necessary conditions for static stability. 
+  Considering the robot as a slow moving system at every moment of time let us find conditions for static stability. 
   Reference frame Oxyz is defined as depicted on Fig. \ref{aba:configuration_1}.
 
 \subsection{First Configuration}
@@ -152,10 +153,10 @@ The following configurations of supporting legs displacement should be studied f
 Contact points of the legs for first configuration are as follows:
 \begin{equation}
   \begin{array}{l}
-    \overline{r}_1 = (d,0,h),\\
-    \overline{r}_2 = (-d,0,h),\\
-    \overline{r}_3 = (d,l,0),\\
-    \overline{r}_4 = (-d,l,0).\\
+    \overline{r}_1 = (d,0,h),
+    \overline{r}_2 = (-d,0,h),
+    \overline{r}_3 = (d,l,0),
+    \overline{r}_4 = (-d,l,0).
   \end{array}
 \end{equation}
 
@@ -169,10 +170,10 @@ The $\overline{\tau}_i$ and $\overline{nu}_i$ vectors have the following coordin
 
 \begin{equation}
 \begin{array}{ccc}
-  \overline{\nu}_1 = (1,0,0), & \overline{\tau}_1 = (0,0,1)\\
-  \overline{\nu}_2 = (1,0,0), & \overline{\tau}_2 = (0,0,1)\\
-  \overline{\nu}_3 = (1,0,0), & \overline{\tau}_3 = (0,1,0)\\
-  \overline{\nu}_4 = (1,0,0), & \overline{\tau}_4 = (0,1,0)\\
+  \overline{n}_1 = (0,1,0), & \overline{\tau}_1 = (0,0,1),& \overline{\nu}_1 = (1,0,0),\\
+  \overline{n}_2 = (0,1,0), & \overline{\tau}_2 = (0,0,1),& \overline{\nu}_2 = (1,0,0),\\
+  \overline{n}_3 = (0,0,1), & \overline{\tau}_3 = (0,1,0),& \overline{\nu}_3 = (1,0,0),\\
+  \overline{n}_4 = (0,0,1), & \overline{\tau}_4 = (0,1,0),& \overline{\nu}_4 = (1,0,0).\\
 \end{array}
 \end{equation}
 
@@ -205,7 +206,7 @@ The equations of static stability for first configuration are as follows:
 
 The total number of equation is six. The number of unknown variables is twelve. Let us assume that the friction forces are modelled with Coulomb mathematical model:
 
-$F_j^i = k_j^i\cdot N_i$, where $k_j^i$ is coefficient of friction for $i$-th leg in $j$-th direction and $0<k_j^i<1$.
+$F_j^i = k_j^i\cdot N_i$, where $k_j^i$ is coefficient of friction for $i$-th leg in $j$-th direction.
 
 After substitution of the Coulomb friction model, the Eq. (\ref{eq:case1_initial}) will transform into the following system:
 
@@ -289,7 +290,7 @@ After substituting Eq. (\ref{eq:case1_Nu_and_Nd}) to the third equation of Eq. (
 y_ck_\tau^2+hk_\tau + (y_c-l) = 0
 \end{equation}
 
-There are two solutions for quadratic Eq. (\ref{eq:case1_k}), but only one satisfies condition $0<k<1$:
+There are two solutions for quadratic Eq. (\ref{eq:case1_k}), but only one satisfies condition $0<k_\tau<1$:
 
 \begin{equation}
 \label{eq:case1_k12}
@@ -326,22 +327,14 @@ It is easy to see that the Eq. (\ref{eq:case1_k12}) for $k_\tau$ depends on $l$,
 p_1 := \dfrac{h}{y_c},~p_2 := \dfrac{l}{y_c},~where ~y_c \ne 0.
 \end{equation}
 
-
-After substitution of Eq. (\ref{eq:case1_dimesionless}) into the Eq. (\ref{eq:case1_k12}) for $k_\tau$ we get the following inequality:
-
-\begin{equation}
-\label{eq:case1_dimless_inequality}
-  0< -\dfrac{1}{2} p_1+\sqrt{\dfrac{1}{4} p_1^2+p_2-1}<1
-\end{equation}
-
-The solution of Eq. (\ref{eq:case1_dimless_inequality}) is depicted on Fig. \ref{aba:case1_dimless_figure}.
+After solving Eq.~(\ref{eq:case1_k12}) with substituted Eq.~(\ref{eq:case1_dimesionless}), the solution of Eq.~(\ref{eq:case1_k12}) is depicted on Fig.~\ref{aba:case1_dimless_figure}.
 
 
 \begin{figure}
   \begin{center}
     \psfig{file=pics/figure_1.eps,width=2.5in}
   \end{center}
-  \caption{Solution of Eq. (\ref{eq:case1_dimless_inequality})}
+  \caption{Solution of Eq. (\ref{eq:case1_k12}) with labeled contour lines for $k_\tau$ as a function of $(p_1, p_2)$.}
   \label{aba:case1_dimless_figure}
 \end{figure}
 
@@ -389,32 +382,33 @@ Let us find solution of inequality $0<k_\tau<1$ using the following dimensionles
 
 \begin{equation}
 \label{eq:case2_dimentionless}
-  p_1 := \dfrac{(H-h)}{y_c}, p_2 := \dfrac{l}{y_c}.
+  p_1 := \dfrac{(H-h)}{y_c}, p_2 := \dfrac{l}{y_c}, where~y_c \ne 0.
 \end{equation}
 
-After substitution of Eq. (\ref{eq:case2_dimentionless}) to Eq. (\ref{eq:case2_k12}) the following inequality obtained:
-
-\begin{equation}
-\label{eq:case2_dimless_inequality}
-0< \dfrac{1}{2} p_1 - \sqrt{\dfrac{1}{4} p_1^2+p_2-1}<1
-\end{equation}
-
-The solution of Eq. (\ref{eq:case2_dimless_inequality}) is depicted on Fig. \ref{aba:case2_dimless_figure}.
+The solution of Eq. (\ref{eq:case2_k12}) is depicted on Fig. \ref{aba:case2_dimless_figure}.
 
 
 \begin{figure}
   \begin{center}
-    \psfig{file=pics/figure_2.eps,width=2.5in}
+    \psfig{file=pics/figure_2_2.eps,width=2.1in}
+    \psfig{file=pics/figure_2_1.eps,width=2.1in}
   \end{center}
-  \caption{Solution of Eq. (\ref{eq:case2_dimless_inequality})}
+  \caption{Solution of Eq. (\ref{eq:case2_k12}). Left - $y_c<0$, right - $y_c>0$.}
   \label{aba:case2_dimless_figure}
 \end{figure}
 
-From Fig. \ref{aba:case2_dimless_figure} it can be shown that to reduce the value of $k_\tau$ the robot should:
+From Fig. \ref{aba:case2_dimless_figure} it can be shown that for case when $y_c>0$ to reduce the value of $k_\tau$ robot should:
 \begin{itemlist}
-\item keep its center of gravity closer to front legs;
-\item keep rear legs as higher as possible;
-\item keep front legs farther from edge of cliff.
+\item keep its center of gravity far from front legs;
+\item keep rear legs as low as possible;
+\item keep front legs closer to cliff edge.
+\end{itemlist}
+
+From Fig. \ref{aba:case2_dimless_figure} it can be shown that for case when $y_c<0$ to reduce the value of $k_\tau$ robot should:
+\begin{itemlist}
+  \item keep its center of gravity closer to front legs;
+  \item keep rear legs as low as possible;
+  \item keep front legs closer to cliff edge.
 \end{itemlist}
 
 In Eq. (\ref{eq:case2_dimentionless}) we have considered substitution in assumption that $y_c\ne0$. Let us see what happens when center of gravity is right above the cliffs edge in second configuration.
@@ -457,7 +451,7 @@ Equation (\ref{eq:case2_conditions_solution}) means that to provide stable confi
 
 
 \section{Hexapod simulation for cliff climbing}
-To verify the static stability conditions the computer simulation of articulated hexapod was made.  The "Universal Mechanism"\cite{um} software package was used to provide dynamical model of the articulated hexapod robot and the "cliff" obstacle. All robot's legs have so called viscous elastic point contact models with obstacle.
+To verify the static stability conditions the computer simulation of articulated hexapod was made.  The "Universal Mechanism"\cite{um} software package was used to provide dynamical model of the articulated hexapod robot and the cliff obstacle. All robot's legs have so called viscous elastic point contact models with the cliff obstacle.
 
 \begin{figure}
   \centering
@@ -475,12 +469,12 @@ To verify the static stability conditions the computer simulation of articulated
     \label{kinogramm}}
 \end{figure}
 
-The desired robot motion was manually scripted as list of scheduled commands for leg's positions and body configuration along with position and orientation. Robot's climbing motion sequence during simulation is depicted on Fig. \ref{kinogramm}. The resulting time of climbing maneuver in quasi static regime of motion takes about 50 seconds to climb up the "cliff" obstacle. The ratio between real and simulation time is approximately equal to 1 on computer with Core-i7 CPU and GTX950M GPU.
+The desired robot motion was manually scripted as list of scheduled commands for leg's positions and body configuration along with position and orientation. Robot's climbing motion sequence during simulation is depicted on Fig. \ref{kinogramm}. The resulting time of climbing maneuver in quasi static regime of motion takes about 50 seconds to climb up the cliff. The ratio between real and simulation time is approximately equal to 1 on computer with Core-i7 CPU and GTX950M GPU.
 
 
 \section{Conclusion}
 The analysis of robot's configurations in different poses on the cliff proved that stable quasi static motion is possible for all steps, i.e. the robot is capable of climbing the cliff with static stability preservation using only Coulomb friction forces. Articulated three segment body has shown advantages in comparison with similar rigid body in context of extreme obstacle overcoming. On the other hand, increased passability requires more complex motion planning and control.
-Necessary conditions fro statics stability for all main climbing configurations obtained.
+Conditions for statics stability for all main climbing configurations obtained.
 
 
 \section*{Acknowledgements}
