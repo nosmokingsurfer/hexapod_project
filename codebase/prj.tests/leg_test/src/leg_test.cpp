@@ -39,8 +39,9 @@ int main(int argc, char** argv)
 
     cout << "solution = " << solution.transpose() << endl;
 
-    cout << "error = " << (traj - testLeg.forwardKinematics(solution)).transpose() << endl;
+    cout << "numerical_solution = " << testLeg.numericalSolve(traj, Vector3d(0.04,0.1,-0.2)).transpose() << endl;
 
+    cout << "error = " << (traj - testLeg.forwardKinematics(solution)).transpose() << endl;
   }
 
 	 return 0;
