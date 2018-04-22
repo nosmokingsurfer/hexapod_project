@@ -47,6 +47,12 @@ private:
   VectorXd getArticulatedBodyControlAngles(double time);
   VectorXd getMozaikBodyControlAngles(double time);
 
+  double totalMass;
+  Vector3d getCOMcoords();
+  Vector3d getSimpleCOMcoords();
+  Vector3d getArticulatedCOMcoords();
+  Vector3d getMozaikCOMcoords();
+
   int nDOF; //!< number of degrees of freedom from FB
   int nControls; //!< number of control torques
   

@@ -70,7 +70,7 @@ VectorXd LinearPlayer::getCurTargetState(double time)
     lambda = 1;
   }
 
-//  cout << lambda << endl;
+  cout << lambda << endl;
 
   return ((1 - lambda)*startState + lambda*finishState);
 }

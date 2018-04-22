@@ -29,6 +29,12 @@ Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, cons
   this->pids.push_back(PID());
   this->pids.push_back(PID());
   this->pids.push_back(PID());
+
+
+  this->masses[0] = 1.928;
+  this->masses[1] = 2.892;
+  this->masses[2] = 1.286;
+  this->totalMass = 0;
 }
 
 
@@ -103,6 +109,96 @@ Eigen::Vector3d Leg::forwardKinematics(const Eigen::Vector3d& targetAngles)
   return solution;
 }
 
+
+Eigen::MatrixXd Leg::jacobian(const Vector3d& jointAngles)
+{
+  Eigen::MatrixXd result(3,3);
+
+  double alpha = jointAngles[0];
+  double beta  = jointAngles[1];
+  double gamma = jointAngles[2];
+
+  double p1 = this->segments[0];
+  double p2 = this->segments[1];
+  double p3 = this->segments[2];
+
+  result(0,0) = -sin(alpha)*(p1 + p2*cos(beta) + p3*cos(beta + gamma));
+  result(0,1) = -cos(alpha)*(p2*sin(beta) + p3*sin(beta+gamma));
+  result(0,2) = -p3*cos(alpha)*sin(beta + gamma);
+
+  result(1,0) = cos(alpha)*(p1 + p2*cos(beta) + p3*cos(beta+gamma));
+  result(1,1) = -sin(alpha)*(p2*sin(beta) + p3*sin(beta + gamma));
+  result(1,2) = -p3*sin(alpha)*sin(beta + gamma);
+
+  result(2,0) = 0;
+  result(2,1) = p2*cos(beta) + p3*cos(beta + gamma);
+  result(2,2) = p3*cos(beta + gamma);
+
+  return result;
+}
+
+Eigen::MatrixXd Leg::jacobian_inverted(const Vector3d& jointAngles)
+{
+  Eigen::MatrixXd result(3,3);
+  double alpha = jointAngles[0];
+  double beta = jointAngles[1];
+  double gamma = jointAngles[2];
+
+  double p1 = this->segments[0];
+  double p2 = this->segments[1];
+  double p3 = this->segments[2];
+
+
+  result(0,0) = -sin(alpha)/(p1 + p3*cos(beta + gamma) + p2*cos(beta));
+  result(0,1) = cos(alpha)/(p1 + p3*cos(beta + gamma) + p2*cos(beta));
+  result(0,2) = 0;
+
+  result(1,0) = (cos(beta + gamma)*cos(alpha))/(p2*sin(gamma));
+  result(1,1) = (cos(beta + gamma)*sin(alpha))/(p2*sin(gamma));
+  result(1,2) = sin(beta + gamma)/(p2*sin(gamma));
+
+  result(2,0) = -(cos(alpha)*(p3*cos(beta + gamma) + p2*cos(beta)))/(p2*p3*sin(gamma));
+  result(2,1) = -(sin(alpha)*(p3*cos(beta + gamma) + p2*cos(beta)))/(p2*p3*sin(gamma));
+  result(2,2) =  -(p3*sin(beta + gamma) + p2*sin(beta))/(p2*p3*sin(gamma));
+
+  return result;
+}
+
+Eigen::Vector3d Leg::numericalSolve(const Vector3d& targetPoint, const Vector3d& initial)
+{
+  Vector3d result;
+  result.fill(0);
+
+  //calculate dx
+  Vector3d curPosition = this->forwardKinematics(initial);
+  result = initial;
+  
+  int maxN = 5;
+  int n = 0;
+
+  while (((targetPoint - curPosition).norm() > 0.001) && (n < maxN))
+  {
+    n++;
+    Vector3d dx = targetPoint - curPosition;
+    if (dx.norm() > 0.0001)
+    {
+      dx = dx/dx.norm() * (targetPoint - curPosition).norm()/100;
+    }
+
+    MatrixXd J = this->jacobian_inverted(result);
+
+    result += J*dx;
+    curPosition = this->forwardKinematics(result);
+    cout << "n = " << n << endl;
+  }
+  
+  return result;
+}
+
+Eigen::Vector3d Leg::numericalSolve(const Vector3d& targetPoint)
+{
+  return this->numericalSolve(targetPoint, this->FBcoords);
+}
 
 bool Leg::checkReachability(const Vector3d& targetPoint)
 {
@@ -207,4 +303,39 @@ bool Leg::setTargetState(const Vector3d& targetstate_)
 Eigen::Vector3d Leg::getTargetState()
 {
   return this->targetState;
+}
+
+Vector3d Leg::getCOMcoords()
+{
+  Vector3d result(0,0,0);
+  
+  double p1 = this->segments[0];
+  double p2 = this->segments[1];
+  double p3 = this->segments[2];
+
+  double alpha = this->FBcoords[0];
+  double beta = this->FBcoords[1];
+  double gamma = this->FBcoords[2];
+
+  double m1 = this->masses[0];
+  double m2 = this->masses[1];
+  double m3 = this->masses[2];
+
+  result[0] += m1*cos(alpha)*0.5*p1;
+  result[0] += m2*cos(alpha)*(p1 + 0.5*p2*cos(beta));
+  result[0] += m3*cos(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta+gamma));
+
+  result[1] += m1*sin(alpha)*0.5*p1;
+  result[1] += m2*sin(alpha)*(p1 + 0.5*cos(beta));
+  result[1] += m3*sin(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta+gamma));
+
+  result[2] += 0;
+  result[2] += m2*0.5*p2*sin(beta);
+  result[2] += m3*(p2*sin(beta) + 0.5*p3*sin(beta + gamma));
+
+  this->totalMass = m1 + m2 + m3;
+
+  result /= totalMass;
+
+  return result;
 }

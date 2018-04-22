@@ -187,6 +187,9 @@ void Body::initMozaikBody()
 
   this->nDOF = 28; //TODO check this number
   this->nControls = 39; //TODO check this number
+
+  std::string fileName = "D:/_my_phd/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
+  this->controlCommands.init(fileName);
 }
 
 VectorXd Body::getSimpleBodyControlAngles(double time)
@@ -239,8 +242,6 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   VectorXd j_2_3_state(1);
   j_2_3_state << 0;
  
-
-
   FL_goal = this->controlCommands.getControls("FL", time);
   FR_goal = this->controlCommands.getControls("FR", time);
   ML_goal = this->controlCommands.getControls("ML", time);
@@ -252,79 +253,6 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   j_2_3_state = this->controlCommands.getControls("j_2_3", time);
 
   tarPose = Pose(this->controlCommands.getControls("seg_angles", time), this->controlCommands.getControls("seg_xyz",time));
-
-  /*
-  switch(phase)
-  {
-    case 0:
-    {
-      this->tarPose = getTargetPose(0);
-      FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.0), Vector3d(-0.5, 0.5, 0.1), 1.0, 0).getCurTargetState(time);
-      FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.0), Vector3d(0.5, 0.5, 0.1), 1.0, 0).getCurTargetState(time);    
-      break;
-    }
-    case 1:
-    {
-      this->tarPose = getTargetPose(0);
-      FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-      FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-      break;
-    }
-    
-    case 2:
-    {
-      this->tarPose = getTargetPose(0);
-      FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-      FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-    
-      ML_goal = LinearPlayer(Vector3d(-0.5, 0.3, 0.0), Vector3d(-0.5, 0.3, 0.1), 1.0, 2).getCurTargetState(time);
-      MR_goal = LinearPlayer(Vector3d(0.5, 0.3, 0.0), Vector3d(0.5,0.3,0.1), 1.0, 2).getCurTargetState(time);
-      break;
-    }
-    
-    case 3:
-    {
-     this->tarPose = Pose(Vector3d(0,0,0),LinearPlayer(Vector3d(0,0,0.3), Vector3d(0,0.2,0.3), 1.0, 3).getCurTargetState(time));
-     FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-     FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-     
-     ML_goal = LinearPlayer(Vector3d(-0.5, 0.3, 0.0), Vector3d(-0.5, 0.3, 0.1), 1.0, 2).getCurTargetState(time);
-     MR_goal = LinearPlayer(Vector3d(0.5, 0.3, 0.0), Vector3d(0.5,0.3,0.1), 1.0, 2).getCurTargetState(time);
-     break;
-    }
-
-    case 4:
-      {
-        this->tarPose = Pose(Vector3d(0,0,0),LinearPlayer(Vector3d(0,0,0.3), Vector3d(0,0.2,0.3), 1.0, 3).getCurTargetState(time));
-        FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-        FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-
-        ML_goal = LinearPlayer(Vector3d(-0.5, 0.3, 0.0), Vector3d(-0.5, 0.3, 0.1), 1.0, 2).getCurTargetState(time);
-        MR_goal = LinearPlayer(Vector3d(0.5, 0.3, 0.0), Vector3d(0.5,0.3,0.1), 1.0, 2).getCurTargetState(time);
-
-
-        j_1_2_state = LinearPlayer(0, EIGEN_PI/4, 1.0, 4).getCurTargetState(time);
-        break; 
-      }
-
-
-    default:
-    {
-      this->tarPose = Pose(Vector3d(0,0,0),LinearPlayer(Vector3d(0,0,0.3), Vector3d(0,0.2,0.3), 1.0, 3).getCurTargetState(time));
-      FL_goal = LinearPlayer(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-      FR_goal = LinearPlayer(Vector3d(0.5, 0.5, 0.1), Vector3d(0.5, 1.01, 0.1), 1.0, 1).getCurTargetState(time);
-
-      ML_goal = LinearPlayer(Vector3d(-0.5, 0.3, 0.1), Vector3d(-0.5, 0.0, 0.1), 1.0, 5).getCurTargetState(time);
-      MR_goal = LinearPlayer(Vector3d(0.5, 0.3, 0.1), Vector3d(0.5,0.0,0.1), 1.0, 5).getCurTargetState(time);
-
-      
-      j_1_2_state = LinearPlayer(0, EIGEN_PI/4, 1.0, 4).getCurTargetState(time);
-      break; 
-    }
-  }
-
-  */
-
 
   this->segments[0].joints[0].setTargetState(j_1_2_state);
   this->segments[1].joints[0].setTargetState(j_2_3_state);
@@ -343,6 +271,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
           FL_goal;
 
   segments[0].legs[0].setTargetState(segments[0].legs[0].inverseKinematics(temp));
+  segments[0].legs[0].setTargetState(segments[0].legs[0].numericalSolve(temp));
   result.segment(segments[0].legs[0].getDebIndex(), 3) = segments[0].legs[0].inverseKinematics(temp);
 
   //FR
@@ -404,8 +333,147 @@ VectorXd Body::getMozaikBodyControlAngles(double time)
   VectorXd result(nControls);
   result.fill(0);
 
-  cout << "NOT IMPLEMENTED: " << "Body::getMozaikBodyControls" << endl;
 
+  //положение следовых точек в абсолютной системе координат
+  //TODO get points from planner
+  Vector3d FL_goal(-0.5,  0.5, 0.0); //FL
+  Vector3d ML_goal(-0.5,  0.3, 0.0); //ML
+  Vector3d RL_goal(-0.5, -0.5, 0.0); //RL
+  Vector3d FR_goal( 0.5,  0.5, 0.0); //FR
+  Vector3d MR_goal( 0.5,  0.3, 0.0); //MR
+  Vector3d RR_goal( 0.5, -0.5, 0.0); //RR
+
+
+  this->tarPose = getTargetPose(0);
+
+  VectorXd j_1_2_state(3);
+  j_1_2_state << 0,0,0;
+
+  VectorXd j_2_3_state(3);
+  j_2_3_state << 0,0,0;
+
+  VectorXd j_3_4_state(3);
+  j_3_4_state << 0,0,0;
+
+  VectorXd j_4_5_state(3);
+  j_4_5_state << 0,0,0;
+
+  VectorXd j_5_6_state(3);
+  j_5_6_state << 0,0,0;
+
+  VectorXd j_6_1_state(3);
+  j_6_1_state << 0,0,0;
+
+  VectorXd j_2_5_state(3);
+  j_2_5_state << 0,0,0;
+
+  FL_goal = this->controlCommands.getControls("FL", time);
+  FR_goal = this->controlCommands.getControls("FR", time);
+  ML_goal = this->controlCommands.getControls("ML", time);
+  MR_goal = this->controlCommands.getControls("MR", time);
+  RL_goal = this->controlCommands.getControls("RL", time);
+  RR_goal = this->controlCommands.getControls("RR", time);
+
+  //j_1_2_state = this->controlCommands.getControls("j_1_2", time);
+  //j_2_3_state = this->controlCommands.getControls("j_2_3", time);
+
+  tarPose = Pose(this->controlCommands.getControls("seg_angles", time), this->controlCommands.getControls("seg_xyz",time));
+
+  this->segments[0].joints[0].setTargetState(j_1_2_state);
+  this->segments[1].joints[0].setTargetState(j_2_3_state);
+
+
+  /*Mozaik mozaikControl;
+
+  mozaikControl.updateBodyGeometry(body_angles);
+
+  j_1_2_state = mozaikControl.getControlAngles("j_1_2", time);
+  j_2_3_state = ...
+
+  j_6_1_state = ...
+  j_2_5_state = mozaikControl.getControlAngles("j_2_5", time);
+  */
+
+
+
+
+  result.segment(segments[0].joints[0].getDebIndex(), 3) = segments[0].joints[0].getTargetState();
+  result.segment(segments[1].joints[0].getDebIndex(), 3) = segments[1].joints[0].getTargetState();
+  
+  return result;
+}
+
+Vector3d Body::getCOMcoords()
+{
+  Vector3d result(0,0,0);
+
+  switch(this->body_type)
+  {
+    case(BODY_TYPE::SIMPLE):
+    {
+      result = getSimpleCOMcoords();
+    }
+    case(BODY_TYPE::ARTICULATED):
+    {
+      result = getArticulatedCOMcoords();
+    }
+    case(BODY_TYPE::MOZAIK):
+    {
+      result = getMozaikCOMcoords();
+    }
+  }
+
+  return result;
+}
+
+Vector3d Body::getSimpleCOMcoords()
+{
+  Vector3d result(0,0,0);
+
+  result = this->segments[0].getCOMcoords();
+
+  this->totalMass = segments[0].totalMass;
+
+  return result;
+}
+
+Vector3d Body::getArticulatedCOMcoords()
+{
+  Vector3d result(0,0,0);
+  this->totalMass = 0;
+
+  //center of mass of front segment in reference middle segment reference frame
+  Vector3d front;
+  front = segments[0].joints[0].getMountInChild().T.inverse()*
+          segments[0].joints[0].getTransformation().T.inverse()*
+          segments[0].joints[0].getMountInParent().T*
+          segments[0].getCOMcoords();
+
+  double frontMass = segments[0].totalMass;
+
+  Vector3d middle;
+  middle = segments[1].getCOMcoords();
+  double middleMass = segments[1].totalMass;
+
+
+  Vector3d rear;
+  rear = segments[1].joints[1].getMountInParent().T.inverse()*
+         segments[1].joints[0].getTransformation().T.inverse()*
+         segments[1].joints[0].getMountInChild().T*
+         segments[2].getCOMcoords();
+
+  double rearMass = segments[2].totalMass;
+
+
+  result = (frontMass*front + middleMass*middle + rearMass*rear)/(frontMass + middleMass + rearMass);
+
+  return result;
+}
+
+Vector3d Body::getMozaikCOMcoords()
+{
+  Vector3d result(0,0,0);
+  cout << " Body::getMozaikCOMcoords() - NOT IMPLEMENTED" << endl;
   return result;
 }
 
@@ -456,14 +524,27 @@ Pose Body::getTargetPose(double time)
         0.05*sin(2*EIGEN_PI/11*time),
         0.05*sin(2*EIGEN_PI/13*time);    
 
-
       //YawPitchRoll << 0,0,0;
 
       break;
     }
     case(BODY_TYPE::MOZAIK):
     {
-      cout << "GetTargetPose for Mozaik Body not implemented" << endl;
+      xyz <<
+        0.05*sin(2*EIGEN_PI/2*time),
+        0.05*sin(2*EIGEN_PI/3*time),
+        0.3 + 0.01*sin(2*EIGEN_PI/5*time);
+
+
+      //xyz << 0, 0, 0.3;
+
+      YawPitchRoll << 
+        0.05*sin(2*EIGEN_PI/7*time),
+        0.05*sin(2*EIGEN_PI/11*time),
+        0.05*sin(2*EIGEN_PI/13*time);    
+
+      //YawPitchRoll << 0,0,0;
+
       break;
     }
   }

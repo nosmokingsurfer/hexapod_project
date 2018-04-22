@@ -40,6 +40,7 @@ private:
   int fbIndex; //!< index of the segment coordinates in the FB array if any
   
 public:
+  Vector3d getCOMcoords(void);//!< returns segment center of mass for segment and its legs
   bool connectLeg(Leg leg); //!< attach leg to the segment. Leg should already have a mounting pose
   bool connectJoint(Joint& joint, const bool parent); //!< attach joint to the segment. Joint should already have a mounting pose
   bool isInitialized();
@@ -47,6 +48,11 @@ public:
   string getName();
   vector<Leg> legs;//!< legs connected to the segment
   vector<Joint> joints; //!< joints connected to the segment
+
+  double totalMass; //!< total mass of segment and all attached legs
+  double mass;//!< mass of the segment
+  Vector3d centerOfMass; //!< center of mass coordinates in segment's reference frame
+  Matrix3d momentsOfInetrcia; //!< tensor of inertia in segment's reference frames
   
 };
 

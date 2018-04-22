@@ -33,27 +33,38 @@ public:
   vector<double> segments;
   Eigen::Vector3d inverseKinematics(const Vector3d& targetPoint);
   Eigen::Vector3d forwardKinematics(const Vector3d& targetAngles);
-  bool checkReachability(const Vector3d& targetPoint);
-  bool recieveFB(const VectorXd& feedback);
-  bool setCoeffs(const PID::PIDcoeffs &coeffs);
-  bool setFBindex(const int index);
+
+  Eigen::MatrixXd jacobian(const Vector3d& jointAngles);
+  Eigen::MatrixXd jacobian_inverted(const Vector3d& jointAngles);
+  Eigen::Vector3d numericalSolve(const Vector3d& targetPoint);
+  Eigen::Vector3d numericalSolve(const Vector3d& targetPoint, const Vector3d& initial);
+
+  bool checkReachability(const Vector3d& targetPoint); //!< check if the leg can reach the target point
+  bool recieveFB(const VectorXd& feedback); //!< copy feedback signals in FBcoords and FBvelocities from common feedback vector
+  bool setCoeffs(const PID::PIDcoeffs &coeffs);//!< set coefficients of the PID controllers inside all leg joints
+  bool setFBindex(const int index); //!< set the offset inside the common feedback vector to collect proper corresponding feedback signals
   int getCtrlIndex();
   int getDebIndex();
 
 
-  Eigen::Vector3d trajectoryGenerator(double time);
-  Eigen::VectorXd getTorques();
+  Eigen::Vector3d trajectoryGenerator(double time); //!< generates trajectory for the leg with reference to time variable
+  Eigen::VectorXd getTorques(); //!< calculates control torques for given targetPoint and current FBCoords
 
-  std::vector<PID> pids; // all PID controllers of the leg
+  std::vector<PID> pids; //!< all PID controllers of the leg
 
-  Pose pose;//leg mounting pose
+  Pose pose;//!< leg mounting pose
 
-  bool setParentSegment(Segment&);
+  bool setParentSegment(Segment&); //!< set pointer to parent segment
 
-  string getName();
-  string getParentName();
-  bool setTargetState(const Vector3d& targetstate);
-  Vector3d getTargetState();
+  string getName(); //!< returns name of the leg
+  string getParentName(); //!< returns the parent segment name
+  bool setTargetState(const Vector3d& targetstate); //!< sets target point for leg
+  Vector3d getTargetState(); //!< returns targetPoint value
+
+  double masses[3]; //!< masses for all segments of the leg
+  double totalMass; //!< total mass of the leg
+
+  Vector3d getCOMcoords(); //!< returns center of mass coordinates in leg's reference frame
 
 private:
   int fbIndex; // todo move to the basic class
@@ -65,6 +76,7 @@ private:
   Vector3d targetState; //!< current leg target position
 
   Segment* parent;//!< the segment leg connected to
+
 };
 
 #endif

@@ -12,6 +12,9 @@ Segment::Segment(const std::string name_, const Pose& pose_)
   this->name = name_;
   this->segmentRF = pose_;
   this->initialized = true;
+
+  this->mass = 95.16;
+  this->totalMass = 0;
 }
 
 
@@ -62,6 +65,26 @@ Segment & Segment::operator=(const Segment& L)
 
 Segment::~Segment()
 {}
+
+Vector3d Segment::getCOMcoords(void)
+{
+  Vector3d result(0,0,0);
+
+  this->totalMass = 0;
+  this->totalMass += this->mass;
+
+  result = this->mass*this->centerOfMass;
+
+  for (auto i = 0; i < this->legs.size(); i++)
+  {
+    this->totalMass += legs[i].totalMass;
+    result += legs[i].totalMass*(legs[i].pose.T.inverse()*legs[i].getCOMcoords());
+  }
+
+  result /= totalMass;
+
+  return result;
+}
 
 bool Segment::connectLeg(Leg leg)
 {
