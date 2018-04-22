@@ -1,6 +1,7 @@
 %Good
 
 clc
+clear variables
 syms N_u N_d k P h y_c l real
 
 
@@ -21,6 +22,9 @@ eqs = [N_u - N_d*k == 0;
        N_d > 0;
        y_c < l;
        k > 0;];
+   
+   
+eqs = subs(eqs, [P,l,h, y_c],[322.116, 1.5, 0.1, 1.0])
    
 solution =  solve(eqs, [N_u, N_d, k], 'ReturnConditions', true);
 disp('N_u = ')
