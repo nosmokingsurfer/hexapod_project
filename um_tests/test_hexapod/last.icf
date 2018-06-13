@@ -19,6 +19,7 @@ with integr;
   psolutionmethod=bdj;
   usethreads=true;
   nthreads=5;
+  real_time_delay=true;
   keep_decomposition=true;
   keep_decomposition_count=100;
   jacobian = true;
@@ -51,10 +52,10 @@ with go_assignment;
 with graphwindow; 
   left=333; top=-11; 
   width=805; height=645; 
-  minx=-6.41376606655616E+0000; 
-  maxx= 1.64796981034879E+0001; 
-  miny=-3.91205579418097E+0000; 
-  maxy= 3.33468258436209E+0000; 
+  minx=-2.00705494561244E+0001; 
+  maxx= 7.01440477598179E+0001; 
+  miny= 1.34876437744955E+0000; 
+  maxy= 1.76661537643628E+0000; 
   filtertype=0; 
   passtype=1; 
   filterorder=12; 
@@ -107,7 +108,7 @@ with graphwindow;
     color=FF0000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=FL_beta_target;
       comment="";
@@ -118,7 +119,7 @@ with graphwindow;
     color=0000FF;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=FL_gamma_target;
       comment="";
@@ -173,7 +174,7 @@ with graphwindow;
     color=FF00FF;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=ML_beta_target;
       comment="";
@@ -184,7 +185,7 @@ with graphwindow;
     color=C0C0C0;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=RL_beta_target;
       comment="";
@@ -195,7 +196,7 @@ with graphwindow;
     color=00FF00;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=FR_beta_target;
       comment="";
@@ -206,7 +207,7 @@ with graphwindow;
     color=008080;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=MR_beta_target;
       comment="";
@@ -217,7 +218,7 @@ with graphwindow;
     color=00FFFF;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=RR_beta_target;
       comment="";
@@ -228,7 +229,7 @@ with graphwindow;
     color=FFFF00;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=ML_gamma_target;
       comment="";
@@ -239,7 +240,7 @@ with graphwindow;
     color=000000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=RL_gamma_target;
       comment="";
@@ -250,7 +251,7 @@ with graphwindow;
     color=008000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=FR_gamma_target;
       comment="";
@@ -261,7 +262,7 @@ with graphwindow;
     color=800080;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=MR_gamma_target;
       comment="";
@@ -272,7 +273,7 @@ with graphwindow;
     color=FF0000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=RR_gamma_target;
       comment="";
@@ -349,7 +350,7 @@ with graphwindow;
     color=C0C0C0;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.13;
       comment="Coordinate 13, subsystem 1";
@@ -360,7 +361,7 @@ with graphwindow;
     color=00FF00;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.14;
       comment="Coordinate 14, subsystem 1";
@@ -371,7 +372,7 @@ with graphwindow;
     color=008080;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.15;
       comment="Coordinate 15, subsystem 1";
@@ -382,7 +383,7 @@ with graphwindow;
     color=00FFFF;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.16;
       comment="Coordinate 16, subsystem 1";
@@ -393,7 +394,7 @@ with graphwindow;
     color=FFFF00;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.17;
       comment="Coordinate 17, subsystem 1";
@@ -404,7 +405,7 @@ with graphwindow;
     color=000000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.18;
       comment="Coordinate 18, subsystem 1";
@@ -415,7 +416,7 @@ with graphwindow;
     color=008000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.19;
       comment="Coordinate 19, subsystem 1";
@@ -426,7 +427,7 @@ with graphwindow;
     color=800080;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.20;
       comment="Coordinate 20, subsystem 1";
@@ -437,7 +438,7 @@ with graphwindow;
     color=FF0000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.21;
       comment="Coordinate 21, subsystem 1";
@@ -448,7 +449,7 @@ with graphwindow;
     color=0000FF;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.22;
       comment="Coordinate 22, subsystem 1";
@@ -459,7 +460,7 @@ with graphwindow;
     color=808000;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.23;
       comment="Coordinate 23, subsystem 1";
@@ -470,13 +471,172 @@ with graphwindow;
     color=000080;
     marker=0;
     markedline=0;
-    visible=1;
+    visible=0;
     with grvar;
       name=X1.24;
       comment="Coordinate 24, subsystem 1";
       subs=1; ielem=24;
       type=coor;
     type=coor; loctype=coor; 
+with graphwindow; 
+  left=279; top=32; 
+  width=860; height=439; 
+  minx= 1.27092727880205E+0001; 
+  maxx= 2.16649757585707E+0001; 
+  miny=-1.03569176095434E-0002; 
+  maxy= 1.06462487065880E-0002; 
+  filtertype=0; 
+  passtype=1; 
+  filterorder=12; 
+  lowfreq= 0.00000000000000E+0000; 
+  highfreq= 1.00000000000000E+0001; 
+  fixedvisibleregion=false;
+  align=3; dpsize= 1.98933333333333E+0002; 
+  abscissa=0;
+  legendsize=8;
+  axislegendonplot=true;  addlines=true;  showscales=true;
+  autostepx=true;  manualstepx= 1.00000000000000E-0001;
+  autostepy=true;  manualstepy= 1.00000000000000E-0001;
+  autoscalex=false;  manualscalex=0;
+  autoscaley=false;  manualscaley=0;
+  backcolor=16777215;  fontcolor=16711680;  fontsize=7;
+  gridstylesolid=false;
+  ofsleft=30;
+  ofstop=15;
+  ofsright=15;
+  ofsbottom=15;
+  graphswidth=1;
+  selectedwidth=2;
+  markselectedvars=true;
+  usefilter=false;
+  filter_min= 0.00000000000000E+0000;
+  filter_max= 1.00000000000000E+0000;
+  with grwindowvar;
+    color=008000;
+    marker=0;
+    markedline=0;
+    visible=1;
+    with grvar;
+      name=COM_X;
+      comment="";
+      elementname=COM_X;
+      subs=1; ielem=28;
+      type=ident;
+  with grwindowvar;
+    color=800080;
+    marker=0;
+    markedline=0;
+    visible=1;
+    with grvar;
+      name=COM_Y;
+      comment="";
+      elementname=COM_Y;
+      subs=1; ielem=29;
+      type=ident;
+  with grwindowvar;
+    color=FF0000;
+    marker=0;
+    markedline=0;
+    visible=0;
+    with grvar;
+      name=COM_Z;
+      comment="";
+      elementname=COM_Z;
+      subs=1; ielem=30;
+      type=ident;
+  with grwindowvar;
+    color=0000FF;
+    marker=0;
+    markedline=0;
+    visible=1;
+    with grvar;
+      name=Xc19(test_hexapod(All bodies));
+      comment="Center of mass. Projection X";
+      subs=1; ielem=1;
+      type=CenterOfMassXBodyList;
+      bodylist={
+        Body,
+        FL.leg_seg1,
+        FL.leg_seg2,
+        FL.leg_seg3,
+        ML.leg_seg1,
+        ML.leg_seg2,
+        ML.leg_seg3,
+        RL.leg_seg1,
+        RL.leg_seg2,
+        RL.leg_seg3,
+        FR.leg_seg1,
+        FR.leg_seg2,
+        FR.leg_seg3,
+        MR.leg_seg1,
+        MR.leg_seg2,
+        MR.leg_seg3,
+        RR.leg_seg1,
+        RR.leg_seg2,
+        RR.leg_seg3
+      };
+  with grwindowvar;
+    color=808000;
+    marker=0;
+    markedline=0;
+    visible=1;
+    with grvar;
+      name=Yc19(test_hexapod(All bodies));
+      comment="Center of mass. Projection Y";
+      subs=1; ielem=1;
+      type=CenterOfMassYBodyList;
+      bodylist={
+        Body,
+        FL.leg_seg1,
+        FL.leg_seg2,
+        FL.leg_seg3,
+        ML.leg_seg1,
+        ML.leg_seg2,
+        ML.leg_seg3,
+        RL.leg_seg1,
+        RL.leg_seg2,
+        RL.leg_seg3,
+        FR.leg_seg1,
+        FR.leg_seg2,
+        FR.leg_seg3,
+        MR.leg_seg1,
+        MR.leg_seg2,
+        MR.leg_seg3,
+        RR.leg_seg1,
+        RR.leg_seg2,
+        RR.leg_seg3
+      };
+  with grwindowvar;
+    color=000080;
+    marker=0;
+    markedline=0;
+    visible=0;
+    with grvar;
+      name=Zc19(test_hexapod(All bodies));
+      comment="Center of mass. Projection Z";
+      subs=1; ielem=1;
+      type=CenterOfMassZBodyList;
+      bodylist={
+        Body,
+        FL.leg_seg1,
+        FL.leg_seg2,
+        FL.leg_seg3,
+        ML.leg_seg1,
+        ML.leg_seg2,
+        ML.leg_seg3,
+        RL.leg_seg1,
+        RL.leg_seg2,
+        RL.leg_seg3,
+        FR.leg_seg1,
+        FR.leg_seg2,
+        FR.leg_seg3,
+        MR.leg_seg1,
+        MR.leg_seg2,
+        MR.leg_seg3,
+        RR.leg_seg1,
+        RR.leg_seg2,
+        RR.leg_seg3
+      };
 with animwindow;
   graphicstype=2; 
   left=23; top=4; 
