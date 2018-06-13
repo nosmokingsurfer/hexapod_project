@@ -14,7 +14,7 @@ using namespace Eigen;
 int main(int argc, char** argv)
 {
 
-  Robot myRobot(Body::BODY_TYPE::ARTICULATED);
+  Robot myRobot(Body::BODY_TYPE::SIMPLE);
 
   VectorXd result;
   
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
   parameters[2] = 3;
 
   myRobot.recieveFeedBack(inputArray, 52);
-  myRobot.recieveParameters(parameters, 3);
+  myRobot.recieveParameters(parameters, 3);  
 
 
   double dt = 0.1;
@@ -52,6 +52,10 @@ int main(int argc, char** argv)
   {
     result = myRobot.getControls(i*dt);
   }
+
+  cout << "Center of mass = " << myRobot.getCOM() << endl;
+  cout << "Total mass = " << myRobot.getTotalMass() << endl;
+
 
 	 return 0;
 }
