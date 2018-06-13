@@ -45,6 +45,11 @@ Eigen::VectorXd Robot::getControls(double time)
       this->calculatedjoints.segment(curJoint.getCtrlIndex(), curJoint.getDOFnumber()) = curJoint.getTorques();
     }
   }
+
+
+  this->calculatedjoints.segment(40, 3) = this->getCOM();
+
+
   return this->calculatedjoints;
 }
 
@@ -128,3 +133,16 @@ bool Robot::recieveParameters(double* params, int numberOfParams)
   return true;
 }
 
+Eigen::Vector3d Robot::getCOM()
+{
+  Vector3d result = this->robotBody.getCOMcoords();
+
+  result = this->robotBody.fbPose.T.inverse()*result;
+
+  return result;
+}
+
+double Robot::getTotalMass()
+{
+  return this->robotBody.getTotalMass();
+}

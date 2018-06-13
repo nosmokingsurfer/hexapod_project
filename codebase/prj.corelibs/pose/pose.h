@@ -22,8 +22,8 @@ using namespace Eigen;
 class Pose{
 public: 
   Pose();
-  Pose(Vector3d angles);
-  Pose(Vector3d angles, Vector3d t);
+  Pose(const Vector3d& angles);
+  Pose(const Vector3d& angles, const  Vector3d& t);
   Pose(const Transform<double, 3, Affine>& T);
   ~Pose();  
 

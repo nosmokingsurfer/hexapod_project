@@ -45,6 +45,9 @@ public:
 
   bool recieveFeedBack(double* inputs, int numberOfInputs);
   bool recieveParameters(double* params, int numberOfParams);
+
+  Eigen::Vector3d getCOM();
+  double getTotalMass();
 };
 
 #endif

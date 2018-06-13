@@ -48,7 +48,7 @@ private:
   VectorXd getMozaikBodyControlAngles(double time);
 
   double totalMass;
-  Vector3d getCOMcoords();
+  
   Vector3d getSimpleCOMcoords();
   Vector3d getArticulatedCOMcoords();
   Vector3d getMozaikCOMcoords();
@@ -75,6 +75,8 @@ private:
   bool updateBodyGeometry(const BodyCoordinates& bodyConfig);
 
 public:
+  BODY_TYPE body_type; //!< kinematics of the body
+  
   vector<Segment> segments;
   Pose fbPose; //!< feedback pose of the robot's body
   Pose tarPose; //!< target pose of the robot's body
@@ -82,6 +84,8 @@ public:
   VectorXd FBcoords;
   VectorXd FBvelocities;
   
+  TaskQueue controlCommands;
+
   bool recieveFB(const VectorXd& feedback);// get feedback from UM
   Pose getTargetPose(double time); // get target position of body in global RF
 
@@ -89,12 +93,12 @@ public:
 
   void printOut();//!< print all the element of the mozaik body into the console
 
-  BODY_TYPE body_type; //!< kinematics of the body
-
+  Vector3d getCOMcoords();
+  double getTotalMass();
   int getNDOF(); //!< returns number of DOF
   int getNControls(); //!< returns number of controls
 
-  TaskQueue controlCommands;
+  
 };
 
 

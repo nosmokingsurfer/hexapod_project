@@ -7,14 +7,15 @@ Segment::Segment()
 
 }
 
-Segment::Segment(const std::string name_, const Pose& pose_)
+Segment::Segment(const std::string& name_, const Pose& pose_)
 {
   this->name = name_;
   this->segmentRF = pose_;
   this->initialized = true;
 
-  this->mass = 95.16;
+  this->mass = 0;//95.16;
   this->totalMass = 0;
+  this->centerOfMass = Vector3d(0,0,0);
 }
 
 
@@ -38,6 +39,20 @@ Segment::Segment(const Segment& L)
   
   this->name = L.name;
   this->segmentRF = L.segmentRF;
+
+  this->mass = L.mass;
+  this->totalMass = L.mass;
+  this->centerOfMass = L.centerOfMass;
+  this->momentsOfInetrcia = L.momentsOfInetrcia;
+}
+
+Segment::Segment(const std::string& name_, const Pose& pose_, const double mass_, const Vector3d& centerOfMass_)
+{
+  *this = Segment(name_, pose_);
+
+  this->mass = mass_;
+  this->totalMass = 0;
+  this->centerOfMass = centerOfMass_;
 }
 
 Segment & Segment::operator=(const Segment& L)
@@ -77,11 +92,26 @@ Vector3d Segment::getCOMcoords(void)
 
   for (auto i = 0; i < this->legs.size(); i++)
   {
-    this->totalMass += legs[i].totalMass;
-    result += legs[i].totalMass*(legs[i].pose.T.inverse()*legs[i].getCOMcoords());
+    this->totalMass += legs[i].getTotalMass();
+    result += legs[i].getTotalMass()*(legs[i].pose.T.inverse()*legs[i].getCOMcoords());
   }
 
   result /= totalMass;
+
+  return result;
+}
+
+double Segment::getTotalMass()
+{
+  double result = 0;
+  result = this->mass;
+
+  for (auto i = 0; i < legs.size(); i++)
+  {
+    result += legs[i].getTotalMass();
+  }
+
+  this->totalMass = result;
 
   return result;
 }

@@ -28,6 +28,7 @@ class Leg{
 public: 
   Leg();
   Leg(const std::string name, const int fbIndex, const int ctrlIndex, const int debIndex, const Vector3d& segments, const Pose& mountingPose);
+  Leg(const std::string name, const int fbIndex, const int ctrlIndex, const int debIndex, const Vector3d& segments, const Pose& mountingPose, const vector<double>& masses);
   ~Leg();
 public:
   vector<double> segments;
@@ -43,8 +44,8 @@ public:
   bool recieveFB(const VectorXd& feedback); //!< copy feedback signals in FBcoords and FBvelocities from common feedback vector
   bool setCoeffs(const PID::PIDcoeffs &coeffs);//!< set coefficients of the PID controllers inside all leg joints
   bool setFBindex(const int index); //!< set the offset inside the common feedback vector to collect proper corresponding feedback signals
-  int getCtrlIndex();
-  int getDebIndex();
+  int getCtrlIndex(); //!< returns control signal index inside common control vector of the system
+  int getDebIndex(); //!< returns index in debug part of common output vector of the system
 
 
   Eigen::Vector3d trajectoryGenerator(double time); //!< generates trajectory for the leg with reference to time variable
@@ -61,10 +62,10 @@ public:
   bool setTargetState(const Vector3d& targetstate); //!< sets target point for leg
   Vector3d getTargetState(); //!< returns targetPoint value
 
-  double masses[3]; //!< masses for all segments of the leg
-  double totalMass; //!< total mass of the leg
+
 
   Vector3d getCOMcoords(); //!< returns center of mass coordinates in leg's reference frame
+  double getTotalMass(); //!< returns total mass of the leg
 
 private:
   int fbIndex; // todo move to the basic class
@@ -76,6 +77,9 @@ private:
   Vector3d targetState; //!< current leg target position
 
   Segment* parent;//!< the segment leg connected to
+
+  std::vector<double> masses; //!< masses for all segments of the leg
+  double totalMass; //!< total mass of the leg
 
 };
 

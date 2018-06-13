@@ -10,13 +10,13 @@ Pose::Pose()
   (*this) = Pose(Vector3d(0,0,0), Vector3d(0,0,0));  
 }
 
-Pose::Pose(Vector3d angles)
+Pose::Pose(const Vector3d& angles)
 {
   (*this) = Pose(angles, Vector3d(0,0,0));
 }
 
 
-Pose::Pose(Vector3d angles, Vector3d t)
+Pose::Pose(const Vector3d& angles, const Vector3d& t)
 {
   
   this->T = Translation<double,3>(t)

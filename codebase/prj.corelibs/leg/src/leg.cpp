@@ -30,13 +30,19 @@ Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, cons
   this->pids.push_back(PID());
   this->pids.push_back(PID());
 
-
-  this->masses[0] = 1.928;
-  this->masses[1] = 2.892;
-  this->masses[2] = 1.286;
   this->totalMass = 0;
 }
 
+
+Leg::Leg(const std::string name_, const int fbIndex_, const int ctrlIndex_, const int debIndex_, const Vector3d& segments_, const Pose& mountingPose_, const vector<double>& masses_)
+{
+  *this = Leg(name_, fbIndex_, ctrlIndex_, debIndex_, segments_, mountingPose_);
+
+  for (auto i = 0; i < masses_.size(); i ++)
+  {
+    this->masses.push_back(masses_[i]);
+  }
+}
 
 Leg::~Leg()
 {
@@ -323,11 +329,11 @@ Vector3d Leg::getCOMcoords()
 
   result[0] += m1*cos(alpha)*0.5*p1;
   result[0] += m2*cos(alpha)*(p1 + 0.5*p2*cos(beta));
-  result[0] += m3*cos(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta+gamma));
+  result[0] += m3*cos(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta + gamma));
 
   result[1] += m1*sin(alpha)*0.5*p1;
   result[1] += m2*sin(alpha)*(p1 + 0.5*cos(beta));
-  result[1] += m3*sin(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta+gamma));
+  result[1] += m3*sin(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta + gamma));
 
   result[2] += 0;
   result[2] += m2*0.5*p2*sin(beta);
@@ -337,5 +343,15 @@ Vector3d Leg::getCOMcoords()
 
   result /= totalMass;
 
+  return result;
+}
+
+double Leg::getTotalMass()
+{
+  double result = 0;
+  for (auto i = 0; i < masses.size(); i++)
+  {
+    result += masses[i];
+  }
   return result;
 }

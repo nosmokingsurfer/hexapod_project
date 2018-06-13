@@ -2,7 +2,14 @@
 
 Body::Body()
 {
-
+  this->FBcoords.fill(0);
+  this->fbPose = Pose();
+  this->FBvelocities.fill(0);
+  this->nControls = 0;
+  this->nDOF = 0;
+  this->segments.clear();
+  this->tarPose =Pose();
+  this->totalMass = 0;
 }
 
 Body::Body(BODY_TYPE bt)
@@ -30,7 +37,6 @@ Body::Body(BODY_TYPE bt)
 }
 
 
-
 Body::~Body()
 {}
 
@@ -38,17 +44,22 @@ void Body::initSimpleBody()
 {
   Vector3d legSegments(0.05, 0.05, 0.05);
 
-  this->segments.push_back(Segment("main", Pose()));
+  this->segments.push_back(Segment("main", Pose(), 2.34, Vector3d(0,0,0.0075)));
 
-  this->segments[0].connectLeg(Leg("FL", 12,  0, 18, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("ML", 18,  3, 21, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RL", 24,  6, 24, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0))));
-  this->segments[0].connectLeg(Leg("FR", 30,  9, 27, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0))));
-  this->segments[0].connectLeg(Leg("MR", 36, 12, 30, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0))));
-  this->segments[0].connectLeg(Leg("RR", 42, 15, 33, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0))));
+  std::vector<double> masses;
+  masses.push_back(0.04339);
+  masses.push_back(0.04339);
+  masses.push_back(0.04339);
+
+  this->segments[0].connectLeg(Leg("FL", 12,  0, 18, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,  0.1, 0)),masses));
+  this->segments[0].connectLeg(Leg("ML", 18,  3, 21, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05,    0, 0)),masses));
+  this->segments[0].connectLeg(Leg("RL", 24,  6, 24, legSegments, Pose(Vector3d( EIGEN_PI/2, 0, 0), Vector3d(-0.05, -0.1, 0)),masses));
+  this->segments[0].connectLeg(Leg("FR", 30,  9, 27, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,  0.1, 0)),masses));
+  this->segments[0].connectLeg(Leg("MR", 36, 12, 30, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05,    0, 0)),masses));
+  this->segments[0].connectLeg(Leg("RR", 42, 15, 33, legSegments, Pose(Vector3d(-EIGEN_PI/2, 0, 0), Vector3d( 0.05, -0.1, 0)),masses));
 
   this->nDOF = 24;
-  this->nControls = 36;
+  this->nControls = 39;
 }
 
 void Body::initArticulatedBody()
@@ -79,23 +90,29 @@ void Body::initArticulatedBody()
   //
   //////////////////////////////////////////////////////////////////////////
   this->segments.clear();
-  this->segments.push_back(Segment("front",  Pose()));
-  this->segments.push_back(Segment("middle", Pose()));
-  this->segments.push_back(Segment("rear",   Pose()));
+  this->segments.push_back(Segment("front",  Pose(), 95.16, Vector3d(0,0,0)));
+  this->segments.push_back(Segment("middle", Pose(), 95.16, Vector3d(0,0,0)));
+  this->segments.push_back(Segment("rear",   Pose(), 95.16, Vector3d(0,0,0)));
 
   /********************************************************/
   /*                   Front Segment                      */
   /********************************************************/
-  this->segments[0].connectLeg(Leg("FL", 12, 0, 18, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[0].connectLeg(Leg("FR", 30, 9, 27, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+
+  std::vector<double> masses;
+  masses.push_back(1.928);
+  masses.push_back(2.892);
+  masses.push_back(1.286);
+
+  this->segments[0].connectLeg(Leg("FL", 12, 0, 18, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0)), masses));
+  this->segments[0].connectLeg(Leg("FR", 30, 9, 27, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0)), masses));
   this->segments[0].connectJoint(Joint("j_1_2", 48, 36, 38, Joint::JOINT_TYPE::ROTATION_1D, Pose(Vector3d(0,0,0), Vector3d(0,-0.25,0)), Pose(Vector3d(0,0,0),Vector3d(0,0.25,0))), true);
 
 
   /********************************************************/
   /*                   Middle Segment                     */
   /********************************************************/
-  this->segments[1].connectLeg(Leg("ML", 18, 3, 21, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[1].connectLeg(Leg("MR", 36, 12, 30, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+  this->segments[1].connectLeg(Leg("ML", 18, 3, 21, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0)), masses));
+  this->segments[1].connectLeg(Leg("MR", 36, 12, 30, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0)), masses));
   this->segments[1].connectJoint(segments[0].joints[0], false);
   this->segments[1].connectJoint(Joint("j_2_3", 50, 37, 39, Joint::JOINT_TYPE::ROTATION_1D, Pose(Vector3d(0,0,0), Vector3d(0,-0.25,0)), Pose(Vector3d(0,0,0),Vector3d(0,0.25,0))), true);
 
@@ -103,12 +120,12 @@ void Body::initArticulatedBody()
   /********************************************************/
   /*                     Rear Segment                     */
   /********************************************************/
-  this->segments[2].connectLeg(Leg("RL", 24, 6, 24, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0))));
-  this->segments[2].connectLeg(Leg("RR", 42, 15, 33, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0))));
+  this->segments[2].connectLeg(Leg("RL", 24, 6, 24, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d( EIGEN_PI/2,0,0),Vector3d(-0.15,0,0)), masses));
+  this->segments[2].connectLeg(Leg("RR", 42, 15, 33, Vector3d(0.2, 0.3, 0.4), Pose(Vector3d(-EIGEN_PI/2,0,0),Vector3d( 0.15,0,0)), masses));
   this->segments[2].connectJoint(segments[1].joints[0], false);
 
   this->nDOF = 26;
-  this->nControls = 40;
+  this->nControls = 43;
 
 
   std::string fileName = "D:/_my_phd/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
@@ -271,7 +288,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
           FL_goal;
 
   segments[0].legs[0].setTargetState(segments[0].legs[0].inverseKinematics(temp));
-  segments[0].legs[0].setTargetState(segments[0].legs[0].numericalSolve(temp));
+  //segments[0].legs[0].setTargetState(segments[0].legs[0].numericalSolve(temp));
   result.segment(segments[0].legs[0].getDebIndex(), 3) = segments[0].legs[0].inverseKinematics(temp);
 
   //FR
@@ -412,18 +429,26 @@ Vector3d Body::getCOMcoords()
     case(BODY_TYPE::SIMPLE):
     {
       result = getSimpleCOMcoords();
+      break;
     }
     case(BODY_TYPE::ARTICULATED):
     {
       result = getArticulatedCOMcoords();
+      break;
     }
     case(BODY_TYPE::MOZAIK):
     {
       result = getMozaikCOMcoords();
+      break;
     }
   }
 
   return result;
+}
+
+double Body::getTotalMass()
+{
+  return this->totalMass;
 }
 
 Vector3d Body::getSimpleCOMcoords()
@@ -432,7 +457,7 @@ Vector3d Body::getSimpleCOMcoords()
 
   result = this->segments[0].getCOMcoords();
 
-  this->totalMass = segments[0].totalMass;
+  this->totalMass = segments[0].getTotalMass();
 
   return result;
 }
@@ -449,23 +474,24 @@ Vector3d Body::getArticulatedCOMcoords()
           segments[0].joints[0].getMountInParent().T*
           segments[0].getCOMcoords();
 
-  double frontMass = segments[0].totalMass;
+  double frontMass = segments[0].getTotalMass();
 
   Vector3d middle;
   middle = segments[1].getCOMcoords();
-  double middleMass = segments[1].totalMass;
+  double middleMass = segments[1].getTotalMass();
 
 
   Vector3d rear;
-  rear = segments[1].joints[1].getMountInParent().T.inverse()*
+  rear = segments[1].joints[0].getMountInParent().T.inverse()*
          segments[1].joints[0].getTransformation().T.inverse()*
          segments[1].joints[0].getMountInChild().T*
          segments[2].getCOMcoords();
 
-  double rearMass = segments[2].totalMass;
+  double rearMass = segments[2].getTotalMass();
 
 
   result = (frontMass*front + middleMass*middle + rearMass*rear)/(frontMass + middleMass + rearMass);
+  this->totalMass = frontMass + middleMass + rearMass;
 
   return result;
 }
@@ -483,6 +509,9 @@ bool Body::recieveFB(const VectorXd& feedback)
   {
     segments[i].recieveFB(feedback);
   }
+
+  this->fbPose = Pose(Vector3d(feedback[5], feedback[3], feedback[4]), Vector3d(feedback[0], feedback[1], feedback[2]));
+
   return true;
 }
 
