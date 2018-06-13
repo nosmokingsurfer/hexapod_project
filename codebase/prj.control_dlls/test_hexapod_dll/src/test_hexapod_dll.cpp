@@ -131,6 +131,7 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   //   status==0 means no errors occured
 
   num    = 36;
+  num  += 3; //!< three coordinates for COM of the robot
   status = 0;
 }
 
@@ -196,6 +197,10 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   case 34: wcscpy(name, L"RR_beta_target"); break;
   case 35: wcscpy(name, L"RR_gamma_target"); break;
 
+  case 36: wcscpy(name, L"COM_X"); break;
+  case 37: wcscpy(name, L"COM_Y"); break;
+  case 38: wcscpy(name, L"COM_Z"); break;
+
   default: status = 1;
   }
 }
@@ -217,11 +222,11 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
   EXT_GetNumU(numberOfInputs, status);
   myRobot.recieveFeedBack(U, numberOfInputs);
 
-  Eigen::VectorXd controlTorques(36);
+  Eigen::VectorXd controlTorques(39);
   controlTorques.fill(0); 
 
   controlTorques = myRobot.getControls(time);
-  for(int i = 0; i < 36; i++)
+  for(int i = 0; i < 39; i++)
   {
     Y[i] = controlTorques[i];
   }

@@ -146,8 +146,9 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   num += 6*3; // target angles for leg joints
   num += 2; // control torques for body joints
   num += 2; // desired angles for body joints
+  num += 3; // calculated COM of the Robot
 
-  //total number of output signals is 40
+  //total number of output signals is 43
 
   status = 0;
 }
@@ -223,6 +224,11 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   case 38:  wcscpy(name, L"j_1_2_target"); break;
   case 39:  wcscpy(name, L"j_2_3_target"); break;
 
+  //COM of the robot
+  case 40: wcscpy(name, L"ROBOT_COM_X_CALCULATED"); break;
+  case 41: wcscpy(name, L"ROBOT_COM_Y_CALCULATED"); break;
+  case 42: wcscpy(name, L"ROBOT_COM_Z_CALCULATED"); break;
+
   default: status = 1;
   }
 }
@@ -244,7 +250,7 @@ void _cdecl EXT_GetY(double time, PDouble U, PDouble X, PDouble Y, int& status)
   EXT_GetNumU(numberOfInputs, status);
   myRobot.recieveFeedBack(U, numberOfInputs);
 
-  Eigen::VectorXd output(40);
+  Eigen::VectorXd output(43);
   output.fill(0); 
 
   output = myRobot.getControls(time);
