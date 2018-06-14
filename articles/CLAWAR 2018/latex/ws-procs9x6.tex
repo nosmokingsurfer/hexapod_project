@@ -13,7 +13,7 @@ $^*$E-mail: PanchenkoAV@vap.ru\\
 $^{**}$E-mail: vlpavl@mail.ru}
 
 \begin{abstract}
-The paper describes kinematic control for hexapod robot with three segments articulated body. Forward and inverse kinematics for articulated body described. Static stability studied in case of climbing the so--called cliff obstacle. Conditions for static stability during climbing sequence provided.
+The paper describes kinematic control for hexapod robot with three--segment articulated body. Forward and inverse kinematics for articulated body described. Static stability studied in case of climbing the so--called cliff obstacle. Conditions for static stability during climbing sequence provided.
 \end{abstract}
 
 \keywords{Multi--legged robot; obstacle climbing; articulated body; simulation.}
@@ -21,10 +21,19 @@ The paper describes kinematic control for hexapod robot with three segments arti
 \bodymatter
 
 \section{Introduction}\label{aba:intoduction}
-Study of walking machines is rather old question. Starting in 
-Ancient China primitive mechanical designs\cite{yan2005historical} and ending with state of the art reinforcement learning \cite{peng2017deeploco} and model predictive control approaches\cite{diedam2008online}. Multi--leged walking robots are complicated systems in terms of control and planning due to significant number of degrees of freedom (d.o.f.) and actuators, complexity of the environment and etc. Nowadays the most complex and robust walking machines are made by Boston Dynamics company\cite{raibert2008bigdog}. Its robots are capable of working in human environment and outdoors. The basis of their solution is model predictive control and non-linear optimization. Their robots are based on the kinematics of mammals - dogs or horses. The kinematics of hexapod robots in turn is based on insects and spiders.
+Study of walking machines is a rather old question. Starting from 
+Ancient China mechanical designs\cite{yan2005historical} and ending with state of the art reinforcement learning \cite{peng2017deeploco} and model predictive control approaches\cite{diedam2008online}. Multi--legged walking robots are complicated systems in terms of control and planning due to significant number of degrees of freedom (d.o.f.) and actuators, complexity of the environment and etc. Nowadays the most complex and robust walking machines are made by Boston Dynamics company\cite{raibert2008bigdog}. Its robots are capable of working in human environment and outdoors. The basis of their approach is model predictive control and non-linear optimization. 
 
-The main idea of the article – to study robot with articulated body, that differs from conventional mainstream hexapods have rigid body with legs attached symmetrically. This arrangement has its limitations but still can be surprisingly agile and overcomes complex obstacles as it was demonstrated in articles\cite{golubev2008control,golubev2009motion,golubev2013motion}. Introducing additional degrees of freedom – making multiple rigid segments to be a body instead of one rigid body segment increases robot’s geometric patency. On the other hand there is going to be trade off – the complexity of control will increase\cite{panchenko2016control} along with number of d.o.f. and actuators but the robot will climb up higher obstacles or do maneuvers that robots with rigid body are not capable of. For example, go through narrow passage, sharp ditch and windrows.
+%Hexapod robots with rigid body can be surprisingly agile and overcome complex obstacles as it was demonstrated in articles\cite{golubev2008control,golubev2009motion,golubev2013motion}. Additional degrees of freedom in robot's body will increase its geometrical patency.
+%From one hand, introducing additional degrees of freedom –- making multiple rigid segments to be a body instead of one rigid body segment increases robot’s geometric patency. On the other hand there is going to be trade off – the complexity of control will increase\cite{panchenko2016control} along with number of d.o.f. and actuators but the robot will climb up higher obstacles or do maneuvers that robots with rigid body are not capable of. For example, go through narrow passage, sharp ditch and windrows.
+
+The main subject of article is to find simple approaches for building control algorithms for multi--legged walking robots with articulated body. It is clear that robots with flexible body can overcome obstacles that are more complex.
+
+For that purpose, a hexapod robot with three--segment body was studied in task of overcoming a cliff obstacle using Coulomb forces with coefficient of static friction less than 1. 
+
+Static stability equations were resolved for robot in different configurations with additional assumptions of symmetry. Motion sequence for climbing on a cliff with static stability preservation was build and verified in computer simulation.
+
+The designed approach for static stability study can be further used for other types of obstacles, such as narrow passage, sharp ditch, windrow and so on. Besides of that, the approach can be applied for different models of robot's body without any modifications.
 
 %The class file loads the packages {\tt amsfonts, amsmath, amssymb,
 %chapterbib, cite, dcolumn, epsfig, rotating} and {\tt url} at
@@ -53,7 +62,7 @@ The total number of degrees of freedom (d.o.f.) for specified robot is 26:
       \item 2 d.o.f. for body segments;
       \item	6 d.o.f. for the whole system as one single body.
 \end{itemlist}
-Overall it is 26 d.o.f. and 20 of them can be controlled with an actuators installed in corresponding rotational joints. Leg kinematics is well known and was already studied in all details.
+Overall it's 26 d.o.f. and 20 of them can be controlled with actuators installed in corresponding rotational joints. Leg kinematics is well--known and was already studied in all details.
 
 
 %In order to facilitate our processing of your article, please give
@@ -91,8 +100,10 @@ To overcome cliff obstacle robot moves using so-called gallop gait when a pair o
 %commands and other standard parts of \LaTeX.
 
 \section{Body Kinematics}
-Robot’s body consists of three equal rigid segments connected to each other with rotational joints with axes aligned in lateral direction of the body. Each segment has a pair of legs connected. Additional joints with angles $\delta_1$ and $\delta_2$ in the robots body allow to bend body and follow the surface shape and shift legs mounting points towards to supporting surface. 
-The following procedure is defined to calculated body joint angles. Initial and goal poses for middle segment are connected with a cubic spline curve, which represents target trajectory for middle segment. If segments and their trajectory are known then the task is solved through simple linear approximation as depicted on Fig. \ref{aba:spline}.
+Robot's body consists of three equal rigid segments connected to each other with rotational joints with axes aligned in lateral direction of the body. Each segment has a pair of legs connected. Additional joints with angles $\delta_1$ and $\delta_2$ in the robots body allow to bend body and follow the surface shape, shift legs mounting points towards to supporting surface. 
+To find body joint angles the following procedure is defined.
+
+Initial and goal poses for middle segment are connected with a cubic spline curve, which represents target trajectory for middle segment. If segments and their trajectory are known, then the task is solved through simple linear approximation as depicted on Fig. \ref{aba:spline}.
 
 \begin{figure}
   \begin{center}
@@ -102,11 +113,11 @@ The following procedure is defined to calculated body joint angles. Initial and 
   \label{aba:spline}
 \end{figure}
 
-To keep the contact points on the goal trajectory all joints should act in a coordinated way. At every moment of time all joint coordinates must be updated to keep the end effectors at the goal position. Additional mobility inside the robots body should be taken into account because all legs are connected to the different segments.  Target point $\overline{R}_i$ for $i$-th leg is given in global reference frame. To obtain leg joint angles the inverse kinematic equations are used, point $\overline{R}_i$ must be translated into leg’s reference frame. To manage all relative coordinate transformations of shifts and rotations between body segments, legs and joints, homogeneous coordinates are used. Calculation of all coordinate transformation for each leg at every moment of time can be easily done automatically through well-known kinematics of a robot.
-The main differences of articulated body from single segment body are:
+To keep the contact points on the goal trajectory all joints should act in a coordinated way. At every moment of time all joint coordinates must be updated to keep the end effectors at the goal position. Additional mobility inside the robots body should be taken into account because all legs are connected to the different segments.  Target point $\overline{R}_i$ for $i$-th leg is given in global reference frame. To obtain leg joint angles the inverse kinematic equations are used, point $\overline{R}_i$ must be translated into leg’s reference frame. To manage all relative coordinate transformations of shifts and rotations between body segments, legs and joints, homogeneous coordinates are used. Calculation of all coordinate transformation for each leg at every moment of time can be easily done automatically through well-known kinematics of robot.
+The main differences between articulated body and single segment body are:
 \begin{itemlist}
   \item Higher ability to overcome obstacles –-- segments follow the surface;
-  \item Articulated body is able to shift mounting points of its legs –-- service region is not constant, i.e. in some conditions robot can reach contact surface and put legs on it;
+  \item Articulated body is able to shift mounting points of its legs –-- service region is not a constant, i.e. in some conditions robot can reach contact surface and put legs on it;
   \item Center of gravity is shifted in a wider range with all else parameters being equal –-- critical parameter in static stability preservation in extreme conditions.
 \end{itemlist}
 
@@ -132,8 +143,8 @@ The system is stable when sums of all external forces and all momentums are equa
 The following configurations of supporting legs displacement should be studied for static stability:
 \begin{itemlist}
   \item All legs on some horizontal plane. This case is already well studied;
-  \item Front legs lean against the vertical plane and rear legs stand on the lower horizontal plane. Let us numerate this configuration as Number One.
-  \item Front legs are placed at the upper horizontal plane, while the rear legs stand on the vertical plane. Let us numerate this configuration as Number Two.
+  \item Front legs lean against the vertical plane and rear legs stand on the lower horizontal plane. Let us refer to this configuration as Number One.
+  \item Front legs are placed at the upper horizontal plane, while the rear legs stand on the vertical plane. Let us refer to this configuration as Number Two.
   \item All legs stand on the upper horizontal plane –-- this case is similar to the initial one.
 \end{itemlist}
   
@@ -260,7 +271,7 @@ Number of unknowns is still greater than number of equations. One more assumptio
   k_\tau^u = k_\tau^d = k_\tau > 0
 \end{equation}
 
-Finally, the system of three equations and three unknowns obtained:
+Finally, the system of three equations and three unknowns is obtained:
 
 \begin{equation}
 \label{eq:case1_final_system}
