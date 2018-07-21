@@ -11,9 +11,14 @@ TaskQueue::~TaskQueue()
 bool TaskQueue::init(const std::string scriptname)
 {
   std::ifstream input(scriptname);
+  if (input.is_open()) {}
+  else {
+	  std::cout << "Json library is missing";
+	  return false;
+  }
   input >> this->controlScript;
   input.close();
-
+ 
   return true;
 }
 

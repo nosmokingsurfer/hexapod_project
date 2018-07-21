@@ -39,9 +39,9 @@ public:
   Body(BODY_TYPE bt);
   ~Body();
 private:
-  void initSimpleBody();
-  void initArticulatedBody();
-  void initMozaikBody();
+  bool initSimpleBody();
+  bool initArticulatedBody();
+  bool initMozaikBody();
 
   VectorXd getSimpleBodyControlAngles(double time);
   VectorXd getArticulatedBodyControlAngles(double time);

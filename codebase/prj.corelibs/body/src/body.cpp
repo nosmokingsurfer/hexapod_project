@@ -40,7 +40,7 @@ Body::Body(BODY_TYPE bt)
 Body::~Body()
 {}
 
-void Body::initSimpleBody()
+bool Body::initSimpleBody()
 {
   Vector3d legSegments(0.05, 0.05, 0.05);
 
@@ -60,9 +60,10 @@ void Body::initSimpleBody()
 
   this->nDOF = 24;
   this->nControls = 39;
+  return true;
 }
 
-void Body::initArticulatedBody()
+bool Body::initArticulatedBody()
 {
   ///the body initialization order as follows:
   /// 1) all segments - w/o legs and joints
@@ -128,12 +129,14 @@ void Body::initArticulatedBody()
   this->nControls = 43;
 
 
-  std::string fileName = "D:/_my_phd/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
+  std::string fileName = "../../../prj.control_dlls/articulated_dll/articulated_controls.json";
+  if (!this->controlCommands.init(fileName))
+	  return false;
   this->controlCommands.init(fileName);
 
 }
 
-void Body::initMozaikBody()
+bool Body::initMozaikBody()
 {
   ///the body initialization order as follows:
   /// 1) all segments - w/o legs and joints
@@ -205,7 +208,9 @@ void Body::initMozaikBody()
   this->nDOF = 28; //TODO check this number
   this->nControls = 39; //TODO check this number
 
-  std::string fileName = "D:/_my_phd/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
+  std::string fileName = "C:/hexapod_project-master/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
+  if (!this->controlCommands.init(fileName))
+	  return false;
   this->controlCommands.init(fileName);
 }
 

@@ -2692,7 +2692,7 @@ LogicError::LogicError(JSONCPP_STRING const& msg)
 {}
 JSONCPP_NORETURN void throwRuntimeError(JSONCPP_STRING const& msg)
 {
-  throw RuntimeError(msg);
+  throw RuntimeError("msg");
 }
 JSONCPP_NORETURN void throwLogicError(JSONCPP_STRING const& msg)
 {
