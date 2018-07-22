@@ -1,4 +1,4 @@
-#include <body/body.h>
+п»ї#include <body/body.h>
 
 Body::Body()
 {
@@ -132,7 +132,11 @@ bool Body::initArticulatedBody()
   std::string fileName = "../../../prj.control_dlls/articulated_dll/articulated_controls.json";
   if (!this->controlCommands.init(fileName))
 	  return false;
-  this->controlCommands.init(fileName);
+  else
+  {
+      this->controlCommands.init(fileName);
+      return true;
+  }
 
 }
 
@@ -211,7 +215,10 @@ bool Body::initMozaikBody()
   std::string fileName = "C:/hexapod_project-master/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
   if (!this->controlCommands.init(fileName))
 	  return false;
-  this->controlCommands.init(fileName);
+  else {
+      this->controlCommands.init(fileName);
+      return true;
+  }
 }
 
 VectorXd Body::getSimpleBodyControlAngles(double time)
@@ -221,7 +228,7 @@ VectorXd Body::getSimpleBodyControlAngles(double time)
 
   std::vector<Vector3d> goals;
 
-  //положение следовых точек в абсолютной системе координат
+  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   goals.push_back(Vector3d(-0.12,  0.1, 0.0)); //FL
   goals.push_back(Vector3d(-0.12,  0.0, 0.0)); //ML
   goals.push_back(Vector3d(-0.12, -0.1, 0.0)); //RL
@@ -233,7 +240,7 @@ VectorXd Body::getSimpleBodyControlAngles(double time)
 
   for (int i = 0; i < 6; i++)
   {
-    //для i-ноги считаем радиус вектор в СК связанной с ногой
+    //пїЅпїЅпїЅ i-пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
     Vector3d result = segments[0].legs[i].pose.T*tarPose.T*goals[i];
     targetAngles.segment(segments[0].legs[i].getDebIndex(), 3) = segments[0].legs[i].inverseKinematics(result);
     segments[0].legs[i].setTargetState(targetAngles.segment(segments[0].legs[i].getDebIndex(), 3));
@@ -246,7 +253,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
   VectorXd result(nControls);
   result.fill(0);
 
-  //положение следовых точек в абсолютной системе координат
+  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   //TODO get points from planner
   Vector3d FL_goal(-0.5,  0.5, 0.0); //FL
   Vector3d ML_goal(-0.5,  0.3, 0.0); //ML
@@ -356,7 +363,7 @@ VectorXd Body::getMozaikBodyControlAngles(double time)
   result.fill(0);
 
 
-  //положение следовых точек в абсолютной системе координат
+  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   //TODO get points from planner
   Vector3d FL_goal(-0.5,  0.5, 0.0); //FL
   Vector3d ML_goal(-0.5,  0.3, 0.0); //ML
