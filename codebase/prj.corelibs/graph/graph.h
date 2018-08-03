@@ -18,6 +18,7 @@
 
 #include <pose/pose.h>
 
+
 using namespace std;
 using namespace Eigen;
 
@@ -44,14 +45,11 @@ public:
   typedef map<string, Vertex *> vmap; // определяем новый тип данных
   vmap g; //вершины графа хранятся здесь
 
-
-
   void addVertex(const string&, const Pose& pose); //добавляем вершину
   void addEdge(const string& from, const string& to, const Pose& pose); //добавляем ребро
   void addBidirectional(const string& from, const string& to, const Pose& pose); //добавляем двунаправленное ребро
+  Vector3d Graph::getCoord(const Vector3d& point, const string& from, const string& to) const;
 
-  void deleteVertex(const string& name);
-  void deleteEdge(const string& from, const string& to);
 
   void DFS(const string name); //обход графа из этой вершины
 

@@ -299,6 +299,7 @@ VectorXd Body::getArticulatedBodyControlAngles(double time)
           tarPose.T*
           FL_goal;
 
+
   segments[0].legs[0].setTargetState(segments[0].legs[0].inverseKinematics(temp));
   //segments[0].legs[0].setTargetState(segments[0].legs[0].numericalSolve(temp));
   result.segment(segments[0].legs[0].getDebIndex(), 3) = segments[0].legs[0].inverseKinematics(temp);

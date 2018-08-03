@@ -1,4 +1,4 @@
-#include <robot/robot.h>
+﻿#include <robot/robot.h>
 
 using namespace Eigen;
 
@@ -11,6 +11,8 @@ Robot::Robot(Body::BODY_TYPE bt)
 {
   this->robotBody = Body(bt);
   this->robotBody.printOut();
+
+//  this->coordGraph.init(this->robotBody);
 
   this->feedBack = VectorXd(2*robotBody.getNDOF());
   this->feedBack.fill(0);
@@ -92,6 +94,8 @@ bool Robot::recieveFeedBack(double* inputs, int numberOfInputs)
 
 
   this->robotBody.recieveFB(signals);
+
+  this->coordGraph.recieveFB(signals);
 
   return true;
 }
