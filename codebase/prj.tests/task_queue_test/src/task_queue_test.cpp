@@ -1,8 +1,6 @@
 // task_queue_test.cpp : Defines the entry point for the console application.
 //
 
-#include "../thirdparty/jsoncpp_headers/json/json.h"
-
 #include <iostream>
 #include <fstream>
 
@@ -15,92 +13,9 @@ using namespace Eigen;
 
 int main(int argc, char** argv)
 {
-  
-
-#if 0
-  std::string filename = "controlTasks.json";
-  
-  Json::Value root(Json::arrayValue);
-
-  for (auto n = 0; n < 10; n++)
-  {
-    Json::Value shot;
-
-    shot["case"]["number"] = n;
-    
-    Vector3d A(0,0,0);
-    Vector3d B(1,2,3);
-    
-
-    Json::Value temp(Json::arrayValue);
-    for (auto i = 0; i < A.size(); i++)
-    {
-      temp.append(A[i]);
-    }
-
-    shot["case"]["from"] = temp;
 
 
-    temp.clear();
-    for (auto i =0; i < B.size(); i++)
-    {
-      temp.append(B[i]);
-    }
-
-    shot["case"]["to"] = temp;
-
-
-    shot["case"]["start_time"] = 1.0;
-    shot["case"]["duration"] = 1.0;
-
-    root.append(shot);
-  }
-
-  Json::StyledWriter writer;
-  std::ofstream output(filename);
-
-  output << writer.write(root);
-
-  output.close();
-
-  std::ifstream input(filename);
-
-  Json::Value controlSeq;
-
-  input >> controlSeq;
-
-  for (auto it = controlSeq.begin(); it != controlSeq.end(); ++it)
-  {
-    
-    if ((*it)["case"]["number"].asInt() == 3)
-    {
-      cout << *it << endl;
-    }
-  }
-#endif
-
- std::string fileName = "articulated_controls.json";
-  //Json::Value root(Json::arrayValue);
-  //Json::Value frame;
-  //frame["start_time"] = 0;
-  //frame["duration"] = 1.0;
-  //frame["FL"] = TaskQueue::setLeg(Vector3d(-0.5, 0.5, 0.0), Vector3d(-0.5,0.5,0.1), 1.0,0);
-  //frame["FR"] = TaskQueue::setLeg(Vector3d(0.5, 0.5, 0.0),  Vector3d(0.5,0.5,0.1), 1.0,0);
-  //
-  //root.append(frame);
-  //
-  //frame["start_time"] = 1.0;
-  //
-  //frame["FL"] = TaskQueue::setLeg(Vector3d(-0.5, 0.5, 0.1), Vector3d(-0.5,1.01,0.1), 1.0,1.0);
-  //frame["FR"] = TaskQueue::setLeg(Vector3d(0.5, 0.5, 0.1),  Vector3d(0.5,1.01,0.1), 1.0,1.0);
-  //
-  //root.append(frame);
-  //
-  //std::ofstream output(fileName);
-  //Json::StyledWriter writer;
-  //output << writer.write(root); 
-  //output.close();
-
+  std::string fileName = "articulated_controls.json";
 
   TaskQueue controlCommands;
   controlCommands.init(fileName);
