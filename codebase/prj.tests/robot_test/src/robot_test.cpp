@@ -14,7 +14,7 @@ using namespace Eigen;
 int main(int argc, char** argv)
 {
 
-  Robot myRobot(Body::BODY_TYPE::SIMPLE);
+  Robot myRobot(Body::BODY_TYPE::ARTICULATED);
 
   VectorXd result;
   
@@ -55,6 +55,26 @@ int main(int argc, char** argv)
 
   cout << "Center of mass = " << myRobot.getCOM() << endl;
   cout << "Total mass = " << myRobot.getTotalMass() << endl;
+
+
+  Vector3d segments(1,2,3);
+  std::vector<double> masses;
+  masses.push_back(60.26);
+  masses.push_back(120.5);
+  masses.push_back(180.8);
+
+
+  Leg testLeg("testLeg",0,0,0,segments,Pose(),masses);
+
+  VectorXd fb(6);
+  fb << 0.78539816339744830961566084581988,0.78539816339744830961566084581988,0.78539816339744830961566084581988,0,0,0;
+
+  testLeg.recieveFB(fb);
+
+  result = testLeg.getCOMcoords();
+
+  cout << result << endl;
+
 
 
 	 return 0;
