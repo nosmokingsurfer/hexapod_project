@@ -332,7 +332,7 @@ Vector3d Leg::getCOMcoords()
   result[0] += m3*cos(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta + gamma));
 
   result[1] += m1*sin(alpha)*0.5*p1;
-  result[1] += m2*sin(alpha)*(p1 + 0.5*cos(beta));
+  result[1] += m2*sin(alpha)*(p1 + 0.5*p2*cos(beta));
   result[1] += m3*sin(alpha)*(p1 + p2*cos(beta) + 0.5*p3*cos(beta + gamma));
 
   result[2] += 0;
@@ -353,5 +353,6 @@ double Leg::getTotalMass()
   {
     result += masses[i];
   }
+  this->totalMass = result;
   return result;
 }

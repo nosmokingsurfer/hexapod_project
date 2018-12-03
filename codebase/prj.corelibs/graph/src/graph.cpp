@@ -36,23 +36,16 @@ void Graph::addBidirectional(const string& from, const string& to, const Pose& p
   addEdge(to,from, temp.inverse());
 }
 
-void Graph::deleteVertex(const string& name)
+Vector3d Graph::getCoord(const Vector3d& point, const string& from, const string& to) const
 {
-  
+    Graph mygraph(*this);
+    auto pose = Pose();
+    pose = mygraph.DFS(from, to, pose);
+    mygraph.setNotUsed();
+    return pose.T*point;
+    
 }
 
-void Graph::deleteEdge(const string& from, const string& to)
-{
-  auto temp = g.find(from);
-  for (auto it = temp->second->adj.begin(); it != temp->second->adj.end(); ++it)
-  {
-    if (it->second->name == to)
-    {
-      temp->second->adj.erase(temp->second->adj.begin(), it);
-    }
-  }
-  cout << "There is no Edge " << from << " -> " << to << endl;
-}
 
 void Graph::DFS(const string name)
 {
