@@ -4,7 +4,7 @@ using namespace Eigen;
 
 Robot::Robot()
 {
-  
+  this->comIndex = 0;
 }
 
 Robot::Robot(Body::BODY_TYPE bt)
@@ -19,6 +19,15 @@ Robot::Robot(Body::BODY_TYPE bt)
 
   this->calculatedjoints = VectorXd(robotBody.getNControls());
   this->calculatedjoints.fill(0);
+
+
+  switch(bt)
+  {
+    case Body::BODY_TYPE::ARTICULATED: this->comIndex = 40; break;
+    case Body::BODY_TYPE::SIMPLE: this->comIndex = 36; break;
+    case Body::BODY_TYPE::MOZAIK: this->comIndex = -1; break;
+    default: this->comIndex = -1; break;
+  }
 
 }
 
@@ -49,7 +58,7 @@ Eigen::VectorXd Robot::getControls(double time)
   }
 
 
-  this->calculatedjoints.segment(40, 3) = this->getCOM();
+  this->calculatedjoints.segment(this->getCOMIndex(), 3) = this->getCOM();
 
 
   return this->calculatedjoints;
@@ -141,7 +150,7 @@ Eigen::Vector3d Robot::getCOM()
 {
   Vector3d result = this->robotBody.getCOMcoords();
 
-  result = this->robotBody.fbPose.T.inverse()*result;
+  result = this->robotBody.fbPose.inverse().T*result;
 
   return result;
 }
@@ -149,4 +158,9 @@ Eigen::Vector3d Robot::getCOM()
 double Robot::getTotalMass()
 {
   return this->robotBody.getTotalMass();
+}
+
+int Robot::getCOMIndex()
+{
+  return this->comIndex;
 }

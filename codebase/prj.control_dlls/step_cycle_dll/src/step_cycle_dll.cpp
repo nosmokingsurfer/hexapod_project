@@ -79,6 +79,7 @@ void _cdecl EXT_GetNumY(int &num, int& status)
   //   status==0 means no errors occured
 
   num    = 3;
+  num += 3;
   status = 0;
 }
 
@@ -92,9 +93,9 @@ void _cdecl EXT_GetYName(int i, WChar name, int& status)
   status = 0;
   switch( i ) // Names of output variables
   {  
-  case 0: wcscpy(name, L"Fx"); break;
-  case 1: wcscpy(name, L"Fy"); break;
-  case 2: wcscpy(name, L"Fz"); break;
+  case 0: wcscpy(name, L"torque_alpha"); break;
+  case 1: wcscpy(name, L"torque_beta"); break;
+  case 2: wcscpy(name, L"torque_gamma"); break;
   default: status = 1;
   }
 }

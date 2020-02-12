@@ -44,7 +44,7 @@ bool Body::initSimpleBody()
 {
   Vector3d legSegments(0.05, 0.05, 0.05);
 
-  this->segments.push_back(Segment("main", Pose(), 2.34, Vector3d(0,0,0.0075)));
+  this->segments.push_back(Segment("main", Pose(), 0.0, Vector3d(0,0,0.0)));
 
   std::vector<double> masses;
   masses.push_back(0.04339);
@@ -130,6 +130,7 @@ bool Body::initArticulatedBody()
 
 
   std::string fileName = "../../../prj.control_dlls/articulated_dll/articulated_controls.json";
+  fileName = "D:/_my_phd/codebase/prj.control_dlls/articulated_dll/articulated_controls.json";
   if (!this->controlCommands.init(fileName))
 	  return false;
   else
@@ -523,7 +524,8 @@ bool Body::recieveFB(const VectorXd& feedback)
     segments[i].recieveFB(feedback);
   }
 
-  this->fbPose = Pose(Vector3d(feedback[5], feedback[3], feedback[4]), Vector3d(feedback[0], feedback[1], feedback[2]));
+  //this->fbPose = Pose(Vector3d(feedback[5], feedback[3], feedback[4]), Vector3d(feedback[0], feedback[1], feedback[2]));
+  this->fbPose = Pose(Vector3d(feedback[3], feedback[4], feedback[5]), Vector3d(feedback[0], feedback[1], feedback[2]));
 
   return true;
 }

@@ -74,6 +74,9 @@ Segment & Segment::operator=(const Segment& L)
   this->legs = L.legs;
   this->name = L.name;
   this->segmentRF = L.segmentRF;
+  this->mass = L.mass;
+  this->totalMass = L.totalMass;
+  this->centerOfMass = L.centerOfMass;
 
   return *this;
 }
@@ -93,7 +96,7 @@ Vector3d Segment::getCOMcoords(void)
   for (auto i = 0; i < this->legs.size(); i++)
   {
     this->totalMass += legs[i].getTotalMass();
-    result += legs[i].getTotalMass()*(legs[i].pose.T.inverse()*legs[i].getCOMcoords());
+    result += legs[i].getTotalMass()*(legs[i].pose.inverse().T*legs[i].getCOMcoords());
   }
 
   result /= totalMass;

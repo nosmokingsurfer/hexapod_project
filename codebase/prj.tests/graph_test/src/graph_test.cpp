@@ -1,6 +1,11 @@
 ﻿// trajectory_test.cpp : Defines the entry point for the console application.
 //
+<<<<<<< HEAD
 /*
+=======
+
+
+>>>>>>> moving from laptop
 #include <graph/graph.h>
 #include <iostream>
 #include <vector>

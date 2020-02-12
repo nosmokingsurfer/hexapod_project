@@ -8,6 +8,7 @@ option(BUILD_TESTS "Build test projects" ON)
 
 
 if(BUILD_TESTS)
+ enable_testing()
 	add_subdirectory(prj.tests)
 endif()
 
